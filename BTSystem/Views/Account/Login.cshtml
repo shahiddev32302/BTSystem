@@ -1,0 +1,76 @@
+﻿@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_LayoutAuth.cshtml";
+}
+
+<div class="login-container">
+    <div class="login-card">
+
+        <div class="login-header text-center mb-4">
+            <div class="logo-circle mb-3">
+                <i class="fas fa-university text-primary"></i>
+            </div>
+            <h1 class="h3 fw-bold">University Bus Tracking</h1>
+            <p class="text-muted small">Real-time transportation management</p>
+        </div>
+
+        <form asp-action="Login" asp-controller="Account" method="post">
+
+            <!-- Hidden Role -->
+            <input type="hidden" name="Role" id="selectedRole" value="student" />
+
+            <!-- Role Selector -->
+            <div class="role-selector mb-4">
+                <label class="form-label fw-semibold">Select Your Role</label>
+                <div class="role-buttons">
+                    <button type="button" class="role-btn active" data-role="student">
+                        <i class="fas fa-graduation-cap"></i> Student
+                    </button>
+                    <button type="button" class="role-btn" data-role="parent">
+                        <i class="fas fa-users"></i> Parent
+                    </button>
+                    <button type="button" class="role-btn" data-role="driver">
+                        <i class="fas fa-car-side"></i> Driver
+                    </button>
+                    <button type="button" class="role-btn" data-role="admin">
+                        <i class="fas fa-lock"></i> Admin
+                    </button>
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input name="Email" class="form-control" required />
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input name="Password" type="password" class="form-control" required />
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+                <i class="fas fa-sign-in-alt me-2"></i> Sign In
+            </button>
+        </form>
+
+        <div class="position-absolute top-0 end-0 p-3">
+            <button class="btn btn-outline-secondary btn-sm" id="darkModeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.role-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById('selectedRole').value = this.dataset.role;
+            });
+        });
+    </script>
+}

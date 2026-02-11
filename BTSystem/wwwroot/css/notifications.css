@@ -1,0 +1,339 @@
+
+/* Notifications specific styles */
+.notifications-container {
+    background: var(--bg);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+
+.notification-card {
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+    .notification-card:hover {
+        background: var(--bg-secondary);
+    }
+
+    .notification-card.unread {
+        background: rgba(30, 58, 138, 0.05);
+    }
+
+    .notification-card:last-child {
+        border-bottom: none;
+    }
+
+.notification-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+    .notification-icon.alert {
+        background: rgba(239, 68, 68, 0.15);
+        color: #dc2626;
+    }
+
+    .notification-icon.warning {
+        background: rgba(250, 204, 21, 0.15);
+        color: #ca8a04;
+    }
+
+    .notification-icon.success {
+        background: rgba(34, 197, 94, 0.15);
+        color: #16a34a;
+    }
+
+    .notification-icon.info {
+        background: rgba(59, 130, 246, 0.15);
+        color: var(--primary-light);
+    }
+
+    .notification-icon.update {
+        background: rgba(139, 92, 246, 0.15);
+        color: #8b5cf6;
+    }
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.notification-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.notification-time {
+    font-size: 12px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.notification-message {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.notification-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.notification-tag {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tag-alert {
+    background: rgba(239, 68, 68, 0.15);
+    color: #dc2626;
+}
+
+.tag-warning {
+    background: rgba(250, 204, 21, 0.15);
+    color: #ca8a04;
+}
+
+.tag-success {
+    background: rgba(34, 197, 94, 0.15);
+    color: #16a34a;
+}
+
+.tag-info {
+    background: rgba(59, 130, 246, 0.15);
+    color: var(--primary-light);
+}
+
+.tag-update {
+    background: rgba(139, 92, 246, 0.15);
+    color: #8b5cf6;
+}
+
+.notification-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+    .notification-actions .btn {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+/* Filter Tabs */
+.filter-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    padding: 15px;
+    background: var(--bg);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+.filter-tab {
+    padding: 8px 20px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+    .filter-tab:hover {
+        background: var(--gray-100);
+    }
+
+    .filter-tab.active {
+        background: var(--primary);
+        color: white;
+    }
+
+    .filter-tab .badge {
+        background: rgba(255, 255, 255, 0.2);
+        color: inherit;
+        font-size: 11px;
+        padding: 2px 6px;
+        border-radius: 10px;
+    }
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.empty-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    color: var(--text-secondary);
+    font-size: 32px;
+}
+
+.empty-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.empty-message {
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+/* Quick Actions */
+.quick-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+/* Notification Types */
+.notification-type-filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.type-filter-btn {
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--bg);
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+    .type-filter-btn:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+
+    .type-filter-btn.active {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+    }
+
+    .type-filter-btn .type-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+    }
+
+.type-alert .type-dot {
+    background: #dc2626;
+}
+
+.type-warning .type-dot {
+    background: #ca8a04;
+}
+
+.type-success .type-dot {
+    background: #16a34a;
+}
+
+.type-info .type-dot {
+    background: var(--primary-light);
+}
+
+.type-update .type-dot {
+    background: #8b5cf6;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .notification-card {
+        padding: 15px;
+        flex-direction: column;
+    }
+
+    .notification-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .notification-time {
+        align-self: flex-start;
+    }
+
+    .notification-actions {
+        align-self: flex-end;
+        margin-top: 10px;
+    }
+
+    .filter-tabs {
+        overflow-x: auto;
+        padding: 10px;
+    }
+
+    .filter-tab {
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .quick-actions {
+        flex-direction: column;
+    }
+
+        .quick-actions .btn {
+            width: 100%;
+        }
+}
+
+

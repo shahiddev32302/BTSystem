@@ -1,0 +1,119 @@
+/* ===================================
+   DARK MODE STYLES
+   =================================== */
+
+html[data-theme="dark"] {
+  --primary: #3b82f6;
+  --primary-dark: #2563eb;
+  --primary-light: #60a5fa;
+
+  --white: #0f172a;
+  --gray-50: #1e293b;
+  --gray-100: #334155;
+  --gray-200: #475569;
+  --gray-300: #64748b;
+  --gray-400: #94a3b8;
+  --gray-500: #cbd5e1;
+  --gray-600: #e2e8f0;
+  --gray-700: #f1f5f9;
+  --gray-800: #f8fafc;
+  --gray-900: #e5e7eb;
+
+  --bg: #0f172a;
+  --bg-secondary: #1e293b;
+  --text-primary: #e5e7eb;
+  --text-secondary: #9ca3af;
+  --text-tertiary: #6b7280;
+  --border: #334155;
+}
+
+html[data-theme="dark"] body {
+  background-color: var(--bg);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .card {
+  background-color: var(--bg-secondary);
+  border-color: var(--border);
+}
+
+html[data-theme="dark"] .card-header,
+html[data-theme="dark"] .card-footer {
+  background-color: #475569;
+  border-color: var(--border);
+}
+
+html[data-theme="dark"] .btn-outline-secondary {
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+html[data-theme="dark"] .btn-outline-secondary:hover {
+  background-color: var(--bg-secondary);
+  border-color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .form-control,
+html[data-theme="dark"] .form-select {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+html[data-theme="dark"] .form-control:focus,
+html[data-theme="dark"] .form-select:focus {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 3px rgba(60, 130, 246, 0.1);
+}
+
+html[data-theme="dark"] .input-group-text {
+  background-color: #475569;
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .sidebar {
+  background-color: var(--bg-secondary);
+  border-right-color: var(--border);
+}
+
+html[data-theme="dark"] .sidebar-item {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .sidebar-item:hover {
+  background-color: #475569;
+  color: var(--primary-light);
+}
+
+html[data-theme="dark"] .sidebar-item.active {
+  background-color: rgba(60, 130, 246, 0.15);
+  color: var(--primary-light);
+}
+
+html[data-theme="dark"] .login-card {
+  background-color: var(--bg-secondary);
+}
+
+html[data-theme="dark"] .role-btn {
+  background-color: var(--bg);
+  color: var(--text-secondary);
+  border-color: var(--border);
+}
+
+html[data-theme="dark"] .role-btn:hover {
+  border-color: var(--primary-light);
+  color: var(--primary-light);
+}
+
+html[data-theme="dark"] .role-btn.active {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: white;
+}
+
+/* Smooth transitions for dark mode */
+html[data-theme="dark"] * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}

@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - BTSystem</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="~/css/dark-mode.css" rel="stylesheet" />
+    <link href="~/css/dashboard.css" rel="stylesheet" />
+    <link href="~/css/management.css" rel="stylesheet" />
+    <link href="~/css/driver-dashboard.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet" />
+
+</head>
+<body>
+    <script src="~/js/dark-mode.js"></script>
+
+    <div class="dashboard-container">
+
+        <!-- ================= Sidebar ================= -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-bus"></i>
+                    <span class="logo-text">BusTrack</span>
+                </div>
+                <button class="btn btn-icon sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a asp-controller="Admin" asp-action="Dashboard" class="sidebar-item active">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a asp-controller="BusManagement" asp-action="Point" class="sidebar-item">
+                    <i class="fas fa-bus"></i>
+                    <span>Bus Management</span>
+                </a>
+
+                <a asp-controller="Driver" asp-action="DriverManagement" class="sidebar-item">
+                    <i class="fas fa-user-tie"></i>
+                    <span>Driver Management</span>
+                </a>
+
+                <a asp-controller="Route"
+                   asp-action="RouteManagement"
+                   class="sidebar-item">
+                    <i class="fas fa-route"></i>
+                    <span>Route Management</span>
+                </a>
+                <a asp-controller="Trip"
+                   asp-action="TripScheduling"
+                   class="sidebar-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Trip Scheduling</span>
+                </a>
+
+                  <a asp-controller="Tracking" asp-action="LiveTracking" class="sidebar-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Live Tracking</span>
+                </a>
+                  <a asp-controller="Notification" asp-action="NotificationManagement" class="sidebar-item">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                </a>
+                  <a asp-controller="Reports" asp-action="ReportsManagement" class="sidebar-item">
+                    <i class="fas fa-file-chart-line"></i>
+                    <span>Reports</span>
+                </a>
+                  <a asp-controller="Settings" asp-action="SettingManagement" class="sidebar-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a asp-controller="Account" asp-action="Logout" class="sidebar-item">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- ================= Main Content ================= -->
+        <main class="main-content">
+
+            <!-- ===== Top Navbar ===== -->
+            <nav class="navbar">
+                <div class="navbar-left">
+                    <button class="btn btn-icon navbar-toggle" id="navbarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">@ViewData["Title"]</h1>
+                </div>
+
+                <div class="navbar-right">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search buses, drivers, routes...">
+                    </div>
+
+                    <button class="btn btn-icon" id="notificationBell" title="Notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </button>
+
+                    <div class="profile-dropdown">
+                        <button class="btn btn-icon" id="profileBtn">
+                            <div class="avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </button>
+                        <div class="dropdown-menu" id="profileMenu">
+                            <a href="#">My Profile</a>
+                            <a href="#">Settings</a>
+                            <hr>
+                            <a href="login.html">Logout</a>
+                        </div>
+                    </div>
+                    <button class="btn btn-icon" id="darkModeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </nav>
+
+            <!-- ===== Page Body ===== -->
+            <div class="content-area">
+                @RenderBody()
+            </div>
+
+        </main>
+    </div>
+
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/main.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

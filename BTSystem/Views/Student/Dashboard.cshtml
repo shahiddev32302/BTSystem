@@ -1,0 +1,121 @@
+﻿@{
+    ViewData["Title"] = "Student Dashboard";
+    Layout = "~/Views/Shared/_LayoutStudent.cshtml";
+}
+
+<div class="student-dashboard">
+
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <h1>My Bus Tracker</h1>
+            <p>Track your bus in real-time</p>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-icon" id="darkModeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="btn btn-icon">
+                <i class="fas fa-user-circle"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="dashboard-content">
+
+        <!-- Status Card -->
+        <div class="status-card">
+            <div class="status-header">
+                <h2>My Bus Status</h2>
+                <span class="status-live">
+                    <span class="pulse-indicator"></span> Live
+                </span>
+            </div>
+
+            <div class="status-body">
+                <div class="bus-info-large">
+                    <div class="bus-number-display">BUS 101</div>
+                    <div class="bus-driver">
+                        <i class="fas fa-user-tie"></i> John Smith
+                    </div>
+                </div>
+
+                <div class="status-metrics">
+                    <div class="metric">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <small>Pickup Stop</small>
+                            <strong>Main Gate</strong>
+                        </div>
+                    </div>
+
+                    <div class="metric">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <small>Pickup Time</small>
+                            <strong>8:30 AM</strong>
+                        </div>
+                    </div>
+
+                    <div class="metric">
+                        <i class="fas fa-hourglass-end"></i>
+                        <div>
+                            <small>Arrival ETA</small>
+                            <strong>8:45 AM</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arrival-countdown">
+                    <div class="countdown-label">Bus arrives in</div>
+                    <div class="countdown-timer">
+                        <span class="timer-digit">0</span> :
+                        <span class="timer-digit">05</span> :
+                        <span class="timer-digit">40</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mini Map -->
+        <div class="mini-map-card">
+            <h3>Live Map</h3>
+            <div class="mini-map">
+                <svg viewBox="0 0 400 300">
+                    <rect width="400" height="300" fill="#f4f6f8" />
+                    <polyline points="50,100 150,120 250,100 350,150"
+                              stroke="#0d6efd" stroke-width="3" fill="none" />
+                    <circle cx="200" cy="110" r="10" fill="#0d6efd" />
+                </svg>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="actions-section">
+            <h3>Quick Actions</h3>
+            <div class="actions-grid">
+                <button class="action-btn"><i class="fas fa-bell"></i> Report Delay</button>
+                <button class="action-btn"><i class="fas fa-phone"></i> Contact Admin</button>
+                <button class="action-btn"><i class="fas fa-info-circle"></i> Bus Details</button>
+                <button class="action-btn"><i class="fas fa-cog"></i> Settings</button>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+@section Scripts {
+    <script>
+        // Simple countdown demo
+        let sec = 300;
+        setInterval(() => {
+            if (sec <= 0) return;
+            sec--;
+            const m = String(Math.floor(sec / 60)).padStart(2, '0');
+            const s = String(sec % 60).padStart(2, '0');
+            document.querySelectorAll('.timer-digit')[1].textContent = m;
+            document.querySelectorAll('.timer-digit')[2].textContent = s;
+        }, 1000);
+    </script>
+}

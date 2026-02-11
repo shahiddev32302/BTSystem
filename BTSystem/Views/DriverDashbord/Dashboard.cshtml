@@ -1,0 +1,270 @@
+﻿@{
+    ViewData["Title"] = "Driver Dashboard";
+    Layout = "~/Views/Shared/_LayoutDriver.cshtml";
+}
+<div class="driver-dashboard">
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <h1>Driver Dashboard</h1>
+            <p>Trip Management & Real-time Tracking</p>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-icon" id="darkModeToggle" title="Toggle Dark Mode">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="btn btn-icon" id="profileBtn" title="Profile">
+                <i class="fas fa-user-circle"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="dashboard-content">
+        <!-- Trip Status Card -->
+        <div class="trip-card-large">
+            <div class="trip-card-header">
+                <div>
+                    <h2>Current Trip</h2>
+                    <p class="trip-route">North Campus Loop</p>
+                </div>
+                <div class="trip-status-badge">
+                    <span class="status-indicator"></span>
+                    In Progress
+                </div>
+            </div>
+
+            <div class="trip-card-body">
+                <div class="trip-stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-icon">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </span>
+                        <span class="stat-label">Current Speed</span>
+                        <span class="stat-value">42 km/h</span>
+                    </div>
+
+                    <div class="stat-item">
+                        <span class="stat-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </span>
+                        <span class="stat-label">Distance Covered</span>
+                        <span class="stat-value">8.5 km</span>
+                    </div>
+
+                    <div class="stat-item">
+                        <span class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </span>
+                        <span class="stat-label">Passengers</span>
+                        <span class="stat-value">42/55</span>
+                    </div>
+
+                    <div class="stat-item">
+                        <span class="stat-icon">
+                            <i class="fas fa-hourglass-end"></i>
+                        </span>
+                        <span class="stat-label">Trip Duration</span>
+                        <span class="stat-value">23 min</span>
+                    </div>
+                </div>
+
+                <div class="control-buttons">
+                    <button class="btn btn-success btn-lg" id="startBtn">
+                        <i class="fas fa-play me-2"></i>
+                        Start Trip
+                    </button>
+                    <button class="btn btn-danger btn-lg" id="endBtn">
+                        <i class="fas fa-stop me-2"></i>
+                        End Trip
+                    </button>
+                    <button class="btn btn-warning btn-lg" id="pauseBtn">
+                        <i class="fas fa-pause me-2"></i>
+                        Pause
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Next Stop Card -->
+        <div class="next-stop-card">
+            <h3>Next Stop</h3>
+            <div class="stop-details">
+                <div class="stop-location">
+                    <i class="fas fa-map-pin"></i>
+                    <div>
+                        <p class="location-name">Library Building</p>
+                        <p class="location-address">Central Campus, Building A</p>
+                    </div>
+                </div>
+
+                <div class="stop-timing">
+                    <div class="timing-item">
+                        <span class="timing-label">ETA</span>
+                        <span class="timing-value">3 minutes</span>
+                    </div>
+                    <div class="timing-item">
+                        <span class="timing-label">Distance</span>
+                        <span class="timing-value">1.2 km</span>
+                    </div>
+                </div>
+
+                <div class="stop-passengers">
+                    <div class="passenger-stat">
+                        <i class="fas fa-users"></i>
+                        <span>4 students waiting</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Route Overview -->
+        <div class="route-overview">
+            <h3>Route Overview</h3>
+            <div class="route-stops-list">
+                <div class="route-stop completed">
+                    <div class="stop-circle"></div>
+                    <div class="stop-info">
+                        <p class="stop-title">Main Gate</p>
+                        <p class="stop-time">7:50 AM</p>
+                    </div>
+                    <div class="stop-badge">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+
+                <div class="route-stop current">
+                    <div class="stop-circle"></div>
+                    <div class="stop-info">
+                        <p class="stop-title">North Parking Lot</p>
+                        <p class="stop-time">8:10 AM</p>
+                    </div>
+                    <div class="stop-badge">
+                        <span class="pulse"></span>
+                    </div>
+                </div>
+
+                <div class="route-stop pending">
+                    <div class="stop-circle"></div>
+                    <div class="stop-info">
+                        <p class="stop-title">Library Building</p>
+                        <p class="stop-time">8:33 AM (est.)</p>
+                    </div>
+                    <div class="stop-badge">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+
+                <div class="route-stop pending">
+                    <div class="stop-circle"></div>
+                    <div class="stop-info">
+                        <p class="stop-title">Science Hall</p>
+                        <p class="stop-time">8:50 AM (est.)</p>
+                    </div>
+                    <div class="stop-badge">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+
+                <div class="route-stop pending">
+                    <div class="stop-circle"></div>
+                    <div class="stop-info">
+                        <p class="stop-title">Engineering Block</p>
+                        <p class="stop-time">9:10 AM (est.)</p>
+                    </div>
+                    <div class="stop-badge">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Emergency & Issue Reporting -->
+        <div class="emergency-section">
+            <div class="emergency-button">
+                <button class="btn btn-danger btn-lg w-100 mb-3" id="sosBtn">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    EMERGENCY SOS
+                </button>
+            </div>
+
+            <div class="issue-reporting">
+                <h5>Report Issue</h5>
+                <div class="issue-buttons">
+                    <button class="btn btn-outline-warning btn-sm">
+                        <i class="fas fa-exclamation-triangle me-1"></i>
+                        Mechanical Issue
+                    </button>
+                    <button class="btn btn-outline-warning btn-sm">
+                        <i class="fas fa-ban me-1"></i>
+                        Traffic Delay
+                    </button>
+                    <button class="btn btn-outline-warning btn-sm">
+                        <i class="fas fa-users me-1"></i>
+                        Passenger Issue
+                    </button>
+                    <button class="btn btn-outline-warning btn-sm">
+                        <i class="fas fa-other"></i>
+                        Other
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map View -->
+        <div class="mini-map-container">
+            <h3>Navigation</h3>
+            <div class="mini-map">
+                <svg class="mini-map-svg" viewBox="0 0 400 300">
+                    <rect width="400" height="300" fill="var(--bg-secondary)" />
+                    <polyline points="50,150 120,130 180,170 250,140 320,160 380,150" stroke="var(--primary)" stroke-width="4" fill="none" />
+                    <circle cx="50" cy="150" r="8" fill="var(--success)" />
+                    <circle cx="120" cy="130" r="8" fill="var(--success)" />
+                    <circle cx="180" cy="170" r="8" fill="var(--success)" />
+                    <circle cx="250" cy="140" r="8" fill="var(--success)" />
+                    <circle cx="320" cy="160" r="8" fill="var(--success)" />
+                    <circle cx="380" cy="150" r="8" fill="var(--success)" />
+
+                    <circle cx="180" cy="170" r="16" fill="var(--primary)" opacity="0.2" />
+                    <circle cx="180" cy="170" r="12" fill="var(--primary)" />
+                    <circle cx="180" cy="170" r="8" fill="white" />
+                </svg>
+            </div>
+        </div>
+    </main>
+</div
+@section Scripts {
+<script>
+      document.addEventListener('DOMContentLoaded', () => {
+            const startBtn = document.getElementById('startBtn');
+            const endBtn = document.getElementById('endBtn');
+            const pauseBtn = document.getElementById('pauseBtn');
+            const sosBtn = document.getElementById('sosBtn');
+
+            startBtn.addEventListener('click', () => {
+                Toast.success('Trip started!');
+                startBtn.disabled = true;
+            });
+
+            endBtn.addEventListener('click', () => {
+                Toast.success('Trip ended!');
+            });
+
+            pauseBtn.addEventListener('click', () => {
+                Toast.warning('Trip paused');
+                pauseBtn.textContent = pauseBtn.textContent === 'Resume' ? 'Pause' : 'Resume';
+            });
+
+            sosBtn.addEventListener('click', () => {
+                Toast.error('SOS Alert sent to admin!');
+            });
+
+            // Issue buttons
+            document.querySelectorAll('.issue-buttons .btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    Toast.warning('Issue reported: ' + this.textContent.trim());
+                });
+            });
+        });
+</script>
+}

@@ -1,0 +1,214 @@
+﻿@{
+    ViewData["Title"] = "Route Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .route-card {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        height: 100%;
+    }
+
+        .route-card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+            border-color: var(--primary);
+        }
+
+    .route-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-light));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+
+    .route-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+    }
+
+    .status-active {
+        background: rgba(34,197,94,.15);
+        color: #16a34a;
+    }
+
+        .status-active .status-dot {
+            background: #16a34a;
+        }
+
+    .status-inactive {
+        background: rgba(239,68,68,.15);
+        color: #dc2626;
+    }
+
+        .status-inactive .status-dot {
+            background: #dc2626;
+        }
+
+    .status-maintenance {
+        background: rgba(250,204,21,.15);
+        color: #ca8a04;
+    }
+
+        .status-maintenance .status-dot {
+            background: #ca8a04;
+        }
+
+    .route-info-grid {
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+        gap: 15px;
+        margin: 15px 0;
+    }
+
+    .route-info-item {
+        text-align: center;
+        padding: 10px;
+        background: var(--bg-secondary);
+        border-radius: 8px;
+    }
+
+    .filter-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 25px;
+        padding: 15px;
+        background: var(--bg);
+        border-radius: 12px;
+        border: 1px solid var(--border);
+    }
+
+    .filter-tab {
+        padding: 8px 20px;
+        border: none;
+        background: transparent;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+        .filter-tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+    .card-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+        .card-actions .btn {
+            flex: 1;
+        }
+</style>
+
+<div class="content-area">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>Bus Routes</h2>
+            <p class="text-muted">Manage and monitor all bus routes</p>
+        </div>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRouteModal">
+            <i class="fas fa-plus me-2"></i>Add New Route
+        </button>
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-tabs">
+        <button class="filter-tab active" data-status="all">All</button>
+        <button class="filter-tab" data-status="active">Active</button>
+        <button class="filter-tab" data-status="inactive">Inactive</button>
+        <button class="filter-tab" data-status="maintenance">Maintenance</button>
+    </div>
+
+    <!-- Cards -->
+    <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4 route-card-wrapper" data-status="active">
+            <div class="route-card">
+                <div class="route-icon"><i class="fas fa-route"></i></div>
+                <div class="d-flex justify-content-between mb-2">
+                    <div>
+                        <h5>Campus Loop</h5>
+                        <p class="text-muted small">Main campus to parking</p>
+                    </div>
+                    <span class="route-status status-active">
+                        <span class="status-dot"></span>Active
+                    </span>
+                </div>
+
+                <div class="route-info-grid">
+                    <div class="route-info-item"><p>Distance</p><h6>8.5 km</h6></div>
+                    <div class="route-info-item"><p>Duration</p><h6>25 mins</h6></div>
+                    <div class="route-info-item"><p>Stops</p><h6>6</h6></div>
+                    <div class="route-info-item"><p>Buses</p><h6>3</h6></div>
+                </div>
+
+                <div class="card-actions">
+                    <button class="btn btn-outline-primary btn-sm">Edit</button>
+                    <button class="btn btn-outline-danger btn-sm">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addRouteModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Add New Route</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input class="form-control mb-2" placeholder="Route Name">
+                <textarea class="form-control mb-2" placeholder="Description"></textarea>
+                <input class="form-control mb-2" placeholder="Distance (km)">
+                <input class="form-control mb-2" placeholder="Duration (mins)">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.onclick = () => {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const status = tab.dataset.status;
+                document.querySelectorAll('.route-card-wrapper').forEach(card => {
+                    card.style.display = status === 'all' || card.dataset.status === status ? '' : 'none';
+                });
+            }
+        });
+    </script>
+}

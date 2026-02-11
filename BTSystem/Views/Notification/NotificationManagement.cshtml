@@ -1,0 +1,558 @@
+﻿@{
+    ViewData["Title"] = "Notifications";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // agar common layout use ho raha ho
+}
+
+
+    <link href="~/css/notifications.css" rel="stylesheet" />
+
+
+
+    <div class="content-area" id="contentArea">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="mb-2">Notifications</h2>
+                <p class="text-muted">Stay updated with system alerts and updates</p>
+            </div>
+            <div class="quick-actions">
+                <button class="btn btn-outline-primary" id="notificationSettingsBtn">
+                    <i class="fas fa-cog me-2"></i>Settings
+                </button>
+                <button class="btn btn-primary" id="markAllReadBtn">
+                    <i class="fas fa-check-double me-2"></i>Mark All Read
+                </button>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">
+                <i class="fas fa-list"></i> All
+                <span class="badge">12</span>
+            </button>
+            <button class="filter-tab" data-filter="unread">
+                <i class="fas fa-envelope"></i> Unread
+                <span class="badge">5</span>
+            </button>
+            <button class="filter-tab" data-filter="alerts">
+                <i class="fas fa-exclamation-circle"></i> Alerts
+                <span class="badge">3</span>
+            </button>
+            <button class="filter-tab" data-filter="updates">
+                <i class="fas fa-info-circle"></i> Updates
+                <span class="badge">6</span>
+            </button>
+            <button class="filter-tab" data-filter="success">
+                <i class="fas fa-check-circle"></i> Success
+                <span class="badge">2</span>
+            </button>
+            <button class="filter-tab" data-filter="warning">
+                <i class="fas fa-exclamation-triangle"></i> Warnings
+                <span class="badge">1</span>
+            </button>
+        </div>
+
+        <!-- Notification Type Filters -->
+        <div class="notification-type-filters">
+            <button class="type-filter-btn type-alert active" data-type="all">
+                <span class="type-dot"></span> All Types
+            </button>
+            <button class="type-filter-btn type-alert" data-type="alert">
+                <span class="type-dot"></span> Alerts
+            </button>
+            <button class="type-filter-btn type-warning" data-type="warning">
+                <span class="type-dot"></span> Warnings
+            </button>
+            <button class="type-filter-btn type-success" data-type="success">
+                <span class="type-dot"></span> Success
+            </button>
+            <button class="type-filter-btn type-info" data-type="info">
+                <span class="type-dot"></span> Info
+            </button>
+            <button class="type-filter-btn type-update" data-type="update">
+                <span class="type-dot"></span> Updates
+            </button>
+        </div>
+
+        <!-- Notifications List -->
+        <div class="notifications-container" id="notificationsList">
+            <!-- Notification 1 - Alert -->
+            <div class="notification-card unread" data-type="alert">
+                <div class="notification-icon alert">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <h4 class="notification-title">Bus Delay Alert</h4>
+                        <span class="notification-time">2 minutes ago</span>
+                    </div>
+                    <p class="notification-message">BUS-101 on Campus Loop route is running 15 minutes behind schedule due to heavy traffic near Main Gate.</p>
+                    <div class="notification-tags">
+                        <span class="notification-tag tag-alert">Alert</span>
+                        <span class="notification-tag tag-info">BUS-101</span>
+                        <span class="notification-tag tag-info">Campus Loop</span>
+                    </div>
+                </div>
+                <div class="notification-actions">
+                    <button class="btn btn-outline-secondary btn-sm" title="Mark as read">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Notification 2 - Warning -->
+            <div class="notification-card unread" data-type="warning">
+                <div class="notification-icon warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <h4 class="notification-title">Maintenance Required</h4>
+                        <span class="notification-time">1 hour ago</span>
+                    </div>
+                    <p class="notification-message">BUS-103 requires immediate maintenance. Oil change and brake inspection needed before next trip.</p>
+                    <div class="notification-tags">
+                        <span class="notification-tag tag-warning">Maintenance</span>
+                        <span class="notification-tag tag-info">BUS-103</span>
+                        <span class="notification-tag tag-alert">Urgent</span>
+                    </div>
+                </div>
+                <div class="notification-actions">
+                    <button class="btn btn-outline-secondary btn-sm" title="Mark as read">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Notification 3 - Success -->
+            <div class="notification-card unread" data-type="success">
+                <div class="notification-icon success">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <h4 class="notification-title">Trip Completed Successfully</h4>
+                        <span class="notification-time">3 hours ago</span>
+                    </div>
+                    <p class="notification-message">BUS-102 has completed its route with 98% on-time performance and zero incidents reported.</p>
+                    <div class="notification-tags">
+                        <span class="notification-tag tag-success">Completed</span>
+                        <span class="notification-tag tag-info">BUS-102</span>
+                        <span class="notification-tag tag-info">On-time</span>
+                    </div>
+                </div>
+                <div class="notification-actions">
+                    <button class="btn btn-outline-secondary btn-sm" title="Mark as read">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Notification 4 - Info -->
+            <div class="notification-card" data-type="info">
+                <div class="notification-icon info">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <h4 class="notification-title">New Driver Assigned</h4>
+                        <span class="notification-time">5 hours ago</span>
+                    </div>
+                    <p class="notification-message">John Smith has been assigned to BUS-101 for the morning shift starting tomorrow.</p>
+                    <div class="notification-tags">
+                        <span class="notification-tag tag-info">Assignment</span>
+                        <span class="notification-tag tag-info">John Smith</span>
+                        <span class="notification-tag tag-info">BUS-101</span>
+                    </div>
+                </div>
+                <div class="notification-actions">
+                    <button class="btn btn-outline-secondary btn-sm" title="Mark as read">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Notification 5 - Update -->
+            <div class="notification-card unread" data-type="update">
+                <div class="notification-icon update">
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <h4 class="notification-title">Route Update</h4>
+                        <span class="notification-time">Yesterday, 2:30 PM</span>
+                    </div>
+                    <p class="notification-message">Campus Loop route has been updated with 2 additional stops near the new library building.</p>
+                    <div class="notification-tags">
+                        <span class="notification-tag tag-update">Route Update</span>
+                        <span class="notification-tag tag-info">Campus Loop</span>
+                        <span class="notification-tag tag-info">Effective Immediately</span>
+                    </div>
+                </div>
+                <div class="notification-actions">
+                    <button class="btn btn-outline-secondary btn-sm" title="Mark as read">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Notification 6 - Success -->
+            <div class="notification-card" data-type="success">
+                <div class="notification-icon success">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <h4 class="notification-title">Excellent Performance</h4>
+                        <span class="notification-time">Yesterday, 10:15 AM</span>
+                    </div>
+                    <p class="notification-message">Maria Garcia achieved 5-star rating for the third consecutive week. Keep up the great work!</p>
+                    <div class="notification-tags">
+                        <span class="notification-tag tag-success">Achievement</span>
+                        <span class="notification-tag tag-info">Maria Garcia</span>
+                        <span class="notification-tag tag-info">5-star Rating</span>
+                    </div>
+                </div>
+                <div class="notification-actions">
+                    <button class="btn btn-outline-secondary btn-sm" title="Mark as read">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Notification 7 - Alert -->
+            <div class="notification-card" data-type="alert">
+                <div class="notification-icon alert">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <h4 class="notification-title">Low Fuel Alert</h4>
+                        <span class="notification-time">2 days ago</span>
+                    </div>
+                    <p class="notification-message">BUS-104 fuel level is at 15%. Please refuel at the next available station.</p>
+                    <div class="notification-tags">
+                        <span class="notification-tag tag-alert">Fuel Alert</span>
+                        <span class="notification-tag tag-info">BUS-104</span>
+                        <span class="notification-tag tag-warning">15% Fuel</span>
+                    </div>
+                </div>
+                <div class="notification-actions">
+                    <button class="btn btn-outline-secondary btn-sm" title="Mark as read">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Notification 8 - Info -->
+            <div class="notification-card" data-type="info">
+                <div class="notification-icon info">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <h4 class="notification-title">Schedule Update</h4>
+                        <span class="notification-time">3 days ago</span>
+                    </div>
+                    <p class="notification-message">Winter schedule changes effective from December 1st. Evening trips will start 30 minutes earlier.</p>
+                    <div class="notification-tags">
+                        <span class="notification-tag tag-info">Schedule</span>
+                        <span class="notification-tag tag-update">Winter Schedule</span>
+                        <span class="notification-tag tag-info">Effective Dec 1</span>
+                    </div>
+                </div>
+                <div class="notification-actions">
+                    <button class="btn btn-outline-secondary btn-sm" title="Mark as read">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State (hidden by default) -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-icon">
+                <i class="fas fa-bell-slash"></i>
+            </div>
+            <h3 class="empty-title">No Notifications</h3>
+            <p class="empty-message">You're all caught up! Check back later for updates.</p>
+            <button class="btn btn-primary" id="refreshNotificationsBtn">
+                <i class="fas fa-sync-alt me-2"></i>Refresh
+            </button>
+        </div>
+    </div>
+    <!-- Notification Settings Modal -->
+    <div class="modal fade" id="settingsModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Notification Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="settings-section">
+                        <h6>Notification Types</h6>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="delayAlerts" checked>
+                            <label class="form-check-label" for="delayAlerts">
+                                Bus Delay Alerts
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="maintenanceAlerts" checked>
+                            <label class="form-check-label" for="maintenanceAlerts">
+                                Maintenance Notifications
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="routeAlerts" checked>
+                            <label class="form-check-label" for="routeAlerts">
+                                Route Updates
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="driverAlerts" checked>
+                            <label class="form-check-label" for="driverAlerts">
+                                Driver Assignments
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="successAlerts" checked>
+                            <label class="form-check-label" for="successAlerts">
+                                Success Notifications
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveSettingsBtn">Save Settings</button>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+@section Scripts
+ {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const filterTabs = document.querySelectorAll('.filter-tab');
+            const typeFilterBtns = document.querySelectorAll('.type-filter-btn');
+            const notificationCards = document.querySelectorAll('.notification-card');
+            const emptyState = document.getElementById('emptyState');
+            const notificationsList = document.getElementById('notificationsList');
+
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', function () {
+                    filterTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    filterNotifications();
+                });
+            });
+
+            typeFilterBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    typeFilterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    filterNotifications();
+                });
+            });
+
+            function filterNotifications() {
+                const activeFilter = document.querySelector('.filter-tab.active').getAttribute('data-filter');
+                const activeType = document.querySelector('.type-filter-btn.active').getAttribute('data-type');
+
+                let visibleCount = 0;
+
+                notificationCards.forEach(card => {
+                    const cardType = card.getAttribute('data-type');
+                    const isUnread = card.classList.contains('unread');
+
+                    let shouldShow = true;
+
+                    // Apply filter tab
+                    if (activeFilter === 'unread' && !isUnread) {
+                        shouldShow = false;
+                    } else if (activeFilter !== 'all' && activeFilter !== 'unread') {
+                        if (activeFilter === 'alerts' && cardType !== 'alert') shouldShow = false;
+                        else if (activeFilter === 'updates' && cardType !== 'update') shouldShow = false;
+                        else if (activeFilter === 'success' && cardType !== 'success') shouldShow = false;
+                        else if (activeFilter === 'warning' && cardType !== 'warning') shouldShow = false;
+                    }
+
+                    // Apply type filter
+                    if (shouldShow && activeType !== 'all' && cardType !== activeType) {
+                        shouldShow = false;
+                    }
+
+                    card.style.display = shouldShow ? 'flex' : 'none';
+                    if (shouldShow) visibleCount++;
+                });
+
+                // Show/hide empty state
+                if (visibleCount === 0) {
+                    notificationsList.style.display = 'none';
+                    emptyState.style.display = 'block';
+                } else {
+                    notificationsList.style.display = 'block';
+                    emptyState.style.display = 'none';
+                }
+            }
+
+            // Mark all as read
+            const markAllReadBtn = document.getElementById('markAllReadBtn');
+            markAllReadBtn.addEventListener('click', function () {
+                notificationCards.forEach(card => {
+                    card.classList.remove('unread');
+                });
+
+                // Update badge counts
+                updateBadgeCounts();
+                showToast('All notifications marked as read', 'success');
+            });
+
+            // Mark individual notification as read
+            notificationCards.forEach(card => {
+                const markBtn = card.querySelector('.notification-actions .btn:first-child');
+                markBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    card.classList.remove('unread');
+                    updateBadgeCounts();
+                });
+
+                // Delete notification
+                const deleteBtn = card.querySelector('.notification-actions .btn:last-child');
+                deleteBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateX(-20px)';
+                    setTimeout(() => {
+                        card.remove();
+                        updateBadgeCounts();
+                        filterNotifications();
+                        showToast('Notification deleted', 'info');
+                    }, 300);
+                });
+
+                // Click on notification card
+                card.addEventListener('click', function (e) {
+                    if (!e.target.closest('.notification-actions')) {
+                        card.classList.remove('unread');
+                        updateBadgeCounts();
+                        // In real app, this would navigate to notification details
+                        console.log('Opening notification details for:', card.querySelector('.notification-title').textContent);
+                    }
+                });
+            });
+
+            // Update badge counts function
+            function updateBadgeCounts() {
+                const unreadCount = document.querySelectorAll('.notification-card.unread').length;
+                const alertCount = document.querySelectorAll('.notification-card[data-type="alert"]').length;
+                const updateCount = document.querySelectorAll('.notification-card[data-type="update"]').length;
+                const successCount = document.querySelectorAll('.notification-card[data-type="success"]').length;
+                const warningCount = document.querySelectorAll('.notification-card[data-type="warning"]').length;
+
+                // Update navbar badge
+                document.querySelector('#notificationBell .badge').textContent = unreadCount;
+
+                // Update filter tab badges
+                document.querySelector('.filter-tab[data-filter="all"] .badge').textContent = notificationCards.length;
+                document.querySelector('.filter-tab[data-filter="unread"] .badge').textContent = unreadCount;
+                document.querySelector('.filter-tab[data-filter="alerts"] .badge').textContent = alertCount;
+                document.querySelector('.filter-tab[data-filter="updates"] .badge').textContent = updateCount;
+                document.querySelector('.filter-tab[data-filter="success"] .badge').textContent = successCount;
+                document.querySelector('.filter-tab[data-filter="warning"] .badge').textContent = warningCount;
+            }
+
+            // Search functionality
+            const searchInput = document.querySelector('.search-box input');
+            searchInput.addEventListener('input', function () {
+                const searchTerm = this.value.toLowerCase();
+
+                notificationCards.forEach(card => {
+                    const title = card.querySelector('.notification-title').textContent.toLowerCase();
+                    const message = card.querySelector('.notification-message').textContent.toLowerCase();
+
+                    if (title.includes(searchTerm) || message.includes(searchTerm)) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                filterNotifications();
+            });
+
+            // Settings modal
+            const settingsBtn = document.getElementById('notificationSettingsBtn');
+            const settingsModal = new bootstrap.Modal(document.getElementById('settingsModal'));
+
+            settingsBtn.addEventListener('click', function () {
+                settingsModal.show();
+            });
+
+            document.getElementById('saveSettingsBtn').addEventListener('click', function () {
+                settingsModal.hide();
+                showToast('Notification settings saved', 'success');
+            });
+
+            // Refresh button
+            document.getElementById('refreshNotificationsBtn').addEventListener('click', function () {
+                showToast('Refreshing notifications...', 'info');
+                // In real app, this would fetch new notifications
+            });
+
+            // Toast notification function
+            function showToast(message, type) {
+                const toast = document.createElement('div');
+                toast.className = `toast align-items-center text-white bg-${type} border-0`;
+                toast.setAttribute('role', 'alert');
+                toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">${message}</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+            `;
+
+                const toastContainer = document.getElementById('toastContainer') || document.body;
+                toastContainer.appendChild(toast);
+
+                const bsToast = new bootstrap.Toast(toast);
+                bsToast.show();
+
+                toast.addEventListener('hidden.bs.toast', function () {
+                    toast.remove();
+                });
+            }
+
+            // Initialize badge counts
+            updateBadgeCounts();
+        });
+    </script>
+}

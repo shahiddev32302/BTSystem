@@ -1,0 +1,145 @@
+﻿@{
+    ViewData["Title"] = "Driver Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="management-container">
+
+    <!-- Header -->
+    <div class="management-header">
+        <div class="header-left">
+            <h1 class="page-title">Driver Management</h1>
+            <p class="page-subtitle">Manage drivers and their assignments</p>
+        </div>
+
+        <div class="header-right">
+            <div class="search-filter">
+                <input type="text" class="form-control" id="searchInput" placeholder="Search drivers...">
+                <button class="btn btn-outline-secondary">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <button class="btn btn-primary" id="addDriverBtn">
+                <i class="fas fa-plus me-2"></i>Add Driver
+            </button>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="management-filters">
+        <div class="filter-group">
+            <label>Status</label>
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">All</button>
+                <button class="filter-tab" data-filter="on-duty">On Duty</button>
+                <button class="filter-tab" data-filter="available">Available</button>
+                <button class="filter-tab" data-filter="off">Off Duty</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Driver Cards -->
+    <div class="driver-cards-grid">
+
+        <!-- Driver Card -->
+        <div class="driver-card" data-status="on-duty">
+            <div class="card-header-section">
+                <div class="driver-avatar">JS</div>
+                <div class="status-badge on-duty">
+                    <span class="pulse"></span> On Duty
+                </div>
+            </div>
+
+            <div class="card-content">
+                <h5 class="driver-name">John Smith</h5>
+                <p class="driver-role">Senior Driver</p>
+
+                <div class="info-item">
+                    <i class="fas fa-id-card"></i> DL-2025-001
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-briefcase"></i> 12 years experience
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-bus"></i> BUS 101
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-star"></i> 4.8 / 5
+                </div>
+            </div>
+
+            <div class="card-actions">
+                <button class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Driver Card -->
+        <div class="driver-card" data-status="available">
+            <div class="card-header-section">
+                <div class="driver-avatar">AH</div>
+                <div class="status-badge available">
+                    <span class="pulse"></span> Available
+                </div>
+            </div>
+
+            <div class="card-content">
+                <h5 class="driver-name">Ahmed Hassan</h5>
+                <p class="driver-role">Driver</p>
+
+                <div class="info-item">
+                    <i class="fas fa-id-card"></i> DL-2025-003
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-briefcase"></i> 5 years experience
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-bus"></i> Unassigned
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-star"></i> 4.7 / 5
+                </div>
+            </div>
+
+            <div class="card-actions">
+                <button class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Floating Button -->
+<button class="btn-fab" id="fabButton">
+    <i class="fas fa-plus"></i>
+</button>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function () {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+
+                const filter = this.dataset.filter;
+                document.querySelectorAll('.driver-card').forEach(card => {
+                    card.style.display =
+                        filter === 'all' || card.dataset.status === filter
+                            ? ''
+                            : 'none';
+                });
+            });
+        });
+    </script>
+}

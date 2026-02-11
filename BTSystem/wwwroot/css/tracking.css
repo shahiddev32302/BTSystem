@@ -1,0 +1,593 @@
+/* ===================================
+   LIVE TRACKING LAYOUT
+   =================================== */
+
+.tracking-container {
+  display: grid;
+  grid-template-columns: 350px 1fr 350px;
+  height: calc(100vh - 80px);
+  gap: 0;
+  background-color: var(--bg);
+}
+
+.tracking-panel {
+  background-color: var(--bg);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.tracking-panel.left-panel {
+  border-right: 1px solid var(--border);
+}
+
+.tracking-panel.right-panel {
+  border-right: none;
+  border-left: 1px solid var(--border);
+}
+
+.panel-header {
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel-header h3 {
+  font-size: var(--font-size-lg);
+  margin: 0;
+  font-weight: 600;
+}
+
+/* ===================================
+   TRIPS LIST
+   =================================== */
+
+.trips-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.trip-card {
+  background-color: var(--bg-secondary);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.trip-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-md);
+}
+
+.trip-card.active {
+  background: linear-gradient(135deg, rgba(30, 58, 138, 0.1), rgba(60, 130, 246, 0.05));
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+}
+
+.trip-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.bus-badge {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: white;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+}
+
+.bus-badge.bg-secondary {
+  background: linear-gradient(135deg, var(--secondary) 0%, #ea6212 100%);
+}
+
+.bus-badge.bg-warning {
+  background: linear-gradient(135deg, var(--warning) 0%, #f59e0b 100%);
+}
+
+.trip-status-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-xs);
+  color: var(--success);
+  font-weight: 600;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--success);
+  animation: dotPulse 2s infinite;
+}
+
+@keyframes dotPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.trip-info {
+  margin-bottom: var(--spacing-lg);
+}
+
+.trip-detail {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.trip-detail i {
+  color: var(--primary);
+  min-width: 16px;
+}
+
+.trip-detail strong {
+  color: var(--text-primary);
+  margin-right: 4px;
+}
+
+.trip-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  background-color: var(--bg);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+}
+
+.progress-section {
+  margin-bottom: var(--spacing-lg);
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-sm);
+  color: var(--text-secondary);
+}
+
+.progress {
+  background-color: var(--bg);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+  transition: width 0.3s ease;
+}
+
+.delay-badge {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--error);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-weight: 500;
+}
+
+/* ===================================
+   MAP & TRACKING
+   =================================== */
+
+.tracking-map {
+  position: relative;
+  background-color: var(--bg-secondary);
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.tracking-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.stop-marker {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.stop-marker:hover {
+  r: 10px;
+  filter: brightness(1.2);
+}
+
+.location-pulse {
+  animation: locationPulse 2s infinite;
+}
+
+@keyframes locationPulse {
+  0% {
+    r: 16px;
+    opacity: 0.3;
+  }
+  50% {
+    r: 24px;
+    opacity: 0.1;
+  }
+  100% {
+    r: 16px;
+    opacity: 0.3;
+  }
+}
+
+.bus-icon {
+  cursor: pointer;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  transition: filter 0.3s ease;
+}
+
+.bus-icon:hover {
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+/* ===================================
+   MAP CONTROLS
+   =================================== */
+
+.map-controls {
+  position: absolute;
+  top: var(--spacing-lg);
+  right: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  z-index: 10;
+}
+
+.btn-control {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background-color: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 18px;
+  padding: 0;
+}
+
+.btn-control:hover {
+  background-color: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  transform: scale(1.05);
+}
+
+/* ===================================
+   MAP LEGEND
+   =================================== */
+
+.map-legend {
+  position: absolute;
+  bottom: var(--spacing-lg);
+  left: var(--spacing-lg);
+  background-color: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  min-width: 150px;
+  box-shadow: var(--shadow-md);
+  z-index: 10;
+}
+
+.map-legend h6 {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  margin-bottom: var(--spacing-md);
+  color: var(--text-primary);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ===================================
+   BUS DETAILS PANEL
+   =================================== */
+
+.bus-details-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-lg);
+}
+
+.details-section {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.details-section:last-child {
+  margin-bottom: 0;
+}
+
+.section-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 2px solid var(--border);
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md) 0;
+  border-bottom: 1px solid var(--border);
+  font-size: var(--font-size-sm);
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-item .label {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.detail-item .value {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: var(--radius-md);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.status-badge.status-active {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: var(--success);
+}
+
+.status-badge.status-idle {
+  background-color: rgba(251, 191, 36, 0.2);
+  color: var(--warning);
+}
+
+.status-badge.status-inactive {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: var(--error);
+}
+
+.action-buttons {
+  margin-top: var(--spacing-2xl);
+  padding-top: var(--spacing-2xl);
+  border-top: 1px solid var(--border);
+}
+
+/* ===================================
+   INFO BAR
+   =================================== */
+
+.tracking-info-bar {
+  background-color: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: var(--spacing-lg) var(--spacing-2xl);
+  min-height: 80px;
+}
+
+.info-bar-content {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--spacing-2xl);
+  align-items: center;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-label {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.info-value {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.info-alert {
+  grid-column: 5;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--error);
+  border-radius: var(--radius-md);
+  display: none;
+  align-items: center;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
+.info-alert.show {
+  display: flex;
+}
+
+/* ===================================
+   RESPONSIVE DESIGN
+   =================================== */
+
+@media (max-width: 1200px) {
+  .tracking-container {
+    grid-template-columns: 1fr;
+  }
+
+  .tracking-panel {
+    display: none;
+  }
+
+  .tracking-panel.left-panel {
+    display: flex;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 350px;
+    height: 100%;
+    z-index: 100;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .map-legend {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .tracking-container {
+    grid-template-columns: 1fr;
+    height: calc(100vh - 60px);
+  }
+
+  .tracking-panel.right-panel {
+    display: none;
+  }
+
+  .tracking-map {
+    height: calc(100vh - 240px);
+  }
+
+  .tracking-info-bar {
+    padding: var(--spacing-lg);
+  }
+
+  .info-bar-content {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  .info-alert {
+    grid-column: 1 / -1;
+  }
+
+  .map-controls {
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .tracking-container {
+    grid-template-columns: 1fr;
+    height: auto;
+    flex-direction: column;
+  }
+
+  .tracking-panel.left-panel {
+    width: 100%;
+    height: 200px;
+    position: relative;
+  }
+
+  .tracking-map {
+    height: 300px;
+  }
+
+  .info-bar-content {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+
+  .map-controls {
+    flex-direction: row;
+    gap: var(--spacing-sm);
+  }
+
+  .btn-control {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .trip-card {
+    padding: var(--spacing-md);
+  }
+
+  .trip-stats {
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+  }
+}

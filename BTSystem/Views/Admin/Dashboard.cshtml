@@ -1,0 +1,203 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- ================= Stats Section ================= -->
+<section class="stats-section">
+
+    <div class="stat-card">
+        <div class="stat-icon bg-primary"><i class="fas fa-bus"></i></div>
+        <div class="stat-content">
+            <p class="stat-label">Active Buses</p>
+            <h3 class="stat-value" data-target="45">0</h3>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon bg-success"><i class="fas fa-user-tie"></i></div>
+        <div class="stat-content">
+            <p class="stat-label">Active Drivers</p>
+            <h3 class="stat-value" data-target="38">0</h3>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon bg-warning"><i class="fas fa-play-circle"></i></div>
+        <div class="stat-content">
+            <p class="stat-label">Live Trips</p>
+            <h3 class="stat-value" data-target="12">0</h3>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon bg-info"><i class="fas fa-graduation-cap"></i></div>
+        <div class="stat-content">
+            <p class="stat-label">Total Students</p>
+            <h3 class="stat-value" data-target="1250">0</h3>
+        </div>
+    </div>
+
+</section>
+
+<!-- ================= Map + Activity ================= -->
+<div class="row mt-4">
+
+    <!-- Live Tracking Map -->
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Live Tracking Map</h5>
+                <div class="btn-group btn-group-sm">
+                    <button class="btn btn-outline-secondary active">Map</button>
+                    <button class="btn btn-outline-secondary">Satellite</button>
+                </div>
+            </div>
+
+            <div class="card-body p-0">
+                <div class="map-container">
+                    <svg class="map-svg" viewBox="0 0 800 400">
+
+                        <rect width="800" height="400" fill="var(--bg-secondary)" />
+
+                        <polyline points="50,100 150,150 250,100 350,200 450,150 550,100"
+                                  stroke="var(--primary)" stroke-width="3" fill="none" opacity="0.5" />
+
+                        <polyline points="100,250 200,280 300,260 400,320 500,280"
+                                  stroke="var(--secondary)" stroke-width="3" fill="none" opacity="0.5" />
+
+                        <circle cx="50" cy="100" r="8" fill="var(--success)" />
+                        <circle cx="150" cy="150" r="8" fill="var(--success)" />
+                        <circle cx="250" cy="100" r="8" fill="var(--success)" />
+                        <circle cx="350" cy="200" r="8" fill="var(--success)" />
+                        <circle cx="450" cy="150" r="8" fill="var(--success)" />
+                        <circle cx="550" cy="100" r="8" fill="var(--success)" />
+
+                        <circle cx="350" cy="200" r="14" class="pulse"
+                                fill="var(--primary)" opacity="0.3" />
+                        <circle cx="350" cy="200" r="8"
+                                fill="var(--primary)" />
+
+                        <g transform="translate(350,200)">
+                            <rect x="-8" y="-6" width="16" height="12"
+                                  fill="var(--primary)" rx="2" />
+                            <circle cx="-4" cy="6" r="2" />
+                            <circle cx="4" cy="6" r="2" />
+                        </g>
+
+                        <g transform="translate(250,100)">
+                            <rect x="-8" y="-6" width="16" height="12"
+                                  fill="var(--secondary)" rx="2" />
+                            <circle cx="-4" cy="6" r="2" />
+                            <circle cx="4" cy="6" r="2" />
+                        </g>
+
+                    </svg>
+                </div>
+            </div>
+
+            <div class="card-footer small d-flex justify-content-between">
+                <span><i class="fas fa-circle" style="color:var(--primary)"></i> Route 1</span>
+                <span><i class="fas fa-circle" style="color:var(--secondary)"></i> Route 2</span>
+                <span><i class="fas fa-circle" style="color:var(--success)"></i> Stops</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header"><h5 class="mb-0">Recent Activity</h5></div>
+            <div class="card-body activity-timeline">
+
+                <div class="activity-item">
+                    <div class="activity-badge bg-success"><i class="fas fa-check"></i></div>
+                    <div>
+                        <p class="fw-semibold mb-1">Trip BUS-101 Completed</p>
+                        <small class="text-muted">2 minutes ago</small>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-badge bg-warning"><i class="fas fa-exclamation"></i></div>
+                    <div>
+                        <p class="fw-semibold mb-1">Driver Late Check-in</p>
+                        <small class="text-muted">5 minutes ago</small>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-badge bg-info"><i class="fas fa-info"></i></div>
+                    <div>
+                        <p class="fw-semibold mb-1">New Route Added</p>
+                        <small class="text-muted">15 minutes ago</small>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================= Charts ================= -->
+<div class="row mt-4">
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header"><h5 class="mb-0">Daily Trip Summary</h5></div>
+            <div class="card-body">
+                <canvas id="tripChart" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header"><h5 class="mb-0">Fleet Status</h5></div>
+            <div class="card-body">
+                <div class="fleet-status">
+
+                    <div class="status-item">
+                        <div class="status-bar">
+                            <div class="status-fill" style="width:75%; background:var(--success)"></div>
+                        </div>
+                        <div class="status-label"><span>Active</span><span>75%</span></div>
+                    </div>
+
+                    <div class="status-item">
+                        <div class="status-bar">
+                            <div class="status-fill" style="width:15%; background:var(--warning)"></div>
+                        </div>
+                        <div class="status-label"><span>Idle</span><span>15%</span></div>
+                    </div>
+
+                    <div class="status-item">
+                        <div class="status-bar">
+                            <div class="status-fill" style="width:10%; background:var(--danger)"></div>
+                        </div>
+                        <div class="status-label"><span>Maintenance</span><span>10%</span></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.stat-value').forEach(el => {
+            let target = +el.dataset.target, val = 0, step = target / 30;
+            let t = setInterval(() => {
+                val += step;
+                if (val >= target) {
+                    el.innerText = target;
+                    clearInterval(t);
+                } else {
+                    el.innerText = Math.floor(val);
+                }
+            }, 40);
+        });
+    </script>
+}
