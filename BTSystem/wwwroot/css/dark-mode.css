@@ -7,24 +7,36 @@ html[data-theme="dark"] {
   --primary-dark: #2563eb;
   --primary-light: #60a5fa;
 
+  /* Core colors */
   --white: #0f172a;
-  --gray-50: #1e293b;
-  --gray-100: #334155;
-  --gray-200: #475569;
-  --gray-300: #64748b;
-  --gray-400: #94a3b8;
-  --gray-500: #cbd5e1;
-  --gray-600: #e2e8f0;
-  --gray-700: #f1f5f9;
-  --gray-800: #f8fafc;
-  --gray-900: #e5e7eb;
+  /* app uses --white as the base background in light mode; keep it dark here */
+  --bg: #0b1220;
+  /* page background for dark theme */
+  --bg-secondary: #0f1726;
+  /* card / panel backgrounds */
 
-  --bg: #0f172a;
-  --bg-secondary: #1e293b;
-  --text-primary: #e5e7eb;
-  --text-secondary: #9ca3af;
-  --text-tertiary: #6b7280;
-  --border: #334155;
+  /* Greys (darker -> lighter within dark theme) */
+  --gray-50: #071026;
+  --gray-100: #0b1220;
+  --gray-200: #122136;
+  --gray-300: #1b2a3f;
+  --gray-400: #243544;
+  --gray-500: #304153;
+  --gray-600: #3b4b5e;
+  --gray-700: #516076;
+  --gray-800: #7b8a98;
+  --gray-900: #a9b5c2;
+
+  /* Text colors with sufficient contrast on dark bg */
+  --text-primary: #e6eef8;
+  /* main text */
+  --text-secondary: #b6c2cf;
+  /* secondary text */
+  --text-tertiary: #94a3b8;
+  /* muted text */
+
+  /* Borders */
+  --border: #233142;
 }
 
 html[data-theme="dark"] body {
@@ -116,4 +128,162 @@ html[data-theme="dark"] .role-btn.active {
 /* Smooth transitions for dark mode */
 html[data-theme="dark"] * {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Additional component tweaks for dark mode readability */
+html[data-theme="dark"] table,
+html[data-theme="dark"] th,
+html[data-theme="dark"] td {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .nav-link,
+html[data-theme="dark"] .page-title,
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] h4,
+html[data-theme="dark"] h5,
+html[data-theme="dark"] h6 {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .text-muted {
+  color: var(--text-secondary) !important;
+}
+
+html[data-theme="dark"] .badge.bg-success {
+  background-color: #16a34a;
+  /* green */
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .badge.bg-warning {
+  background-color: #f59e0b;
+  /* amber */
+  color: #0b1220;
+}
+
+html[data-theme="dark"] .badge.bg-danger {
+  background-color: #dc2626;
+  /* red */
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .card {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .sidebar-item {
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .sidebar-item.active {
+  color: var(--primary-light);
+}
+
+html[data-theme="dark"] .search-box input {
+  color: var(--text-secondary);
+}
+
+/* Override Bootstrap table defaults in dark mode */
+html[data-theme="dark"] .table {
+  background-color: transparent;
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .table thead th {
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+html[data-theme="dark"] .table tbody td {
+  background-color: transparent;
+  color: var(--text-primary);
+  border-top: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+html[data-theme="dark"] .table.table-hover tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Dropdown styles for dark mode */
+html[data-theme="dark"] .dropdown-menu {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+html[data-theme="dark"] .dropdown-item {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* ===================================
+   MODAL STYLES FOR DARK MODE
+   =================================== */
+html[data-theme="dark"] .modal-content {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border) !important;
+}
+
+html[data-theme="dark"] .modal-header {
+  border-bottom-color: var(--border) !important;
+  background-color: var(--bg-secondary) !important;
+}
+
+html[data-theme="dark"] .modal-footer {
+  border-top-color: var(--border) !important;
+  background-color: var(--bg-secondary) !important;
+}
+
+html[data-theme="dark"] .modal-title {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%) !important;
+}
+
+/* Form labels - ensure white text in dark mode */
+html[data-theme="dark"] .form-label,
+html[data-theme="dark"] label {
+  color: var(--text-primary) !important;
+}
+
+/* Form inputs with dark background */
+html[data-theme="dark"] .form-control,
+html[data-theme="dark"] .form-select {
+  background-color: var(--bg) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+
+html[data-theme="dark"] .form-control::placeholder {
+  color: var(--text-tertiary) !important;
+}
+
+/* List group for settings tabs */
+html[data-theme="dark"] .list-group-item {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+
+html[data-theme="dark"] .list-group-item-action:hover,
+html[data-theme="dark"] .list-group-item-action:focus {
+  background-color: var(--gray-300) !important;
+  color: var(--primary-light) !important;
+}
+
+html[data-theme="dark"] .list-group-item.active {
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+  color: white !important;
 }

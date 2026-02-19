@@ -13,105 +13,502 @@
     <div class="row">
         <div class="col-lg-3">
             <div class="list-group">
-                <button class="list-group-item list-group-item-action active" data-bs-toggle="list" href="#general">
-                    <i class="fas fa-sliders-h me-2"></i>General
+                <button class="list-group-item list-group-item-action active" data-bs-toggle="list"
+                        href="#requests">
+                    <i class="fas fa-envelope me-2"></i>Request from User
                 </button>
-                <button class="list-group-item list-group-item-action" data-bs-toggle="list" href="#system">
-                    <i class="fas fa-server me-2"></i>System
+                <button class="list-group-item list-group-item-action" data-bs-toggle="list"
+                        href="#drivers">
+                    <i class="fas fa-user-tie me-2"></i>Drivers
                 </button>
-                <button class="list-group-item list-group-item-action" data-bs-toggle="list" href="#notifications">
+                <button class="list-group-item list-group-item-action" data-bs-toggle="list"
+                        href="#admin-password">
+                    <i class="fas fa-key me-2"></i>Super Admin Password
+                </button>
+                <button class="list-group-item list-group-item-action" data-bs-toggle="list"
+                        href="#notifications">
                     <i class="fas fa-bell me-2"></i>Notifications
-                </button>
-                <button class="list-group-item list-group-item-action" data-bs-toggle="list" href="#security">
-                    <i class="fas fa-lock me-2"></i>Security
-                </button>
-                <button class="list-group-item list-group-item-action" data-bs-toggle="list" href="#integrations">
-                    <i class="fas fa-plug me-2"></i>Integrations
                 </button>
             </div>
         </div>
 
         <div class="col-lg-9">
             <div class="tab-content">
-                <!-- General Settings -->
-                <div id="general" class="tab-pane fade show active">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">General Settings</h5>
+                <!-- Request from User -->
+                <div id="requests" class="tab-pane fade show active">
+                    <div class="card mb-4">
+                        <div class="card-header bg-info bg-opacity-10">
+                            <h5 class="mb-0">
+                                <i class="fas fa-envelope me-2 text-info"></i>Send Message to
+                                User
+                            </h5>
                         </div>
                         <div class="card-body">
+                            <p class="text-muted mb-4">
+                                Send messages, credentials, and important information
+                                to system users
+                            </p>
+
+                            <div class="mb-4">
+                                <label class="form-label">Send To</label>
+                                <div class="btn-group w-100" role="group">
+                                    <input type="radio" class="btn-check" name="sendMode" id="sendSingle"
+                                           value="single" checked>
+                                    <label class="btn btn-outline-primary" for="sendSingle">
+                                        <i class="fas fa-user me-2"></i>Single User
+                                    </label>
+                                    <input type="radio" class="btn-check" name="sendMode" id="sendAll"
+                                           value="all">
+                                    <label class="btn btn-outline-primary" for="sendAll">
+                                        <i class="fas fa-users me-2"></i>All Users
+                                    </label>
+                                </div>
+                            </div>
+
                             <form>
-                                <div class="mb-4">
-                                    <label class="form-label">System Name</label>
-                                    <input type="text" class="form-control" value="BusTrack Pro">
-                                </div>
-                                <div class="mb-4">
-                                    <label class="form-label">University Name</label>
-                                    <input type="text" class="form-control" value="State University">
-                                </div>
-                                <div class="mb-4">
-                                    <label class="form-label">System Language</label>
-                                    <select class="form-select">
-                                        <option selected>English</option>
-                                        <option>Urdu</option>
-                                        <option>Spanish</option>
-                                        <option>French</option>
+                                <div class="mb-4" id="userSelectDiv">
+                                    <label class="form-label">Select User</label>
+                                    <select class="form-select" id="userSelect">
+                                        <option selected disabled>-- Choose a User --</option>
+                                        <option value="user1">John Smith (john.smith@student.edu)</option>
+                                        <option value="user2">
+                                            Sarah Johnson (sarah.johnson@passenger.edu)
+                                        </option>
+                                        <option value="user3">
+                                            Ahmed Hassan (ahmed.hassan@student.edu)
+                                        </option>
+                                        <option value="user4">Emma Wilson (emma.wilson@student.edu)</option>
                                     </select>
                                 </div>
+
                                 <div class="mb-4">
-                                    <label class="form-label">Time Zone</label>
-                                    <select class="form-select">
-                                        <option selected>UTC+5:00 (Pakistan)</option>
-                                        <option>UTC+0:00 (GMT)</option>
-                                        <option>UTC-5:00 (EST)</option>
-                                    </select>
+                                    <label class="form-label">Message Type</label>
+                                    <div class="btn-group w-100" role="group">
+                                        <input type="radio" class="btn-check" name="messageType"
+                                               id="msgGeneral" value="general" checked>
+                                        <label class="btn btn-outline-secondary" for="msgGeneral">
+                                            <i class="fas fa-comment me-2"></i>General Message
+                                        </label>
+                                        <input type="radio" class="btn-check" name="messageType"
+                                               id="msgCredentials" value="credentials">
+                                        <label class="btn btn-outline-secondary" for="msgCredentials">
+                                            <i class="fas fa-key me-2"></i>Send Credentials
+                                        </label>
+                                    </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Save Changes</button>
+
+                                <div class="mb-4" id="credentialsFields" style="display: none;">
+                                    <div class="alert alert-warning">
+                                        <small>
+                                            <i class="fas fa-exclamation-triangle me-2"></i>Credentials
+                                            will be sent securely via email
+                                        </small>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Username</label>
+                                            <input type="text" class="form-control" id="credUsername"
+                                                   placeholder="e.g., john.smith">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Password</label>
+                                            <input type="password" class="form-control" id="credPassword"
+                                                   placeholder="••••••••">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">Message Content</label>
+                                    <textarea class="form-control" id="messageContent" rows="4"
+                                              placeholder="Type your message here..."></textarea>
+                                    <small class="text-muted d-block mt-2">
+                                        Character count: <span id="charCount">0</span>/500
+                                    </small>
+                                </div>
+
+                                <div class="mb-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="confirmSend">
+                                        <label class="form-check-label" for="confirmSend">
+                                            <span id="confirmText">
+                                                I confirm this message will be sent to
+                                                the selected user
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-info me-2" id="sendBtn" disabled>
+                                    <i class="fas fa-paper-plane me-2"></i>Send Message
+                                </button>
+                                <button type="reset" class="btn btn-secondary">Clear</button>
                             </form>
+                        </div>
+                    </div>
+
+                    <!-- Message History -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-history me-2"></i>Message History</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>User</th>
+                                            <th>Message Type</th>
+                                            <th>Sent</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>John Smith</strong></td>
+                                            <td><span class="badge bg-success">Credentials</span></td>
+                                            <td>Today at 9:30 AM</td>
+                                            <td><span class="badge bg-success">Delivered</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary" title="View">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Sarah Johnson</strong></td>
+                                            <td><span class="badge bg-info">General Message</span></td>
+                                            <td>Yesterday at 3:15 PM</td>
+                                            <td><span class="badge bg-success">Delivered</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary" title="View">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Ahmed Hassan</strong></td>
+                                            <td><span class="badge bg-success">Credentials</span></td>
+                                            <td>2 days ago at 11:20 AM</td>
+                                            <td><span class="badge bg-success">Delivered</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary" title="View">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- System Settings -->
-                <div id="system" class="tab-pane fade">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">System Configuration</h5>
+                <div id="drivers" class="tab-pane fade">
+                    <div class="card mb-4">
+                        <div class="card-header bg-info bg-opacity-10">
+                            <h5 class="mb-0">
+                                <i class="fas fa-bus me-2 text-info"></i>Send Message to Driver
+                            </h5>
                         </div>
                         <div class="card-body">
+                            <p class="text-muted mb-4">
+                                Send messages or credentials to drivers (single or
+                                all).
+                            </p>
+
+                            <div class="mb-4">
+                                <label class="form-label">Send To</label>
+                                <div class="btn-group w-100" role="group">
+                                    <input type="radio" class="btn-check" name="sendModeDriver"
+                                           id="sendSingleDriver" value="single" checked>
+                                    <label class="btn btn-outline-primary" for="sendSingleDriver">
+                                        <i class="fas fa-user me-2"></i>Single Driver
+                                    </label>
+                                    <input type="radio" class="btn-check" name="sendModeDriver"
+                                           id="sendAllDriver" value="all">
+                                    <label class="btn btn-outline-primary" for="sendAllDriver">
+                                        <i class="fas fa-users me-2"></i>All Drivers
+                                    </label>
+                                </div>
+                            </div>
+
                             <form>
-                                <div class="mb-4">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <label class="form-label mb-1">GPS Tracking</label>
-                                            <p class="text-muted small">Enable real-time GPS tracking for buses</p>
-                                        </div>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" checked>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-4">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <label class="form-label mb-1">Automatic Backups</label>
-                                            <p class="text-muted small">Daily backup of system data</p>
-                                        </div>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" checked>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="form-label">Backup Frequency</label>
-                                    <select class="form-select">
-                                        <option selected>Daily</option>
-                                        <option>Weekly</option>
-                                        <option>Monthly</option>
+                                <div class="mb-4" id="driverSelectDiv">
+                                    <label class="form-label">Select Driver</label>
+                                    <select class="form-select" id="driverSelect">
+                                        <option selected disabled>-- Choose a Driver --</option>
+                                        <option value="drv1">Ali Khan (ali.khan@driver.edu)</option>
+                                        <option value="drv2">Fatima Noor (fatima.noor@driver.edu)</option>
+                                        <option value="drv3">Zafar Iqbal (zafar.iqbal@driver.edu)</option>
+                                        <option value="drv4">Maria Gomez (maria.gomez@driver.edu)</option>
                                     </select>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Save Changes</button>
+
+                                <div class="mb-4">
+                                    <label class="form-label">Message Type</label>
+                                    <div class="btn-group w-100" role="group">
+                                        <input type="radio" class="btn-check" name="messageTypeDriver"
+                                               id="msgGeneralDriver" value="general" checked>
+                                        <label class="btn btn-outline-secondary" for="msgGeneralDriver">
+                                            <i class="fas fa-comment me-2"></i>General Message
+                                        </label>
+                                        <input type="radio" class="btn-check" name="messageTypeDriver"
+                                               id="msgCredentialsDriver" value="credentials">
+                                        <label class="btn btn-outline-secondary" for="msgCredentialsDriver">
+                                            <i class="fas fa-key me-2"></i>Send Credentials
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4" id="credentialsFieldsDriver" style="display: none;">
+                                    <div class="alert alert-warning">
+                                        <small>
+                                            <i class="fas fa-exclamation-triangle me-2"></i>Credentials
+                                            will be sent securely via email
+                                        </small>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Username</label>
+                                            <input type="text" class="form-control" id="credUsernameDriver"
+                                                   placeholder="e.g., ali.khan">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Password</label>
+                                            <input type="password" class="form-control"
+                                                   id="credPasswordDriver" placeholder="••••••••">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">Message Content</label>
+                                    <textarea class="form-control" id="messageContentDriver" rows="4"
+                                              placeholder="Type your message here..."></textarea>
+                                    <small class="text-muted d-block mt-2">
+                                        Character count: <span id="charCountDriver">0</span>/500
+                                    </small>
+                                </div>
+
+                                <div class="mb-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox"
+                                               id="confirmSendDriver">
+                                        <label class="form-check-label" for="confirmSendDriver">
+                                            <span id="confirmTextDriver">
+                                                I confirm this message will be sent
+                                                to the selected driver
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-info me-2" id="sendBtnDriver" disabled>
+                                    <i class="fas fa-paper-plane me-2"></i>Send Message
+                                </button>
+                                <button type="reset" class="btn btn-secondary">Clear</button>
                             </form>
+
+                            <!-- Driver Message History -->
+                            <div class="card mt-4">
+                                <div class="card-header">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-history me-2"></i>Driver Message
+                                        History
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Driver</th>
+                                                    <th>Message Type</th>
+                                                    <th>Sent</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><strong>Ali Khan</strong></td>
+                                                    <td>
+                                                        <span class="badge bg-success">Credentials</span>
+                                                    </td>
+                                                    <td>Today at 8:10 AM</td>
+                                                    <td><span class="badge bg-success">Delivered</span></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary"
+                                                                title="View">
+                                                            <i class="fas fa-eye"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Fatima Noor</strong></td>
+                                                    <td>
+                                                        <span class="badge bg-info">General Message</span>
+                                                    </td>
+                                                    <td>Yesterday at 5:40 PM</td>
+                                                    <td><span class="badge bg-success">Delivered</span></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary"
+                                                                title="View">
+                                                            <i class="fas fa-eye"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Zafar Iqbal</strong></td>
+                                                    <td>
+                                                        <span class="badge bg-success">Credentials</span>
+                                                    </td>
+                                                    <td>2 days ago at 10:20 AM</td>
+                                                    <td><span class="badge bg-warning">Pending</span></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary"
+                                                                title="View">
+                                                            <i class="fas fa-eye"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Super Admin Password Update Request -->
+                <div id="admin-password" class="tab-pane fade">
+                    <div class="card">
+                        <div class="card-header bg-danger bg-opacity-10">
+                            <h5 class="mb-0">
+                                <i class="fas fa-lock-open text-danger me-2"></i>Super Admin
+                                Password Update Request
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted mb-4">
+                                Request a password update for Super Admin accounts.
+                                An email will be sent to the Super Admin with password reset instructions.
+                            </p>
+
+                            <form>
+                                <div class="mb-4">
+                                    <label class="form-label">Super Admin Account</label>
+                                    <div class="alert alert-warning">
+                                        <div class="d-flex align-items-center">
+                                            <div class="me-3">
+                                                <i class="fas fa-crown fa-2x text-warning"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-1">System Admin</h6>
+                                                <p class="mb-0 text-muted">admin@university.edu</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">Reason for Password Update</label>
+                                    <textarea class="form-control" rows="3"
+                                              placeholder="Enter the reason for requesting password update..."></textarea>
+                                </div>
+
+                                <div class="mb-4">
+                                    <div class="alert alert-info">
+                                        <small>
+                                            <i class="fas fa-info-circle me-2"></i>The Super Admin will
+                                            receive an email with a secure link to reset their password.
+                                            This link expires in 24 hours.
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="notifyAdmin">
+                                        <label class="form-check-label" for="notifyAdmin">
+                                            Notify Super Admin via email about this request
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-danger me-2">
+                                    <i class="fas fa-envelope me-2"></i>Send Password Update Request
+                                </button>
+                                <button type="reset" class="btn btn-secondary">Reset Form</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Recent Requests History -->
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-history me-2"></i>Recent Password Update
+                                Requests
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Super Admin</th>
+                                            <th>Requested By</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>System Admin</strong></td>
+                                            <td>Admin User</td>
+                                            <td>Today at 1:30 PM</td>
+                                            <td><span class="badge bg-success">Completed</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary" title="View">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Dr. Sarah Williams</strong></td>
+                                            <td>Admin User</td>
+                                            <td>Yesterday at 3:45 PM</td>
+                                            <td><span class="badge bg-warning">Pending</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary me-1"
+                                                        title="View">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-secondary"
+                                                        title="Resend">
+                                                    <i class="fas fa-redo"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Mr. Muhammad Ahmed</strong></td>
+                                            <td>Admin User</td>
+                                            <td>3 days ago</td>
+                                            <td><span class="badge bg-success">Completed</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary" title="View">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -162,84 +559,121 @@
                     </div>
                 </div>
 
-                <!-- Security Settings -->
-                <div id="security" class="tab-pane fade">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">Security Settings</h5>
-                        </div>
-                        <div class="card-body">
-                            <form>
-                                <div class="mb-4">
-                                    <label class="form-label">Change Password</label>
-                                    <input type="password" class="form-control" placeholder="Current Password">
-                                    <input type="password" class="form-control mt-2" placeholder="New Password">
-                                    <input type="password" class="form-control mt-2" placeholder="Confirm Password">
-                                </div>
-                                <div class="mb-4">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <label class="form-label mb-0">Two-Factor Authentication</label>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="form-label">Session Timeout (minutes)</label>
-                                    <input type="number" class="form-control" value="30">
-                                </div>
-                                <button type="submit" class="btn btn-primary">Save Changes</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Integrations -->
-                <div id="integrations" class="tab-pane fade">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">Integrations</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-4">
-                                <div class="d-flex justify-content-between align-items-center p-3 border rounded">
-                                    <div>
-                                        <h6 class="mb-1">Google Maps</h6>
-                                        <p class="text-muted small mb-0">GPS tracking and mapping service</p>
-                                    </div>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" checked>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <div class="d-flex justify-content-between align-items-center p-3 border rounded">
-                                    <div>
-                                        <h6 class="mb-1">Email Service</h6>
-                                        <p class="text-muted small mb-0">Notifications and communication</p>
-                                    </div>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" checked>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <div class="d-flex justify-content-between align-items-center p-3 border rounded">
-                                    <div>
-                                        <h6 class="mb-1">SMS Gateway</h6>
-                                        <p class="text-muted small mb-0">Text message notifications</p>
-                                    </div>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 </div>
 
+@section Scripts {
+    <script>
+        // Message Form Interactivity (Users + Drivers)
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // -------- USERS --------
+            const credentialsFields = document.getElementById('credentialsFields');
+            const msgGeneralInput = document.getElementById('msgGeneral');
+            const msgCredentialsInput = document.getElementById('msgCredentials');
+            const messageContent = document.getElementById('messageContent');
+            const charCount = document.getElementById('charCount');
+            const confirmSendCheckbox = document.getElementById('confirmSend');
+            const sendBtn = document.getElementById('sendBtn');
+            const userSelectDiv = document.getElementById('userSelectDiv');
+            const userSelect = document.getElementById('userSelect');
+            const confirmText = document.getElementById('confirmText');
+            const sendSingleRadio = document.getElementById('sendSingle');
+            const sendAllRadio = document.getElementById('sendAll');
+
+            // -------- DRIVERS --------
+            const credentialsFieldsDriver = document.getElementById('credentialsFieldsDriver');
+            const msgGeneralInputDriver = document.getElementById('msgGeneralDriver');
+            const msgCredentialsInputDriver = document.getElementById('msgCredentialsDriver');
+            const messageContentDriver = document.getElementById('messageContentDriver');
+            const charCountDriver = document.getElementById('charCountDriver');
+            const confirmSendCheckboxDriver = document.getElementById('confirmSendDriver');
+            const sendBtnDriver = document.getElementById('sendBtnDriver');
+            const driverSelectDiv = document.getElementById('driverSelectDiv');
+            const driverSelect = document.getElementById('driverSelect');
+            const confirmTextDriver = document.getElementById('confirmTextDriver');
+            const sendSingleDriver = document.getElementById('sendSingleDriver');
+            const sendAllDriver = document.getElementById('sendAllDriver');
+
+            // ---- Send mode toggle (Users)
+            sendSingleRadio?.addEventListener('change', () => {
+                userSelectDiv.style.display = 'block';
+                confirmText.innerText = 'I confirm this message will be sent to the selected user';
+            });
+
+            sendAllRadio?.addEventListener('change', () => {
+                userSelectDiv.style.display = 'none';
+                userSelect.value = '';
+                confirmText.innerText = 'I confirm this message will be sent to all users';
+            });
+
+            // ---- Send mode toggle (Drivers)
+            sendSingleDriver?.addEventListener('change', () => {
+                driverSelectDiv.style.display = 'block';
+                confirmTextDriver.innerText = 'I confirm this message will be sent to the selected driver';
+            });
+
+            sendAllDriver?.addEventListener('change', () => {
+                driverSelectDiv.style.display = 'none';
+                driverSelect.value = '';
+                confirmTextDriver.innerText = 'I confirm this message will be sent to all drivers';
+            });
+
+            // ---- Message type toggle (Users)
+            msgGeneralInput?.addEventListener('change', () => credentialsFields.style.display = 'none');
+            msgCredentialsInput?.addEventListener('change', () => credentialsFields.style.display = 'block');
+
+            // ---- Message type toggle (Drivers)
+            msgGeneralInputDriver?.addEventListener('change', () => credentialsFieldsDriver.style.display = 'none');
+            msgCredentialsInputDriver?.addEventListener('change', () => credentialsFieldsDriver.style.display = 'block');
+
+            // ---- Character count (Users)
+            messageContent?.addEventListener('input', function () {
+                this.value = this.value.substring(0, 500);
+                charCount.innerText = this.value.length;
+            });
+
+            // ---- Character count (Drivers)
+            messageContentDriver?.addEventListener('input', function () {
+                this.value = this.value.substring(0, 500);
+                charCountDriver.innerText = this.value.length;
+            });
+
+            // ---- Enable send button (Users)
+            confirmSendCheckbox?.addEventListener('change', function () {
+                sendBtn.disabled = !this.checked;
+            });
+
+            // ---- Enable send button (Drivers)
+            confirmSendCheckboxDriver?.addEventListener('change', function () {
+                sendBtnDriver.disabled = !this.checked;
+            });
+
+            // ---- Demo submit handlers
+            document.querySelectorAll('#requests form').forEach(form => {
+                form.addEventListener('submit', e => {
+                    e.preventDefault();
+                    alert('Message queued (demo)');
+                    form.reset();
+                    sendBtn.disabled = true;
+                    sendBtnDriver.disabled = true;
+                });
+            });
+
+            // ---- Collapsible notification cards
+            document.querySelectorAll('#notifications .card-header').forEach(header => {
+                header.style.cursor = 'pointer';
+                const body = header.nextElementSibling;
+
+                header.addEventListener('click', () => {
+                    body.style.display = body.style.display === 'none' ? 'block' : 'none';
+                });
+            });
+
+        });
+    </script>
+}
 
