@@ -1,0 +1,265 @@
+﻿@{
+    ViewData["Title"] = "System Overview";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="flex-1 overflow-y-auto p-8 space-y-8">
+    <!-- Welcome Section -->
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-bold tracking-tight">System Overview</h1>
+            <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">
+                Real-time performance metrics across all
+                connected tenants.
+            </p>
+        </div>
+        <div class="flex items-center gap-3">
+            <div class="text-xs text-slate-400 mr-2 italic">Last updated: Today, 10:45 AM</div>
+            <button class="flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary hover:bg-primary hover:text-white rounded-lg transition-all text-sm font-medium">
+                <span class="material-icons text-[18px]">file_download</span>
+                Generate Report
+            </button>
+        </div>
+    </div>
+    <!-- KPI Metric Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        <!-- Card 1 -->
+        <div class="bg-white dark:bg-surface-dark p-5 rounded-xl border border-slate-200 dark:border-border-dark shadow-sm group hover:shadow-md transition-all">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-10 h-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+                    <span class="material-icons">business</span>
+                </div>
+                <span class="text-xs font-bold text-emerald-500 flex items-center">
+                    <span class="material-icons text-[14px]">arrow_upward</span> 12%
+                </span>
+            </div>
+            <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Companies</p>
+            <h3 class="text-2xl font-bold mt-1">124</h3>
+        </div>
+        <!-- Card 2 -->
+        <div class="bg-white dark:bg-surface-dark p-5 rounded-xl border border-slate-200 dark:border-border-dark shadow-sm group hover:shadow-md transition-all">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-10 h-10 bg-blue-500/10 text-blue-500 rounded-lg flex items-center justify-center">
+                    <span class="material-icons">directions_bus</span>
+                </div>
+                <span class="text-xs font-bold text-emerald-500 flex items-center">
+                    <span class="material-icons text-[14px]">arrow_upward</span> 5%
+                </span>
+            </div>
+            <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Total Buses</p>
+            <h3 class="text-2xl font-bold mt-1">1,850</h3>
+        </div>
+        <!-- Card 3 -->
+        <div class="bg-white dark:bg-surface-dark p-5 rounded-xl border border-slate-200 dark:border-border-dark shadow-sm group hover:shadow-md transition-all">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-10 h-10 bg-indigo-500/10 text-indigo-500 rounded-lg flex items-center justify-center">
+                    <span class="material-icons">badge</span>
+                </div>
+                <span class="text-xs font-bold text-emerald-500 flex items-center">
+                    <span class="material-icons text-[14px]">arrow_upward</span> 8%
+                </span>
+            </div>
+            <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Drivers</p>
+            <h3 class="text-2xl font-bold mt-1">2,100</h3>
+        </div>
+        <!-- Card 4 -->
+        <div class="bg-white dark:bg-surface-dark p-5 rounded-xl border border-slate-200 dark:border-border-dark shadow-sm group hover:shadow-md transition-all">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-10 h-10 bg-violet-500/10 text-violet-500 rounded-lg flex items-center justify-center">
+                    <span class="material-icons">school</span>
+                </div>
+                <span class="text-xs font-bold text-emerald-500 flex items-center">
+                    <span class="material-icons text-[14px]">arrow_upward</span> 15%
+                </span>
+            </div>
+            <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Students</p>
+            <h3 class="text-2xl font-bold mt-1">45,000</h3>
+        </div>
+        <!-- Card 5 -->
+        <div class="bg-white dark:bg-surface-dark p-5 rounded-xl border border-slate-200 dark:border-border-dark shadow-sm group hover:shadow-md transition-all">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-10 h-10 bg-cyan-500/10 text-cyan-500 rounded-lg flex items-center justify-center">
+                    <span class="material-icons">route</span>
+                </div>
+                <span class="text-xs font-bold text-emerald-500 flex items-center">
+                    <span class="material-icons text-[14px]">arrow_upward</span> 20%
+                </span>
+            </div>
+            <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Total Trips</p>
+            <h3 class="text-2xl font-bold mt-1">1.2M</h3>
+        </div>
+    </div>
+    <!-- Main Chart Section -->
+    <div class="bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-border-dark overflow-hidden shadow-sm">
+        <div class="p-6 border-b border-slate-200 dark:border-border-dark flex items-center justify-between">
+            <div>
+                <h2 class="text-lg font-bold">Trips Over Time</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Aggregated system traffic across all companies</p>
+            </div>
+            <div class="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
+                <button class="px-3 py-1.5 text-xs font-medium bg-white dark:bg-surface-dark shadow-sm rounded-md">
+                    Daily
+                </button>
+                <button class="px-3 py-1.5 text-xs font-medium text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">
+                    Weekly
+                </button>
+                <button class="px-3 py-1.5 text-xs font-medium text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">
+                    Monthly
+                </button>
+            </div>
+        </div>
+        <div class="p-8">
+            <div class="h-64 w-full flex flex-col justify-between">
+                <!-- SVG Chart Simulation -->
+                <div class="relative h-full w-full">
+                    <svg class="w-full h-full" preserveaspectratio="none">
+                        <defs>
+                            <lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+                                <stop offset="0%" stop-color="#135bec" stop-opacity="0.2"></stop>
+                                <stop offset="100%" stop-color="#135bec" stop-opacity="0"></stop>
+                            </lineargradient>
+                        </defs>
+                        <path class="w-full"
+                              d="M0 180 Q 50 160 100 170 T 200 120 T 300 140 T 400 90 T 500 110 T 600 60 T 700 80 T 800 40 T 900 60 T 1000 30"
+                              fill="none" stroke="#135bec" stroke-linecap="round" stroke-width="3"></path>
+                        <path d="M0 180 Q 50 160 100 170 T 200 120 T 300 140 T 400 90 T 500 110 T 600 60 T 700 80 T 800 40 T 900 60 T 1000 30 L 1000 200 L 0 200 Z"
+                              fill="url(#chartGradient)"></path>
+                    </svg>
+                    <!-- Grid Lines -->
+                    <div class="absolute inset-0 flex flex-col justify-between opacity-10 pointer-events-none">
+                        <div class="border-b border-slate-900 dark:border-white w-full"></div>
+                        <div class="border-b border-slate-900 dark:border-white w-full"></div>
+                        <div class="border-b border-slate-900 dark:border-white w-full"></div>
+                        <div class="border-b border-slate-900 dark:border-white w-full"></div>
+                        <div class="w-full"></div>
+                    </div>
+                </div>
+                <div class="flex justify-between mt-4 text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                    <span>Mon, 01</span>
+                    <span>Mon, 05</span>
+                    <span>Mon, 10</span>
+                    <span>Mon, 15</span>
+                    <span>Mon, 20</span>
+                    <span>Mon, 25</span>
+                    <span>Mon, 30</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bottom Two-Column Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- User Distribution (Pie Chart Style) -->
+        <div class="bg-white dark:bg-surface-dark p-6 rounded-xl border border-slate-200 dark:border-border-dark shadow-sm">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-lg font-bold">User Distribution</h2>
+                <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <span class="material-icons">more_horiz</span>
+                </button>
+            </div>
+            <div class="flex items-center gap-12">
+                <div class="relative w-48 h-48">
+                    <svg class="w-full h-full transform -rotate-90">
+                        <!-- Students (85%) -->
+                        <circle cx="96" cy="96" fill="none" r="80" stroke="#135bec" stroke-dasharray="502"
+                                stroke-dashoffset="75" stroke-width="32"></circle>
+                        <!-- Drivers (10%) -->
+                        <circle cx="96" cy="96" fill="none" r="80" stroke="#8b5cf6" stroke-dasharray="502"
+                                stroke-dashoffset="450" stroke-width="32"></circle>
+                        <!-- Admins (5%) -->
+                        <circle cx="96" cy="96" fill="none" r="80" stroke="#06b6d4" stroke-dasharray="502"
+                                stroke-dashoffset="490" stroke-width="32"></circle>
+                    </svg>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                        <span class="text-2xl font-bold">47.2K</span>
+                        <span class="text-[10px] text-slate-400 font-bold uppercase">Users Total</span>
+                    </div>
+                </div>
+                <div class="flex-1 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-primary"></div>
+                            <span class="text-sm font-medium">Students</span>
+                        </div>
+                        <span class="text-sm font-bold">85%</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-violet-500"></div>
+                            <span class="text-sm font-medium">Drivers</span>
+                        </div>
+                        <span class="text-sm font-bold">10%</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-cyan-500"></div>
+                            <span class="text-sm font-medium">Admins</span>
+                        </div>
+                        <span class="text-sm font-bold">5%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Buses per Company (Bar Chart Style) -->
+        <div class="bg-white dark:bg-surface-dark p-6 rounded-xl border border-slate-200 dark:border-border-dark shadow-sm">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-lg font-bold">Top Companies by Fleet</h2>
+                <a class="text-primary text-xs font-bold uppercase hover:underline" href="#">View All</a>
+            </div>
+            <div class="space-y-6">
+                <!-- Bar Item 1 -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between text-xs font-bold">
+                        <span class="text-slate-700 dark:text-slate-300">City Transit Group</span>
+                        <span>420 Buses</span>
+                    </div>
+                    <div class="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                        <div class="h-full bg-primary w-[85%] rounded-full"></div>
+                    </div>
+                </div>
+                <!-- Bar Item 2 -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between text-xs font-bold">
+                        <span class="text-slate-700 dark:text-slate-300">Unified Schools Network</span>
+                        <span>385 Buses</span>
+                    </div>
+                    <div class="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                        <div class="h-full bg-primary w-[75%] rounded-full"></div>
+                    </div>
+                </div>
+                <!-- Bar Item 3 -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between text-xs font-bold">
+                        <span class="text-slate-700 dark:text-slate-300">Global Logistics Corp</span>
+                        <span>210 Buses</span>
+                    </div>
+                    <div class="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                        <div class="h-full bg-primary w-[45%] rounded-full"></div>
+                    </div>
+                </div>
+                <!-- Bar Item 4 -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between text-xs font-bold">
+                        <span class="text-slate-700 dark:text-slate-300">Suburban Mobility</span>
+                        <span>150 Buses</span>
+                    </div>
+                    <div class="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                        <div class="h-full bg-primary w-[35%] rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer System Info -->
+    <div class="flex flex-col md:flex-row justify-between items-center py-4 border-t border-slate-200 dark:border-border-dark text-slate-400 text-xs">
+        <p>© 2024 OmniBus Tracking System. All rights reserved.</p>
+        <div class="flex gap-6 mt-4 md:mt-0">
+            <a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+            <a class="hover:text-primary transition-colors" href="#">Service Status</a>
+            <a class="hover:text-primary transition-colors" href="#">API Docs</a>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-dashboard.css" />
+}

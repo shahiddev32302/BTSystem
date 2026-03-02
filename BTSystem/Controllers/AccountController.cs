@@ -15,7 +15,7 @@ namespace BTSystem.Controllers
         {
             // 🔴 Dummy login (for now)
             if (Role == "admin")
-                return RedirectToAction("Dashboard", "Admin");
+                return RedirectToAction("Dashboard", "SuperAdmin");
 
             if (Role == "student" || Role == "parent")
                 return RedirectToAction("Dashboard", "Student");

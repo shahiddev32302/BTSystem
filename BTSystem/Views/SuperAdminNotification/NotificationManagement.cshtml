@@ -1,0 +1,413 @@
+﻿@{
+    ViewData["Title"] = "Global Notification Center";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="flex-1 overflow-y-auto p-8 space-y-8">
+    <!-- Welcome Section -->
+    <div class="flex items-center justify-between">
+         <div>
+            <main class="max-w-[1440px] mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Left Pane: Notification Feed -->
+                <div class="lg:col-span-7 flex flex-col gap-6">
+                    <div class="flex flex-col gap-1">
+                        <h1 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">
+                            Global Notification
+                            Center
+                        </h1>
+                        <p class="text-slate-500 dark:text-[#9da6b9]">
+                            Monitor system health and broadcast updates across the
+                            network.
+                        </p>
+                    </div>
+                    <!-- Stats Overview -->
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="bg-white dark:bg-[#101622] border border-slate-200 dark:border-[#3b4354] p-4 rounded-xl">
+                            <p class="text-xs font-semibold text-slate-500 dark:text-[#9da6b9] uppercase tracking-wider">
+                                Sent
+                                Today
+                            </p>
+                            <div class="flex items-baseline gap-2 mt-1">
+                                <span class="text-2xl font-bold">1,284</span>
+                                <span class="text-xs font-medium text-emerald-500">+12%</span>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-[#101622] border border-slate-200 dark:border-[#3b4354] p-4 rounded-xl">
+                            <p class="text-xs font-semibold text-slate-500 dark:text-[#9da6b9] uppercase tracking-wider">
+                                Active
+                                Alerts
+                            </p>
+                            <div class="flex items-baseline gap-2 mt-1">
+                                <span class="text-2xl font-bold text-orange-500">12</span>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-[#101622] border border-slate-200 dark:border-[#3b4354] p-4 rounded-xl">
+                            <p class="text-xs font-semibold text-slate-500 dark:text-[#9da6b9] uppercase tracking-wider">
+                                Total
+                                Users
+                            </p>
+                            <div class="flex items-baseline gap-2 mt-1">
+                                <span class="text-2xl font-bold">45.2k</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Feed Header & Filters -->
+                    <div class="flex items-center justify-between border-b border-slate-200 dark:border-[#3b4354] pb-4">
+                        <div class="flex gap-4" id="feedTabs">
+                            <button class="tab-btn active text-sm font-bold text-primary border-b-2 border-primary pb-2 transition-all"
+                                    data-tab="all">
+                                All Alerts
+                            </button>
+                            <button class="tab-btn text-sm font-medium text-slate-500 dark:text-[#9da6b9] pb-2 hover:text-white transition-all flex items-center gap-2"
+                                    data-tab="unread">
+                                Unread
+                                <span class="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full">3</span>
+                            </button>
+                            <button class="tab-btn text-sm font-medium text-slate-500 dark:text-[#9da6b9] pb-2 hover:text-white transition-all"
+                                    data-tab="system">
+                                System
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <button class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-[#9da6b9] hover:text-primary transition-colors">
+                                <span class="material-symbols-outlined text-sm">filter_list</span>
+                                By Priority
+                            </button>
+                            <button class="text-xs font-bold uppercase text-primary hover:underline">Mark all read</button>
+                        </div>
+                    </div>
+                    <!-- Scrollable Feed with Company Grouping -->
+                    <div class="flex flex-col gap-6 overflow-y-auto max-h-[calc(100vh-400px)] pr-2 custom-scrollbar"
+                         id="notificationFeed">
+
+                        <!-- Company Group 1 -->
+                        <div class="bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                            <div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-border-dark flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
+                                        <span class="material-icons">business</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm font-bold text-slate-900 dark:text-white">City Transit Group</h4>
+                                        <p class="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                            Admin: John Smith
+                                        </p>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 px-2 py-1 rounded uppercase tracking-tighter">
+                                    2
+                                    Active Issues
+                                </span>
+                            </div>
+
+                            <div class="divide-y divide-slate-100 dark:divide-slate-800">
+                                <!-- Notification Item -->
+                                <div class="p-6 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group unread-notif">
+                                    <div class="flex gap-4">
+                                        <div class="h-8 w-8 rounded-lg bg-rose-500/10 text-rose-500 flex items-center justify-center shrink-0">
+                                            <span class="material-icons text-[18px]">warning</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="flex justify-between items-start">
+                                                <h5 class="text-sm font-semibold text-slate-900 dark:text-white">
+                                                    Bus 42: Significant Route
+                                                    Deviation
+                                                </h5>
+                                                <span class="text-[10px] text-slate-400 font-medium">2 mins ago</span>
+                                            </div>
+                                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                                                Vehicle has moved more than 2km
+                                                off the assigned 'Campus Loop' route. Immediate action required.
+                                            </p>
+                                            <div class="flex items-center gap-3 mt-3">
+                                                <button class="text-[10px] font-bold text-primary hover:underline uppercase">
+                                                    Track
+                                                    Live
+                                                </button>
+                                                <button class="text-[10px] font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 uppercase">
+                                                    Dismiss
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="h-2 w-2 rounded-full bg-primary mt-2"></div>
+                                    </div>
+                                </div>
+
+                                <div class="p-6 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group unread-notif">
+                                    <div class="flex gap-4">
+                                        <div class="h-8 w-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center shrink-0">
+                                            <span class="material-icons text-[18px]">person_off</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="flex justify-between items-start">
+                                                <h5 class="text-sm font-semibold text-slate-900 dark:text-white">
+                                                    Driver Absent Without
+                                                    Notice
+                                                </h5>
+                                                <span class="text-[10px] text-slate-400 font-medium">1 hour ago</span>
+                                            </div>
+                                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                                                Driver 'Robert T.' failed to
+                                                check-in for the 08:30 morning shift on Route B.
+                                            </p>
+                                        </div>
+                                        <div class="h-2 w-2 rounded-full bg-primary mt-2"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Company Group 2 -->
+                        <div class="bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                            <div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-border-dark flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-500">
+                                        <span class="material-icons">school</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm font-bold text-slate-900 dark:text-white">Unified Schools Network</h4>
+                                        <p class="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                            Admin: Sarah Johnson
+                                        </p>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-bold text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded uppercase tracking-tighter">
+                                    1
+                                    Resolved
+                                </span>
+                            </div>
+
+                            <div class="divide-y divide-slate-100 dark:divide-slate-800">
+                                <div class="p-6 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group">
+                                    <div class="flex gap-4">
+                                        <div class="h-8 w-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0">
+                                            <span class="material-icons text-[18px]">verified</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="flex justify-between items-start">
+                                                <h5 class="text-sm font-semibold text-slate-900 dark:text-white">
+                                                    System Upgrade Complete
+                                                </h5>
+                                                <span class="text-[10px] text-slate-400 font-medium">5 hours ago</span>
+                                            </div>
+                                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                                                All 12 backend services for the
+                                                client have been migrated to v2.4 successfully.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Right Pane: Create Notification Form -->
+                <div class="lg:col-span-5">
+                    <div class="sticky top-24 bg-white dark:bg-[#101622] border border-slate-200 dark:border-[#3b4354] rounded-2xl overflow-hidden shadow-2xl">
+                        <div class="bg-primary p-6 text-white">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-2xl">send</span>
+                                <h3 class="text-xl font-bold">Create Broadcast</h3>
+                            </div>
+                            <p class="text-primary/10 mt-1 opacity-80 text-sm">
+                                Notify users across the entire system ecosystem.
+                            </p>
+                        </div>
+                        <form class="p-6 flex flex-col gap-6">
+                            <!-- Title Input -->
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-[#9da6b9]">
+                                    Notification
+                                    Title
+                                </label>
+                                <input class="w-full bg-slate-50 dark:bg-[#282e39] border-slate-200 dark:border-transparent rounded-lg focus:ring-2 focus:ring-primary p-3 text-sm text-slate-900 dark:text-white"
+                                       placeholder="e.g. Urgent Maintenance Notice" type="text" />
+                            </div>
+                            <!-- Target Audience -->
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-[#9da6b9]">
+                                    Target
+                                    Audience
+                                </label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <label class="relative flex items-center gap-3 p-3 rounded-lg bg-slate-50 dark:bg-[#282e39] cursor-pointer border-2 border-transparent hover:border-primary/50 transition-all has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+                                        <input class="rounded text-primary focus:ring-primary bg-transparent border-slate-400"
+                                               type="checkbox" />
+                                        <span class="text-sm font-medium">Admins</span>
+                                    </label>
+                                    <label class="relative flex items-center gap-3 p-3 rounded-lg bg-slate-50 dark:bg-[#282e39] cursor-pointer border-2 border-transparent hover:border-primary/50 transition-all has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+                                        <input class="rounded text-primary focus:ring-primary bg-transparent border-slate-400"
+                                               type="checkbox" />
+                                        <span class="text-sm font-medium">Drivers</span>
+                                    </label>
+                                    <label class="relative flex items-center gap-3 p-3 rounded-lg bg-slate-50 dark:bg-[#282e39] cursor-pointer border-2 border-transparent hover:border-primary/50 transition-all has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+                                        <input checked=""
+                                               class="rounded text-primary focus:ring-primary bg-transparent border-slate-400"
+                                               type="checkbox" />
+                                        <span class="text-sm font-medium">Students</span>
+                                    </label>
+                                    <label class="relative flex items-center gap-3 p-3 rounded-lg bg-slate-50 dark:bg-[#282e39] cursor-pointer border-2 border-transparent hover:border-primary/50 transition-all has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+                                        <input class="rounded text-primary focus:ring-primary bg-transparent border-slate-400"
+                                               type="checkbox" />
+                                        <span class="text-sm font-medium">All Users</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- Priority Level -->
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-[#9da6b9]">
+                                    Priority
+                                    Level
+                                </label>
+                                <div class="flex p-1 bg-slate-50 dark:bg-[#282e39] rounded-lg">
+                                    <button class="flex-1 py-2 text-xs font-bold rounded-md text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors"
+                                            type="button">
+                                        LOW
+                                    </button>
+                                    <button class="flex-1 py-2 text-xs font-bold rounded-md bg-white dark:bg-[#3b4354] shadow-sm text-primary"
+                                            type="button">
+                                        MEDIUM
+                                    </button>
+                                    <button class="flex-1 py-2 text-xs font-bold rounded-md text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors"
+                                            type="button">
+                                        HIGH
+                                    </button>
+                                    <button class="flex-1 py-2 text-xs font-bold rounded-md text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors"
+                                            type="button">
+                                        URGENT
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Message Body -->
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-[#9da6b9]">
+                                    Message
+                                    Body
+                                </label>
+                                <div class="relative">
+                                    <textarea class="w-full bg-slate-50 dark:bg-[#282e39] border-slate-200 dark:border-transparent rounded-lg focus:ring-2 focus:ring-primary p-3 text-sm text-slate-900 dark:text-white resize-none"
+                                              placeholder="Compose your message here..." rows="5"></textarea>
+                                    <div class="absolute bottom-3 right-3 flex gap-2">
+                                        <button class="p-1.5 rounded bg-slate-200 dark:bg-[#3b4354] text-slate-600 dark:text-[#9da6b9] hover:text-white"
+                                                type="button">
+                                            <span class="material-symbols-outlined text-sm">attach_file</span>
+                                        </button>
+                                        <button class="p-1.5 rounded bg-slate-200 dark:bg-[#3b4354] text-slate-600 dark:text-[#9da6b9] hover:text-white"
+                                                type="button">
+                                            <span class="material-symbols-outlined text-sm">mood</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Delivery Methods -->
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-[#9da6b9]">
+                                    Delivery
+                                    Channels
+                                </label>
+                                <div class="flex gap-4">
+                                    <label class="flex items-center gap-2 cursor-pointer group">
+                                        <input checked="" class="w-4 h-4 text-primary bg-transparent border-slate-400 rounded"
+                                               type="checkbox" />
+                                        <span class="text-sm font-medium text-slate-600 dark:text-[#9da6b9] group-hover:text-white transition-colors">
+                                            Push
+                                            Notification
+                                        </span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer group">
+                                        <input class="w-4 h-4 text-primary bg-transparent border-slate-400 rounded" type="checkbox" />
+                                        <span class="text-sm font-medium text-slate-600 dark:text-[#9da6b9] group-hover:text-white transition-colors">
+                                            Email
+                                            Blast
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- Form Actions -->
+                            <div class="flex flex-col gap-3 pt-2">
+                                <button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2 group"
+                                        type="submit">
+                                    Send Broadcast Now
+                                    <span class="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform">rocket_launch</span>
+                                </button>
+                                <div class="flex gap-3">
+                                    <button class="flex-1 bg-slate-100 dark:bg-[#282e39] text-slate-700 dark:text-white font-bold py-2.5 px-4 rounded-xl hover:bg-slate-200 dark:hover:bg-[#3b4354] transition-all text-sm"
+                                            type="button">
+                                        Schedule
+                                    </button>
+                                    <button class="flex-1 border-2 border-slate-200 dark:border-[#282e39] text-slate-500 dark:text-[#9da6b9] font-bold py-2.5 px-4 rounded-xl hover:border-rose-500/50 hover:text-rose-500 transition-all text-sm"
+                                            type="button">
+                                        Clear
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- Confirmation Preview Tip -->
+                        <div class="bg-emerald-500/5 p-4 border-t border-slate-200 dark:border-[#3b4354] flex gap-3">
+                            <span class="material-symbols-outlined text-emerald-500">info</span>
+                            <p class="text-xs text-slate-500 dark:text-[#9da6b9] leading-relaxed">
+                                <strong class="text-emerald-500">Heads up!</strong> This broadcast will be delivered to <span class="text-slate-900 dark:text-white font-bold">12,402 active Students</span>. Estimated
+                                delivery time: 1.5 seconds.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Footer -->
+            <div class="flex flex-col md:flex-row justify-between items-center py-4 border-t border-slate-200 dark:border-border-dark text-slate-400 text-xs">
+                <p>© 2024 OmniBus Tracking System. All rights reserved.</p>
+                <div class="flex gap-6 mt-4 md:mt-0">
+                    <a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+                    <a class="hover:text-primary transition-colors" href="#">Service Status</a>
+                    <a class="hover:text-primary transition-colors" href="#">API Docs</a>
+                </div>
+            </div>
+        </div>
+   </div> 
+</div>
+
+        @section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const tabs = document.querySelectorAll('.tab-btn');
+          const feedItems = document.querySelectorAll('#notificationFeed > div'); // Groups
+          const notificationItems = document.querySelectorAll('.divide-y > div'); // Individual items
+
+          tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+              // Update tab UI
+              tabs.forEach(t => {
+                t.classList.remove('active', 'text-primary', 'border-b-2', 'border-primary');
+                t.classList.add('text-slate-500');
+              });
+              tab.classList.add('active', 'text-primary', 'border-b-2', 'border-primary');
+              tab.classList.remove('text-slate-500');
+
+              const filter = tab.dataset.tab;
+
+              // Simple tab logic
+              if (filter === 'unread') {
+                notificationItems.forEach(item => {
+                  if (item.classList.contains('unread-notif')) {
+                    item.style.display = 'block';
+                  } else {
+                    item.style.display = 'none';
+                  }
+                });
+                // Hide empty company groups (simplified logic for demo)
+                feedItems.forEach(group => {
+                  const hasVisibleNotif = Array.from(group.querySelectorAll('.divide-y > div')).some(i => i.style.display !== 'none');
+                  group.style.display = hasVisibleNotif ? 'block' : 'none';
+                });
+              } else {
+                notificationItems.forEach(item => item.style.display = 'block');
+                feedItems.forEach(group => group.style.display = 'block');
+              }
+            });
+          });
+        });
+    </script>
+
+
+        }
