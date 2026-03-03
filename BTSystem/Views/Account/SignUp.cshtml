@@ -150,6 +150,120 @@
 
 @section Scripts {
     <script>
-   
+
+        const signupBtn = document.getElementById("signupBtn");
+        const password = document.getElementById("password");
+        const confirmPassword = document.getElementById("confirmPassword");
+
+        const passwordError = document.createElement("p");
+        passwordError.className = "text-red-500 text-sm mt-1 hidden";
+        passwordError.innerText = "Passwords do not match";
+        confirmPassword.parentNode.appendChild(passwordError);
+
+        // 🔹 Real-time password validation
+        confirmPassword.addEventListener("input", function () {
+            if (password.value !== confirmPassword.value) {
+                passwordError.classList.remove("hidden");
+            } else {
+                passwordError.classList.add("hidden");
+            }
+        });
+
+        signupBtn.addEventListener("click", async function () {
+
+            const fullName = document.getElementById("fullName").value.trim();
+            const username = document.getElementById("username").value.trim();
+            const regNo = document.getElementById("regNo").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const phone = document.getElementById("phone").value.trim();
+            const address = document.getElementById("address").value.trim();
+            const passwordValue = password.value;
+            const confirmPasswordValue = confirmPassword.value;
+
+            const baseUrl = '@ViewBag.ApiBaseUrl';
+            const endpoint = baseUrl + "users/signup";
+
+            // 🔹 Validation
+            if (!fullName || !username || !regNo || !email || !phone || !address || !passwordValue || !confirmPasswordValue) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Missing Fields',
+                    text: 'Please fill all required fields'
+                });
+                return;
+            }
+
+            if (passwordValue.length < 6) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Weak Password',
+                    text: 'Password must be at least 6 characters'
+                });
+                return;
+            }
+
+            if (passwordValue !== confirmPasswordValue) {
+                passwordError.classList.remove("hidden");
+                return;
+            }
+
+            try {
+
+                // 🔹 Loading State
+                signupBtn.disabled = true;
+                signupBtn.innerHTML = "Creating Account...";
+
+                const response = await fetch(endpoint, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        fullName: fullName,
+                        username: username,
+                        registrationNumber: regNo,
+                        email: email,
+                        phone: phone,
+                        address: address,
+                        password: passwordValue
+                    })
+                });
+
+                const result = await response.json();
+
+                // 🔹 Backend Response Model Handling
+                // Based on your Response class:
+                // { status, result, message, count, isError }
+
+                if (!response.ok || result.isError) {
+                    throw new Error(result.message || "Registration failed");
+                }
+
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'Account Created Successfully!',
+                    text: result.message || 'Redirecting to login...',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
+                window.location.href = '@Url.Action("Login", "Account")';
+
+            } catch (error) {
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Registration Failed',
+                    text: error.message
+                });
+
+                signupBtn.disabled = false;
+                signupBtn.innerHTML = `
+                        Sign Up
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    `;
+            }
+        });
+
     </script>
 }

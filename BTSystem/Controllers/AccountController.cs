@@ -4,7 +4,13 @@ namespace BTSystem.Controllers
 {
     public class AccountController : Controller
     {
-        [HttpGet]
+        private readonly IConfiguration _config;
+
+        public AccountController(IConfiguration config)
+        {
+            _config = config;
+        }
+
         public IActionResult Login()
         {
             return View();
@@ -26,32 +32,24 @@ namespace BTSystem.Controllers
             return View();
         }
 
-        [HttpGet]
         public IActionResult SignUp()
         {
+            ViewBag.ApiBaseUrl = _config["ApiSettings:BaseUrl"];
             return View();
         }
 
-        //[HttpPost]
-        //public IActionResult SignUp(
-        //    string FullName,
-        //    string Username,
-        //    string RegistrationNo,
-        //    string Email,
-        //    string Phone,
-        //    string Address,
-        //    string Password,
-        //    string ConfirmPassword,
-        //    string Role = "student" // default role
-        //)
-        //{
-        //    // 🔹 Dummy implementation: normally you'd save to DB
-        //    // Example: TempData or a service call could store user
-        //    TempData["SignupSuccess"] = $"User {FullName} ({Role}) registered successfully.";
-
-        //    // Redirect to login page after signup
-        //    return RedirectToAction("Login");
-        //}
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+        public IActionResult VarifyPinCode()
+        {
+            return View();
+        }
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
 
         public IActionResult Logout()
         {

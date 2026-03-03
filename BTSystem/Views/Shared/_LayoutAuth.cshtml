@@ -17,7 +17,7 @@
 
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
@@ -42,7 +42,7 @@
     </script>
 </head>
 
-<body class="bg-bg-light dark:bg-bg-dark min-h-screen font-display">
+<body class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-bg-dark font-display">
     @RenderBody()
     @RenderSection("Scripts", required: false)
 </body>
