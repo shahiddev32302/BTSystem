@@ -100,6 +100,7 @@
                         <th class="px-6 py-4">Admin Info</th>
                         <th class="px-6 py-4">Email Address</th>
                         <th class="px-6 py-4">Phone Number</th>
+                        <th class="px-6 py-4">Company</th>
                         <th class="px-6 py-4">Status</th>
                         <th class="px-6 py-4 text-right">Actions</th>
                     </tr>
@@ -120,6 +121,7 @@
                         </td>
                         <td class="px-6 py-4 text-sm">sarah.johnson@omnibus.com</td>
                         <td class="px-6 py-4 text-sm font-medium text-slate-600 dark:text-slate-300">+1 (555) 000-1234</td>
+                        <td class="px-6 py-4 text-sm">City Transit Group</td>
                         <td class="px-6 py-4">
                             <span class="px-2.5 py-1 bg-emerald-500/10 text-emerald-500 text-[10px] font-bold rounded-full uppercase">Active</span>
                         </td>
@@ -162,22 +164,32 @@
                     </button>
                 </div>
 
-                <form id="addAdminForm" class="space-y-6">
-                    <div class="space-y-4">
+                <form id="addAdminForm" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Username</label>
+                            <div class="relative">
+                                <span class="material-icons absolute left-4 top-3.5 text-slate-400 text-[18px]">alternate_email</span>
+                                <input type="text" required
+                                       class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm"
+                                       placeholder="john.doe">
+                            </div>
+                        </div>
+
                         <div>
                             <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">
-                                Admin
-                                Information
+                                Full
+                                Name
                             </label>
                             <div class="relative">
                                 <span class="material-icons absolute left-4 top-3.5 text-slate-400 text-[18px]">person</span>
                                 <input type="text" required
                                        class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm"
-                                       placeholder="e.g. John Smith">
+                                       placeholder="John Smith">
                             </div>
                         </div>
 
-                        <div>
+                        <div class="sm:col-span-2">
                             <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">
                                 Contact
                                 Email
@@ -197,14 +209,57 @@
                             </label>
                             <div class="relative">
                                 <span class="material-icons absolute left-4 top-3.5 text-slate-400 text-[18px]">phone</span>
-                                <input type="tel" required
+                                <input type="tel"
                                        class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm"
                                        placeholder="+1 (234) 567-8900">
                             </div>
                         </div>
+
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">
+                                Select
+                                Company
+                            </label>
+                            <div class="relative">
+                                <span class="material-icons absolute left-4 top-3.5 text-slate-400 text-[18px]">business</span>
+                                <select required
+                                        class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm appearance-none">
+                                    <option value="" disabled selected>Select Company</option>
+                                    <option value="City Transit Group">City Transit Group</option>
+                                    <option value="Unified Schools Network">Unified Schools Network</option>
+                                    <option value="Global Logistics Corp">Global Logistics Corp</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Password</label>
+                            <div class="relative">
+                                <span class="material-icons absolute left-4 top-3.5 text-slate-400 text-[18px]">lock</span>
+                                <input type="password" required minlength="8"
+                                       class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm"
+                                       placeholder="••••••••">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">
+                                Confirm
+                                Password
+                            </label>
+                            <div class="relative">
+                                <span class="material-icons absolute left-4 top-3.5 text-slate-400 text-[18px]">lock</span>
+                                <input type="password" required
+                                       class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm"
+                                       placeholder="••••••••">
+                            </div>
+                        </div>
+
                     </div>
 
-                    <div class="mt-8 flex flex-col sm:flex-row gap-3 pt-6 border-t border-slate-100 dark:border-border-dark">
+                    <div class="mt-4 flex flex-col sm:flex-row gap-3 pt-6 border-t border-slate-100 dark:border-border-dark">
                         <button type="button" id="cancelModalBtn"
                                 class="flex-1 px-6 py-3 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-all text-sm">
                             Cancel
