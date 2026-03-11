@@ -172,7 +172,7 @@
                             <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Username</label>
                             <div class="relative">
                                 <span class="material-icons absolute left-4 top-3.5 text-slate-400 text-[18px]">alternate_email</span>
-                                <input type="text" required
+                                <input id="username" type="text" required
                                        class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm"
                                        placeholder="john.doe">
                             </div>
@@ -185,7 +185,7 @@
                             </label>
                             <div class="relative">
                                 <span class="material-icons absolute left-4 top-3.5 text-slate-400 text-[18px]">person</span>
-                                <input type="text" required
+                                <input id="fullName" type="text" required
                                        class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm"
                                        placeholder="John Smith">
                             </div>
@@ -198,7 +198,7 @@
                             </label>
                             <div class="relative">
                                 <span class="material-icons absolute left-4 top-3.5 text-slate-400 text-[18px]">email</span>
-                                <input type="email" required
+                                <input id="email" type="email" required
                                        class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm"
                                        placeholder="admin@omnibus.com">
                             </div>
@@ -211,7 +211,7 @@
                             </label>
                             <div class="relative">
                                 <span class="material-icons absolute left-4 top-3.5 text-slate-400 text-[18px]">phone</span>
-                                <input type="tel"
+                                <input id="phone" type="tel"
                                        class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm"
                                        placeholder="+1 (234) 567-8900">
                             </div>
@@ -224,12 +224,11 @@
                             </label>
                             <div class="relative">
                                 <span class="material-icons absolute left-4 top-3.5 text-slate-400 text-[18px]">business</span>
-                                <select required
+                                <select id="companyDropdown" required
                                         class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm appearance-none">
-                                    <option value="" disabled selected>Select Company</option>
-                                    <option value="City Transit Group">City Transit Group</option>
-                                    <option value="Unified Schools Network">Unified Schools Network</option>
-                                    <option value="Global Logistics Corp">Global Logistics Corp</option>
+
+                                    <option value="">Select Company</option>
+
                                 </select>
                             </div>
                         </div>
@@ -240,7 +239,7 @@
                             <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Password</label>
                             <div class="relative">
                                 <span class="material-icons absolute left-4 top-3.5 text-slate-400 text-[18px]">lock</span>
-                                <input type="password" required minlength="8"
+                                <input id="password" type="password" required minlength="8"
                                        class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm"
                                        placeholder="••••••••">
                             </div>
@@ -253,7 +252,7 @@
                             </label>
                             <div class="relative">
                                 <span class="material-icons absolute left-4 top-3.5 text-slate-400 text-[18px]">lock</span>
-                                <input type="password" required
+                                <input id="confirmPassword" type="password" required
                                        class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm"
                                        placeholder="••••••••">
                             </div>
@@ -291,24 +290,43 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-          const modal = document.getElementById('addAdminModal');
-          const addBtn = document.getElementById('addAdminBtn');
-          const closeBtns = [document.getElementById('closeModalBtn'), document.getElementById('cancelModalBtn'), document.getElementById('modalBackdrop')];
-          const form = document.getElementById('addAdminForm');
 
-          const toggleModal = () => modal.classList.toggle('hidden');
+            const modal = document.getElementById('addAdminModal');
+            const addBtn = document.getElementById('addAdminBtn');
+            const closeBtns = [
+                document.getElementById('closeModalBtn'),
+                document.getElementById('cancelModalBtn'),
+                document.getElementById('modalBackdrop')
+            ];
 
-          if (addBtn) addBtn.addEventListener('click', toggleModal);
-          closeBtns.forEach(btn => btn?.addEventListener('click', toggleModal));
+            const form = document.getElementById('addAdminForm');
 
-          if (form) {
-            form.addEventListener('submit', (e) => {
-              e.preventDefault();
-              alert('Admin added successfully!');
-              toggleModal();
-              form.reset();
+            function openModal() {
+                modal.classList.remove('hidden');
+                loadCompanies();   // ✅ Companies load when modal opens
+            }
+
+            function closeModal() {
+                modal.classList.add('hidden');
+            }
+
+            if (addBtn) addBtn.addEventListener('click', openModal);
+
+            closeBtns.forEach(btn => {
+                if (btn) btn.addEventListener('click', closeModal);
             });
-          }
+
+            if (form) {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    alert("Admin added successfully!");
+
+                    closeModal();
+                    form.reset();
+                });
+            }
+
             loadAdmins();
         });
         function loadAdmins() {
@@ -405,7 +423,89 @@
 
                 });
 
-        }   
+        } 
+        function loadCompanies() {
+
+            const dropdown = document.getElementById("companyDropdown");
+
+            dropdown.innerHTML = '<option value="">Loading companies...</option>';
+
+            fetch("http://192.168.10.18:8021/api/companies/dropdown")
+                .then(response => response.json())
+                .then(data => {
+
+                    dropdown.innerHTML = '<option value="">Select Company</option>';
+
+                    data.result.forEach(company => {
+
+                        const option = document.createElement("option");
+
+                        option.value = company.companyId;
+                        option.textContent = company.companyName;
+
+                        dropdown.appendChild(option);
+
+                    });
+
+                })
+                .catch(error => {
+
+                    console.error("Company API error:", error);
+
+                    dropdown.innerHTML = '<option value="">Failed to load companies</option>';
+
+                });
+        }
+        document.getElementById("addAdminForm").addEventListener("submit", function (e) {
+
+            e.preventDefault();
+
+            const data = {
+                fullName: document.getElementById("fullName").value,
+                username: document.getElementById("username").value,
+                email: document.getElementById("email").value,
+                password: document.getElementById("password").value,
+                confirmPassword: document.getElementById("confirmPassword").value,
+                phone: document.getElementById("phone").value,
+                companyId: parseInt(document.getElementById("companyDropdown").value),
+                createdBy: 1
+            };
+
+            fetch("http://192.168.10.18:8021/api/admins/SignUpAdmin", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(result => {
+
+                    if (!result.isError) {
+
+                        alert("Admin created successfully");
+
+                        document.getElementById("addAdminModal").classList.add("hidden");
+
+                        document.getElementById("addAdminForm").reset();
+
+                        loadAdmins(); // table reload
+
+                    } else {
+
+                        alert(result.message);
+
+                    }
+
+                })
+                .catch(error => {
+
+                    console.error("Signup error:", error);
+                    alert("Something went wrong");
+
+                });
+
+        });
     </script>
 
     <!-- Footer -->
