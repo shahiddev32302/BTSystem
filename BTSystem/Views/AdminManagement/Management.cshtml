@@ -32,7 +32,7 @@
                         Total
                         Admins
                     </p>
-                    <h3 class="text-2xl font-bold mt-1">21</h3>
+                    <h3 id="totalAdmins" class="text-2xl font-bold mt-1">0</h3>
                     <p class="text-emerald-500 text-xs font-medium mt-2 flex items-center">
                         <span class="material-icons text-sm mr-1">trending_up</span> +2 this month
                     </p>
@@ -47,7 +47,7 @@
             <div class="flex items-start justify-between">
                 <div>
                     <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Active</p>
-                    <h3 class="text-2xl font-bold mt-1">19</h3>
+                    <h3 id="activeAdmins" class="text-2xl font-bold mt-1">0</h3>
                     <p class="text-emerald-500 text-xs font-medium mt-2 flex items-center">
                         <span class="material-icons text-sm mr-1">check_circle</span> 90% overall
                     </p>
@@ -62,7 +62,7 @@
             <div class="flex items-start justify-between">
                 <div>
                     <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Pending</p>
-                    <h3 class="text-2xl font-bold mt-1">2</h3>
+                    <h3 id="pendingAdmins" class="text-2xl font-bold mt-1">0</h3>
                     <p class="text-amber-500 text-xs font-medium mt-2 flex items-center">
                         <span class="material-icons text-sm mr-1">hourglass_empty</span> Awaiting Review
                     </p>
@@ -107,39 +107,39 @@
                 </thead>
                 <tbody id="adminTableBody" class="divide-y divide-primary/5">
                 </tbody>
-               @*  <tbody class="divide-y divide-primary/5">
-                    <!-- Row 1 -->
-                    <tr class="hover:bg-slate-50/50 dark:hover:bg-primary/5 transition-colors group">
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-600 font-bold text-sm">
-                                    SJ
-                                </div>
-                                <div>
-                                    <div class="font-bold text-sm">Sarah Johnson</div>
-                                    <div class="text-[11px] text-slate-500 dark:text-slate-400">ID: #AD-002</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-sm">sarah.johnson@omnibus.com</td>
-                        <td class="px-6 py-4 text-sm font-medium text-slate-600 dark:text-slate-300">+1 (555) 000-1234</td>
-                        <td class="px-6 py-4 text-sm">City Transit Group</td>
-                        <td class="px-6 py-4">
-                            <span class="px-2.5 py-1 bg-emerald-500/10 text-emerald-500 text-[10px] font-bold rounded-full uppercase">Active</span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="flex justify-end gap-2">
-                                <button class="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
-                                        title="Edit Admin">
-                                    <span class="material-icons text-sm">edit</span>
-                                </button>
-                                <button class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-500/5 rounded-lg transition-all"
-                                        title="Remove Admin">
-                                    <span class="material-icons text-sm">delete_outline</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                @*  <tbody class="divide-y divide-primary/5">
+                <!-- Row 1 -->
+                <tr class="hover:bg-slate-50/50 dark:hover:bg-primary/5 transition-colors group">
+                <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-600 font-bold text-sm">
+                SJ
+                </div>
+                <div>
+                <div class="font-bold text-sm">Sarah Johnson</div>
+                <div class="text-[11px] text-slate-500 dark:text-slate-400">ID: #AD-002</div>
+                </div>
+                </div>
+                </td>
+                <td class="px-6 py-4 text-sm">sarah.johnson@omnibus.com</td>
+                <td class="px-6 py-4 text-sm font-medium text-slate-600 dark:text-slate-300">+1 (555) 000-1234</td>
+                <td class="px-6 py-4 text-sm">City Transit Group</td>
+                <td class="px-6 py-4">
+                <span class="px-2.5 py-1 bg-emerald-500/10 text-emerald-500 text-[10px] font-bold rounded-full uppercase">Active</span>
+                </td>
+                <td class="px-6 py-4 text-right">
+                <div class="flex justify-end gap-2">
+                <button class="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
+                title="Edit Admin">
+                <span class="material-icons text-sm">edit</span>
+                </button>
+                <button class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-500/5 rounded-lg transition-all"
+                title="Remove Admin">
+                <span class="material-icons text-sm">delete_outline</span>
+                </button>
+                </div>
+                </td>
+                </tr>
                 </tbody> *@
             </table>
         </div>
@@ -232,7 +232,7 @@
                                 </select>
                             </div>
                         </div>
-                 
+
 
 
                         <div>
@@ -263,7 +263,7 @@
                                 <span class="material-icons absolute left-4 top-3.5 text-slate-400 text-[18px]">info</span>
                                 <select id="statusSelect" required
                                         class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm appearance-none">
-                                 
+
                                     <option value="0">Inactive</option>
                                     <option value="1">Active</option>
                                     <option value="2">Pending</option>
@@ -331,15 +331,26 @@
         });
         function loadAdmins() {
             debugger
-            fetch("http://192.168.10.18:8021/api/admins/admins?deleted=false&StatusFilter=All")
+            fetch("http://192.168.0.120:8023/api/admins/admins?StatusFilter=All")
                 .then(response => response.json())
                 .then(data => {
-                console.log("data" , data);
-                    const admins = data.result;
+
+                    console.log("API DATA:", data);
+
+                    const admins = data.result.admins;
+                    const stats = data.result.stats;
 
                     const tableBody = document.getElementById("adminTableBody");
 
                     tableBody.innerHTML = "";
+
+                    const total = document.getElementById("totalAdmins");
+                    const active = document.getElementById("activeAdmins");
+                    const pending = document.getElementById("pendingAdmins");
+
+                    if (total) total.innerText = stats.totalAdmins;
+                    if (active) active.innerText = stats.activeAdmins;
+                    if (pending) pending.innerText = stats.pendingAdmins;
 
                     admins.forEach(admin => {
 
@@ -358,59 +369,59 @@
                             statusColor = "amber";
 
                         let row = `
-        <tr class="hover:bg-slate-50/50 dark:hover:bg-primary/5 transition-colors">
+                <tr class="hover:bg-slate-50/50 dark:hover:bg-primary/5 transition-colors">
 
-        <td class="px-6 py-4">
-        <div class="flex items-center gap-3">
+                <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
 
-        <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-600 font-bold text-sm">
-        ${initials}
-        </div>
+                <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-600 font-bold text-sm">
+                ${initials}
+                </div>
 
-        <div>
-        <div class="font-bold text-sm">${admin.fullName}</div>
-        <div class="text-[11px] text-slate-500 dark:text-slate-400">
-        ID: #AD-${admin.adminId}
-        </div>
-        </div>
+                <div>
+                <div class="font-bold text-sm">${admin.fullName}</div>
+                <div class="text-[11px] text-slate-500 dark:text-slate-400">
+                ID: #AD-${admin.adminId}
+                </div>
+                </div>
 
-        </div>
-        </td>
+                </div>
+                </td>
 
-        <td class="px-6 py-4 text-sm">${admin.email}</td>
+                <td class="px-6 py-4 text-sm">${admin.email}</td>
 
-        <td class="px-6 py-4 text-sm font-medium text-slate-600 dark:text-slate-300">
-        ${admin.phone ?? '-'}
-        </td>
+                <td class="px-6 py-4 text-sm font-medium text-slate-600 dark:text-slate-300">
+                ${admin.phone ?? '-'}
+                </td>
 
-        <td class="px-6 py-4 text-sm">
-        ${admin.companyName ?? '-'}
-        </td>
+                <td class="px-6 py-4 text-sm">
+                ${admin.companyName ?? '-'}
+                </td>
 
-        <td class="px-6 py-4">
-        <span class="px-2.5 py-1 bg-${statusColor}-500/10 text-${statusColor}-500 text-[10px] font-bold rounded-full uppercase">
-        ${admin.status}
-        </span>
-        </td>
+                <td class="px-6 py-4">
+                <span class="px-2.5 py-1 bg-${statusColor}-500/10 text-${statusColor}-500 text-[10px] font-bold rounded-full uppercase">
+                ${admin.status}
+                </span>
+                </td>
 
-        <td class="px-6 py-4 text-right">
+                <td class="px-6 py-4 text-right">
 
-        <div class="flex justify-end gap-2">
+                <div class="flex justify-end gap-2">
 
-        <button class="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all">
-        <span class="material-icons text-sm">edit</span>
-        </button>
+                <button class="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all">
+                <span class="material-icons text-sm">edit</span>
+                </button>
 
-        <button class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-500/5 rounded-lg transition-all">
-        <span class="material-icons text-sm">delete_outline</span>
-        </button>
+                <button class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-500/5 rounded-lg transition-all">
+                <span class="material-icons text-sm">delete_outline</span>
+                </button>
 
-        </div>
+                </div>
 
-        </td>
+                </td>
 
-        </tr>
-        `;
+                </tr>
+                `;
 
                         tableBody.innerHTML += row;
 
@@ -423,17 +434,17 @@
 
                 });
 
-        } 
+        }
         function loadCompanies() {
 
             const dropdown = document.getElementById("companyDropdown");
 
             dropdown.innerHTML = '<option value="">Loading companies...</option>';
 
-            fetch("http://192.168.10.18:8021/api/companies/dropdown")
+            fetch("http://192.168.0.120:8023/api/companies/dropdown")
                 .then(response => response.json())
                 .then(data => {
-
+                    console.log("data", data);
                     dropdown.innerHTML = '<option value="">Select Company</option>';
 
                     data.result.forEach(company => {
@@ -471,7 +482,7 @@
                 createdBy: 1
             };
 
-            fetch("http://192.168.10.18:8021/api/admins/SignUpAdmin", {
+            fetch("http://192.168.0.120:8023/api/admins/SignUpAdmin", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
