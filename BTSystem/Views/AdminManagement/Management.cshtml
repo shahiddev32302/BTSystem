@@ -1,7 +1,9 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Admin Management";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+
 <!-- Dashboard Content -->
 <div class="flex-1 overflow-y-auto p-8 space-y-8">
     <!-- Welcome Section -->
@@ -29,8 +31,7 @@
             <div class="flex items-start justify-between">
                 <div>
                     <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">
-                        Total
-                        Admins
+                        Total Admins
                     </p>
                     <h3 id="totalAdmins" class="text-2xl font-bold mt-1">0</h3>
                     <p class="text-emerald-500 text-xs font-medium mt-2 flex items-center">
@@ -42,6 +43,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Active Admins -->
         <div class="bg-white dark:bg-surface-dark p-6 rounded-xl border border-primary/5 shadow-sm hover:shadow-md transition-all group">
             <div class="flex items-start justify-between">
@@ -57,7 +59,8 @@
                 </div>
             </div>
         </div>
-        <!-- Pending Approvals -->
+
+        <!-- Pending Admins -->
         <div class="bg-white dark:bg-surface-dark p-6 rounded-xl border border-primary/5 shadow-sm hover:shadow-md transition-all group">
             <div class="flex items-start justify-between">
                 <div>
@@ -107,45 +110,11 @@
                 </thead>
                 <tbody id="adminTableBody" class="divide-y divide-primary/5">
                 </tbody>
-                @*  <tbody class="divide-y divide-primary/5">
-                <!-- Row 1 -->
-                <tr class="hover:bg-slate-50/50 dark:hover:bg-primary/5 transition-colors group">
-                <td class="px-6 py-4">
-                <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-600 font-bold text-sm">
-                SJ
-                </div>
-                <div>
-                <div class="font-bold text-sm">Sarah Johnson</div>
-                <div class="text-[11px] text-slate-500 dark:text-slate-400">ID: #AD-002</div>
-                </div>
-                </div>
-                </td>
-                <td class="px-6 py-4 text-sm">sarah.johnson@omnibus.com</td>
-                <td class="px-6 py-4 text-sm font-medium text-slate-600 dark:text-slate-300">+1 (555) 000-1234</td>
-                <td class="px-6 py-4 text-sm">City Transit Group</td>
-                <td class="px-6 py-4">
-                <span class="px-2.5 py-1 bg-emerald-500/10 text-emerald-500 text-[10px] font-bold rounded-full uppercase">Active</span>
-                </td>
-                <td class="px-6 py-4 text-right">
-                <div class="flex justify-end gap-2">
-                <button class="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
-                title="Edit Admin">
-                <span class="material-icons text-sm">edit</span>
-                </button>
-                <button class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-500/5 rounded-lg transition-all"
-                title="Remove Admin">
-                <span class="material-icons text-sm">delete_outline</span>
-                </button>
-                </div>
-                </td>
-                </tr>
-                </tbody> *@
             </table>
         </div>
     </div>
 
-    <!-- ➕ Add Admin Modal (NEW) -->
+    <!-- Add / Edit Admin Modal -->
     <div id="addAdminModal" class="fixed inset-0 z-[9999] hidden">
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" id="modalBackdrop"></div>
         <div class="flex min-h-full items-center justify-center p-4">
@@ -156,8 +125,10 @@
                             <span class="material-icons text-primary">security</span>
                         </div>
                         <div>
-                            <h3 class="text-xl font-bold">Add New Admin</h3>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Create a new system administrator</p>
+                            <h3 id="modalTitle" class="text-xl font-bold">Add New Admin</h3>
+                            <p id="modalSubtitle" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                                Create a new system administrator
+                            </p>
                         </div>
                     </div>
                     <button id="closeModalBtn"
@@ -167,6 +138,8 @@
                 </div>
 
                 <form id="addAdminForm" class="space-y-4">
+                    <input type="hidden" id="editAdminId" />
+
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Username</label>
@@ -179,10 +152,7 @@
                         </div>
 
                         <div>
-                            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">
-                                Full
-                                Name
-                            </label>
+                            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Full Name</label>
                             <div class="relative">
                                 <span class="material-icons absolute left-4 top-3.5 text-slate-400 text-[18px]">person</span>
                                 <input id="fullName" type="text" required
@@ -192,10 +162,7 @@
                         </div>
 
                         <div class="sm:col-span-2">
-                            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">
-                                Contact
-                                Email
-                            </label>
+                            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Contact Email</label>
                             <div class="relative">
                                 <span class="material-icons absolute left-4 top-3.5 text-slate-400 text-[18px]">email</span>
                                 <input id="email" type="email" required
@@ -205,67 +172,55 @@
                         </div>
 
                         <div>
-                            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">
-                                Phone
-                                Number
-                            </label>
+                            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Phone Number</label>
                             <div class="relative">
                                 <span class="material-icons absolute left-4 top-3.5 text-slate-400 text-[18px]">phone</span>
                                 <input id="phone" type="tel"
                                        class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm"
-                                       placeholder="+1 (234) 567-8900">
+                                       placeholder="+92 300 1234567">
                             </div>
                         </div>
 
                         <div>
-                            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">
-                                Select
-                                Company
-                            </label>
+                            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Select Company</label>
                             <div class="relative">
                                 <span class="material-icons absolute left-4 top-3.5 text-slate-400 text-[18px]">business</span>
                                 <select id="companyDropdown" required
                                         class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm appearance-none">
-
                                     <option value="">Select Company</option>
-
                                 </select>
                             </div>
                         </div>
 
-
-
-                        <div>
+                        <!-- Password fields only for Add -->
+                        <div id="passwordFieldWrapper">
                             <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Password</label>
                             <div class="relative">
                                 <span class="material-icons absolute left-4 top-3.5 text-slate-400 text-[18px]">lock</span>
-                                <input id="password" type="password" required minlength="8"
+                                <input id="password" type="password" minlength="8"
                                        class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm"
                                        placeholder="••••••••">
                             </div>
                         </div>
 
-                        <div>
-                            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">
-                                Confirm
-                                Password
-                            </label>
+                        <div id="confirmPasswordFieldWrapper">
+                            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Confirm Password</label>
                             <div class="relative">
                                 <span class="material-icons absolute left-4 top-3.5 text-slate-400 text-[18px]">lock</span>
-                                <input id="confirmPassword" type="password" required
+                                <input id="confirmPassword" type="password"
                                        class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm"
                                        placeholder="••••••••">
                             </div>
                         </div>
+
                         <div>
                             <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Status</label>
                             <div class="relative">
                                 <span class="material-icons absolute left-4 top-3.5 text-slate-400 text-[18px]">info</span>
-                                <select id="statusSelect" required
+                                <select id="statusSelect"
                                         class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm appearance-none">
-
                                     <option value="0">Inactive</option>
-                                    <option value="1">Active</option>
+                                    <option value="1" selected>Active</option>
                                     <option value="2">Pending</option>
                                 </select>
                             </div>
@@ -277,7 +232,7 @@
                                 class="flex-1 px-6 py-3 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-all text-sm">
                             Cancel
                         </button>
-                        <button type="submit"
+                        <button type="submit" id="submitAdminBtn"
                                 class="flex-1 px-6 py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 shadow-lg shadow-primary/25 transition-all text-sm flex items-center justify-center gap-2">
                             <span class="material-icons text-sm">check_circle</span>
                             Confirm & Create
@@ -287,237 +242,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-
-            const modal = document.getElementById('addAdminModal');
-            const addBtn = document.getElementById('addAdminBtn');
-            const closeBtns = [
-                document.getElementById('closeModalBtn'),
-                document.getElementById('cancelModalBtn'),
-                document.getElementById('modalBackdrop')
-            ];
-
-            const form = document.getElementById('addAdminForm');
-
-            function openModal() {
-                modal.classList.remove('hidden');
-                loadCompanies();   // ✅ Companies load when modal opens
-            }
-
-            function closeModal() {
-                modal.classList.add('hidden');
-            }
-
-            if (addBtn) addBtn.addEventListener('click', openModal);
-
-            closeBtns.forEach(btn => {
-                if (btn) btn.addEventListener('click', closeModal);
-            });
-
-            if (form) {
-                form.addEventListener('submit', function (e) {
-                    e.preventDefault();
-
-                    alert("Admin added successfully!");
-
-                    closeModal();
-                    form.reset();
-                });
-            }
-
-            loadAdmins();
-        });
-        function loadAdmins() {
-            debugger
-            fetch("http://192.168.0.120:8023/api/admins/admins?StatusFilter=All")
-                .then(response => response.json())
-                .then(data => {
-
-                    console.log("API DATA:", data);
-
-                    const admins = data.result.admins;
-                    const stats = data.result.stats;
-
-                    const tableBody = document.getElementById("adminTableBody");
-
-                    tableBody.innerHTML = "";
-
-                    const total = document.getElementById("totalAdmins");
-                    const active = document.getElementById("activeAdmins");
-                    const pending = document.getElementById("pendingAdmins");
-
-                    if (total) total.innerText = stats.totalAdmins;
-                    if (active) active.innerText = stats.activeAdmins;
-                    if (pending) pending.innerText = stats.pendingAdmins;
-
-                    admins.forEach(admin => {
-
-                        let initials = admin.fullName
-                            .split(" ")
-                            .map(x => x[0])
-                            .join("")
-                            .toUpperCase();
-
-                        let statusColor = "emerald";
-
-                        if (admin.status === "Inactive")
-                            statusColor = "red";
-
-                        if (admin.status === "Pending")
-                            statusColor = "amber";
-
-                        let row = `
-                <tr class="hover:bg-slate-50/50 dark:hover:bg-primary/5 transition-colors">
-
-                <td class="px-6 py-4">
-                <div class="flex items-center gap-3">
-
-                <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-600 font-bold text-sm">
-                ${initials}
-                </div>
-
-                <div>
-                <div class="font-bold text-sm">${admin.fullName}</div>
-                <div class="text-[11px] text-slate-500 dark:text-slate-400">
-                ID: #AD-${admin.adminId}
-                </div>
-                </div>
-
-                </div>
-                </td>
-
-                <td class="px-6 py-4 text-sm">${admin.email}</td>
-
-                <td class="px-6 py-4 text-sm font-medium text-slate-600 dark:text-slate-300">
-                ${admin.phone ?? '-'}
-                </td>
-
-                <td class="px-6 py-4 text-sm">
-                ${admin.companyName ?? '-'}
-                </td>
-
-                <td class="px-6 py-4">
-                <span class="px-2.5 py-1 bg-${statusColor}-500/10 text-${statusColor}-500 text-[10px] font-bold rounded-full uppercase">
-                ${admin.status}
-                </span>
-                </td>
-
-                <td class="px-6 py-4 text-right">
-
-                <div class="flex justify-end gap-2">
-
-                <button class="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all">
-                <span class="material-icons text-sm">edit</span>
-                </button>
-
-                <button class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-500/5 rounded-lg transition-all">
-                <span class="material-icons text-sm">delete_outline</span>
-                </button>
-
-                </div>
-
-                </td>
-
-                </tr>
-                `;
-
-                        tableBody.innerHTML += row;
-
-                    });
-
-                })
-                .catch(error => {
-
-                    console.error("Error loading admins:", error);
-
-                });
-
-        }
-        function loadCompanies() {
-
-            const dropdown = document.getElementById("companyDropdown");
-
-            dropdown.innerHTML = '<option value="">Loading companies...</option>';
-
-            fetch("http://192.168.0.120:8023/api/companies/dropdown")
-                .then(response => response.json())
-                .then(data => {
-                    console.log("data", data);
-                    dropdown.innerHTML = '<option value="">Select Company</option>';
-
-                    data.result.forEach(company => {
-
-                        const option = document.createElement("option");
-
-                        option.value = company.companyId;
-                        option.textContent = company.companyName;
-
-                        dropdown.appendChild(option);
-
-                    });
-
-                })
-                .catch(error => {
-
-                    console.error("Company API error:", error);
-
-                    dropdown.innerHTML = '<option value="">Failed to load companies</option>';
-
-                });
-        }
-        document.getElementById("addAdminForm").addEventListener("submit", function (e) {
-
-            e.preventDefault();
-
-            const data = {
-                fullName: document.getElementById("fullName").value,
-                username: document.getElementById("username").value,
-                email: document.getElementById("email").value,
-                password: document.getElementById("password").value,
-                confirmPassword: document.getElementById("confirmPassword").value,
-                phone: document.getElementById("phone").value,
-                companyId: parseInt(document.getElementById("companyDropdown").value),
-                createdBy: 1
-            };
-
-            fetch("http://192.168.0.120:8023/api/admins/SignUpAdmin", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-            })
-                .then(response => response.json())
-                .then(result => {
-
-                    if (!result.isError) {
-
-                        alert("Admin created successfully");
-
-                        document.getElementById("addAdminModal").classList.add("hidden");
-
-                        document.getElementById("addAdminForm").reset();
-
-                        loadAdmins(); // table reload
-
-                    } else {
-
-                        alert(result.message);
-
-                    }
-
-                })
-                .catch(error => {
-
-                    console.error("Signup error:", error);
-                    alert("Something went wrong");
-
-                });
-
-        });
-    </script>
 
     <!-- Footer -->
     <div class="flex flex-col md:flex-row justify-between items-center py-4 border-t border-slate-200 dark:border-border-dark text-slate-400 text-xs">
@@ -529,3 +253,394 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // =========================
+            // CONFIG
+            // =========================
+            const API_BASE = "http://192.168.0.111:8023";
+            // Agar tumhari sari APIs 192 wali machine pe hain to yahan replace kar do:
+            // const API_BASE = "http://192.168.0.111:8023";
+
+            // =========================
+            // ELEMENTS
+            // =========================
+            const modal = document.getElementById('addAdminModal');
+            const addBtn = document.getElementById('addAdminBtn');
+            const form = document.getElementById('addAdminForm');
+
+            const closeBtns = [
+                document.getElementById('closeModalBtn'),
+                document.getElementById('cancelModalBtn'),
+                document.getElementById('modalBackdrop')
+            ];
+
+            const modalTitle = document.getElementById("modalTitle");
+            const modalSubtitle = document.getElementById("modalSubtitle");
+            const submitBtn = document.getElementById("submitAdminBtn");
+
+            const passwordFieldWrapper = document.getElementById("passwordFieldWrapper");
+            const confirmPasswordFieldWrapper = document.getElementById("confirmPasswordFieldWrapper");
+
+            const passwordInput = document.getElementById("password");
+            const confirmPasswordInput = document.getElementById("confirmPassword");
+
+            // =========================
+            // STATE
+            // =========================
+            let isEditMode = false;
+            let editingAdminId = null;
+            let allAdmins = [];
+
+            // =========================
+            // MODAL FUNCTIONS
+            // =========================
+            function openModal() {
+                modal.classList.remove('hidden');
+                loadCompanies();
+            }
+
+            function closeModal() {
+                modal.classList.add('hidden');
+                resetForm();
+            }
+
+            function resetForm() {
+                form.reset();
+                isEditMode = false;
+                editingAdminId = null;
+
+                document.getElementById("editAdminId").value = "";
+
+                modalTitle.innerText = "Add New Admin";
+                modalSubtitle.innerText = "Create a new system administrator";
+                submitBtn.innerHTML = `
+                            <span class="material-icons text-sm">check_circle</span>
+                            Confirm & Create
+                        `;
+
+                passwordFieldWrapper.style.display = "block";
+                confirmPasswordFieldWrapper.style.display = "block";
+
+                passwordInput.required = true;
+                confirmPasswordInput.required = true;
+            }
+
+            function setEditMode(admin) {
+                isEditMode = true;
+                editingAdminId = admin.adminId;
+
+                document.getElementById("editAdminId").value = admin.adminId;
+
+                modalTitle.innerText = "Update Admin";
+                modalSubtitle.innerText = "Modify administrator details";
+                submitBtn.innerHTML = `
+                            <span class="material-icons text-sm">edit</span>
+                            Update Admin
+                        `;
+
+                document.getElementById("fullName").value = admin.fullName ?? "";
+                document.getElementById("username").value = admin.username ?? "";
+                document.getElementById("email").value = admin.email ?? "";
+                document.getElementById("phone").value = admin.phone ?? "";
+
+                passwordInput.value = "";
+                confirmPasswordInput.value = "";
+
+                // Update mode mein password hide
+                passwordFieldWrapper.style.display = "none";
+                confirmPasswordFieldWrapper.style.display = "none";
+
+                passwordInput.required = false;
+                confirmPasswordInput.required = false;
+
+                openModal();
+
+                // Company dropdown load hone ke baad set karna
+                setTimeout(() => {
+                    document.getElementById("companyDropdown").value = admin.companyId ?? "";
+                }, 500);
+            }
+
+            // =========================
+            // EVENT BINDINGS
+            // =========================
+            if (addBtn) {
+                addBtn.addEventListener('click', () => {
+                    resetForm();
+                    openModal();
+                });
+            }
+
+            closeBtns.forEach(btn => {
+                if (btn) btn.addEventListener('click', closeModal);
+            });
+
+            if (form) {
+                form.addEventListener("submit", function (e) {
+                    e.preventDefault();
+
+                    if (isEditMode) {
+                        updateAdmin();
+                    } else {
+                        const password = passwordInput.value;
+                        const confirmPassword = confirmPasswordInput.value;
+
+                        if (password !== confirmPassword) {
+                            alert("Password and Confirm Password do not match");
+                            return;
+                        }
+
+                        createAdmin();
+                    }
+                });
+            }
+
+            // =========================
+            // LOAD ADMINS
+            // =========================
+            function loadAdmins() {
+                fetch(`${API_BASE}/api/admins/admins?StatusFilter=All`)
+                    .then(response => response.json())
+                    .then(data => {
+
+                        console.log("API DATA:", data);
+
+                        if (!data || data.isError || !data.result) {
+                            alert(data?.message || "Failed to load admins");
+                            return;
+                        }
+
+                        const admins = data.result.admins || [];
+                        const stats = data.result.stats || {};
+
+                        allAdmins = admins;
+
+                        const tableBody = document.getElementById("adminTableBody");
+                        tableBody.innerHTML = "";
+
+                        const total = document.getElementById("totalAdmins");
+                        const active = document.getElementById("activeAdmins");
+                        const pending = document.getElementById("pendingAdmins");
+
+                        if (total) total.innerText = stats.totalAdmins ?? 0;
+                        if (active) active.innerText = stats.activeAdmins ?? 0;
+                        if (pending) pending.innerText = stats.pendingAdmins ?? 0;
+
+                        if (admins.length === 0) {
+                            tableBody.innerHTML = `
+                                        <tr>
+                                            <td colspan="6" class="text-center py-10 text-slate-500 text-sm">
+                                                No admins found
+                                            </td>
+                                        </tr>
+                                    `;
+                            return;
+                        }
+
+                        admins.forEach(admin => {
+
+                            let initials = (admin.fullName || "NA")
+                                .split(" ")
+                                .map(x => x[0])
+                                .join("")
+                                .toUpperCase();
+
+                            let statusColor = "emerald";
+
+                            if (admin.status === "Inactive") statusColor = "red";
+                            if (admin.status === "Pending") statusColor = "amber";
+
+                            let row = `
+                                        <tr class="hover:bg-slate-50/50 dark:hover:bg-primary/5 transition-colors">
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-600 font-bold text-sm">
+                                                        ${initials}
+                                                    </div>
+                                                    <div>
+                                                        <div class="font-bold text-sm">${admin.fullName ?? '-'}</div>
+                                                        <div class="text-[11px] text-slate-500 dark:text-slate-400">
+                                                            ID: #AD-${admin.adminId ?? '-'}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            <td class="px-6 py-4 text-sm">${admin.email ?? '-'}</td>
+
+                                            <td class="px-6 py-4 text-sm font-medium text-slate-600 dark:text-slate-300">
+                                                ${admin.phone ?? '-'}
+                                            </td>
+
+                                            <td class="px-6 py-4 text-sm">
+                                                ${admin.companyName ?? '-'}
+                                            </td>
+
+                                            <td class="px-6 py-4">
+                                                <span class="px-2.5 py-1 bg-${statusColor}-500/10 text-${statusColor}-500 text-[10px] font-bold rounded-full uppercase">
+                                                    ${admin.status ?? '-'}
+                                                </span>
+                                            </td>
+
+                                            <td class="px-6 py-4 text-right">
+                                                <div class="flex justify-end gap-2">
+                                                    <button
+                                                        class="editAdminBtn p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
+                                                        data-id="${admin.adminId}"
+                                                        title="Edit Admin">
+                                                        <span class="material-icons text-sm">edit</span>
+                                                    </button>
+
+                                                    <button
+                                                        class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-500/5 rounded-lg transition-all"
+                                                        title="Remove Admin">
+                                                        <span class="material-icons text-sm">delete_outline</span>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    `;
+
+                            tableBody.innerHTML += row;
+                        });
+
+                        // Attach edit events
+                        document.querySelectorAll(".editAdminBtn").forEach(btn => {
+                            btn.addEventListener("click", function () {
+                                const adminId = parseInt(this.getAttribute("data-id"));
+                                const selectedAdmin = allAdmins.find(x => x.adminId === adminId);
+
+                                if (selectedAdmin) {
+                                    setEditMode(selectedAdmin);
+                                }
+                            });
+                        });
+
+                    })
+                    .catch(error => {
+                        console.error("Error loading admins:", error);
+                        alert("Error loading admins");
+                    });
+            }
+
+            // =========================
+            // LOAD COMPANIES
+            // =========================
+            function loadCompanies() {
+                const dropdown = document.getElementById("companyDropdown");
+                dropdown.innerHTML = '<option value="">Loading companies...</option>';
+
+                fetch(`${API_BASE}/api/companies/dropdown`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Companies:", data);
+
+                        dropdown.innerHTML = '<option value="">Select Company</option>';
+
+                        if (data.result && data.result.length > 0) {
+                            data.result.forEach(company => {
+                                const option = document.createElement("option");
+                                option.value = company.companyId;
+                                option.textContent = company.companyName;
+                                dropdown.appendChild(option);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Company API error:", error);
+                        dropdown.innerHTML = '<option value="">Failed to load companies</option>';
+                    });
+            }
+
+            // =========================
+            // CREATE ADMIN
+            // =========================
+            function createAdmin() {
+                const data = {
+                    fullName: document.getElementById("fullName").value.trim(),
+                    username: document.getElementById("username").value.trim(),
+                    email: document.getElementById("email").value.trim(),
+                    password: passwordInput.value,
+                    confirmPassword: confirmPasswordInput.value,
+                    phone: document.getElementById("phone").value.trim(),
+                    companyId: parseInt(document.getElementById("companyDropdown").value),
+                    createdBy: 1
+                };
+
+                fetch(`${API_BASE}/api/admins/SignUpAdmin`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => response.json())
+                    .then(result => {
+
+                        console.log("Create Response:", result);
+
+                        if (!result.isError) {
+                            alert(result.message || "Admin created successfully");
+                            closeModal();
+                            loadAdmins();
+                        } else {
+                            alert(result.message || "Failed to create admin");
+                        }
+
+                    })
+                    .catch(error => {
+                        console.error("Signup error:", error);
+                        alert("Something went wrong while creating admin");
+                    });
+            }
+
+            // =========================
+            // UPDATE ADMIN
+            // =========================
+            function updateAdmin() {
+                const data = {
+                    adminId: editingAdminId,
+                    fullName: document.getElementById("fullName").value.trim(),
+                    username: document.getElementById("username").value.trim(),
+                    email: document.getElementById("email").value.trim(),
+                    phone: document.getElementById("phone").value.trim(),
+                    companyId: parseInt(document.getElementById("companyDropdown").value),
+                    modifiedBy: 1
+                };
+
+                fetch(`${API_BASE}/api/admins/admin/update`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => response.json())
+                    .then(result => {
+
+                        console.log("Update Response:", result);
+
+                        if (!result.isError) {
+                            alert(result.message || "Admin updated successfully");
+                            closeModal();
+                            loadAdmins();
+                        } else {
+                            alert(result.message || "Failed to update admin");
+                        }
+
+                    })
+                    .catch(error => {
+                        console.error("Update error:", error);
+                        alert("Something went wrong while updating admin");
+                    });
+            }
+
+            // Initial load
+            loadAdmins();
+        });
+    </script>
+}
