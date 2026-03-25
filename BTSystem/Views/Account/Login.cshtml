@@ -206,7 +206,7 @@
                 password: document.getElementById("password").value
             };
 
-            fetch("http://192.168.0.120:8023/api/users/login", {
+            fetch("http://192.168.10.189:8021/api/users/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -233,12 +233,16 @@
                         else if (result.result.roleName === "Driver") {
                             window.location.href = "/Driver/Dashboard";
                         }
-                        else {
-                            window.location.href = "/Home/Index";
+                        else if (result.result.roleName === "Student") {
+                            window.location.href = "/Student/Dashboard";
+                        }
+                        else if (result.result.roleName === "Super Admin") {
+                            window.location.href = "/SuperAdmin/Dashboard";
                         }
 
                     } else {
-                        alert(result.message);
+
+                        alert("Login Failed ✅");
                     }
 
                 })
