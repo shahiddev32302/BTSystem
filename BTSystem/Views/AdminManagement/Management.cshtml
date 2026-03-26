@@ -265,7 +265,7 @@
             // =========================
             // CONFIG
             // =========================
-            const API_BASE = "https://localhost:7293";
+            const API_BASE = "http://192.168.10.189:8021";
             const MODIFIED_BY = 1;
             const CREATED_BY = 1;
 
@@ -295,12 +295,15 @@
             const searchInput = document.getElementById("searchInput");
             const statusFilter = document.getElementById("statusFilter");
 
+            const tableBody = document.getElementById("adminTableBody");
+
             // =========================
             // STATE
             // =========================
             let isEditMode = false;
             let editingAdminId = null;
             let allAdmins = [];
+            let searchTimeout = null;
 
             // =========================
             // MODAL FUNCTIONS
@@ -325,9 +328,9 @@
                 modalTitle.innerText = "Add New Admin";
                 modalSubtitle.innerText = "Create a new system administrator";
                 submitBtn.innerHTML = `
-                    <span class="material-icons text-sm">check_circle</span>
-                    Confirm & Create
-                `;
+                            <span class="material-icons text-sm">check_circle</span>
+                            Confirm & Create
+                        `;
 
                 passwordFieldWrapper.style.display = "block";
                 confirmPasswordFieldWrapper.style.display = "block";
@@ -347,9 +350,9 @@
                 modalTitle.innerText = "Update Admin";
                 modalSubtitle.innerText = "Modify administrator details";
                 submitBtn.innerHTML = `
-                    <span class="material-icons text-sm">edit</span>
-                    Update Admin
-                `;
+                            <span class="material-icons text-sm">edit</span>
+                            Update Admin
+                        `;
 
                 document.getElementById("fullName").value = admin.fullName ?? "";
                 document.getElementById("username").value = admin.username ?? "";
@@ -388,7 +391,8 @@
                     icon: 'success',
                     title: 'Success',
                     text: message,
-                    confirmButtonColor: '#2563eb'
+                    confirmButtonColor: '#2563eb',
+                    zIndex: 30000
                 });
             }
 
@@ -397,7 +401,8 @@
                     icon: 'error',
                     title: 'Oops...',
                     text: message,
-                    confirmButtonColor: '#dc2626'
+                    confirmButtonColor: '#dc2626',
+                    zIndex: 30000
                 });
             }
 
@@ -406,7 +411,8 @@
                     icon: 'warning',
                     title: 'Warning',
                     text: message,
-                    confirmButtonColor: '#f59e0b'
+                    confirmButtonColor: '#f59e0b',
+                    zIndex: 30000
                 });
             }
 
@@ -429,19 +435,26 @@
                     e.preventDefault();
 
                     if (isEditMode) {
-                        const result = await Swal.fire({
-                            title: 'Update Admin?',
-                            text: 'Are you sure you want to update this admin?',
-                            icon: 'question',
-                            showCancelButton: true,
-                            confirmButtonColor: '#2563eb',
-                            cancelButtonColor: '#64748b',
-                            confirmButtonText: 'Yes, Update'
-                        });
+                        closeModal();
 
-                        if (result.isConfirmed) {
-                            updateAdmin();
-                        }
+                        setTimeout(async () => {
+                            const result = await Swal.fire({
+                                title: 'Update Admin?',
+                                text: 'Are you sure you want to update this admin?',
+                                icon: 'question',
+                                showCancelButton: true,
+                                confirmButtonColor: '#2563eb',
+                                cancelButtonColor: '#64748b',
+                                confirmButtonText: 'Yes, Update',
+                                zIndex: 30000
+                            });
+
+                            if (result.isConfirmed) {
+                                updateAdmin();
+                            } else {
+                                openModal();
+                            }
+                        }, 150);
 
                     } else {
                         const password = passwordInput.value;
@@ -457,19 +470,44 @@
                 });
             }
 
+            // Search Filter (Debounce)
             if (searchInput) {
-                searchInput.addEventListener("input", renderFilteredAdmins);
+                searchInput.addEventListener("input", function () {
+                    clearTimeout(searchTimeout);
+
+                    searchTimeout = setTimeout(() => {
+                        loadAdmins();
+                    }, 500);
+                });
             }
 
+            // Status Filter
             if (statusFilter) {
-                statusFilter.addEventListener("change", renderFilteredAdmins);
+                statusFilter.addEventListener("change", function () {
+                    loadAdmins();
+                });
             }
 
             // =========================
-            // LOAD ADMINS
+            // LOAD ADMINS (API FILTER)
             // =========================
             function loadAdmins() {
-                fetch(`${API_BASE}/api/admins/admins?StatusFilter=All`)
+                const searchText = searchInput?.value?.trim() || "";
+                const selectedStatus = statusFilter?.value || "All";
+
+                const url = `${API_BASE}/api/admins/admins?searchText=${encodeURIComponent(searchText)}&StatusFilter=${encodeURIComponent(selectedStatus)}`;
+
+                console.log("Loading Admins URL:", url);
+
+                tableBody.innerHTML = `
+                            <tr>
+                                <td colspan="6" class="text-center py-10 text-slate-500 text-sm">
+                                    Loading admins...
+                                </td>
+                            </tr>
+                        `;
+
+                fetch(url)
                     .then(response => response.json())
                     .then(data => {
 
@@ -477,6 +515,13 @@
 
                         if (!data || data.isError || !data.result) {
                             showError(data?.message || "Failed to load admins");
+                            tableBody.innerHTML = `
+                                        <tr>
+                                            <td colspan="6" class="text-center py-10 text-red-500 text-sm">
+                                                Failed to load admins
+                                            </td>
+                                        </tr>
+                                    `;
                             return;
                         }
 
@@ -487,50 +532,39 @@
                         document.getElementById("activeAdmins").innerText = stats.activeAdmins ?? 0;
                         document.getElementById("pendingAdmins").innerText = stats.pendingAdmins ?? 0;
 
-                        renderFilteredAdmins();
+                        renderAdmins(allAdmins);
                     })
                     .catch(error => {
                         console.error("Error loading admins:", error);
                         showError("Error loading admins");
+                        tableBody.innerHTML = `
+                                    <tr>
+                                        <td colspan="6" class="text-center py-10 text-red-500 text-sm">
+                                            Error loading admins
+                                        </td>
+                                    </tr>
+                                `;
                     });
             }
 
             // =========================
             // RENDER ADMINS
             // =========================
-            function renderFilteredAdmins() {
-                const tableBody = document.getElementById("adminTableBody");
+            function renderAdmins(admins) {
                 tableBody.innerHTML = "";
 
-                const searchTerm = (searchInput.value || "").toLowerCase().trim();
-                const selectedStatus = statusFilter.value;
-
-                let filteredAdmins = [...allAdmins];
-
-                if (selectedStatus !== "All") {
-                    filteredAdmins = filteredAdmins.filter(x => (x.status || "").toLowerCase() === selectedStatus.toLowerCase());
-                }
-
-                if (searchTerm) {
-                    filteredAdmins = filteredAdmins.filter(admin =>
-                        (admin.fullName || "").toLowerCase().includes(searchTerm) ||
-                        (admin.email || "").toLowerCase().includes(searchTerm) ||
-                        (admin.username || "").toLowerCase().includes(searchTerm)
-                    );
-                }
-
-                if (filteredAdmins.length === 0) {
+                if (!admins || admins.length === 0) {
                     tableBody.innerHTML = `
-                        <tr>
-                            <td colspan="6" class="text-center py-10 text-slate-500 text-sm">
-                                No admins found
-                            </td>
-                        </tr>
-                    `;
+                                <tr>
+                                    <td colspan="6" class="text-center py-10 text-slate-500 text-sm">
+                                        No admins found
+                                    </td>
+                                </tr>
+                            `;
                     return;
                 }
 
-                filteredAdmins.forEach(admin => {
+                admins.forEach(admin => {
                     let initials = (admin.fullName || "NA")
                         .split(" ")
                         .map(x => x[0])
@@ -542,56 +576,56 @@
                     if (admin.status === "Pending") statusColor = "amber";
 
                     let row = `
-                        <tr class="hover:bg-slate-50/50 dark:hover:bg-primary/5 transition-colors">
-                            <td class="px-6 py-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-600 font-bold text-sm">
-                                        ${initials}
-                                    </div>
-                                    <div>
-                                        <div class="font-bold text-sm">${admin.fullName ?? '-'}</div>
-                                        <div class="text-[11px] text-slate-500 dark:text-slate-400">
-                                            ID: #AD-${admin.adminId ?? '-'}
+                                <tr class="hover:bg-slate-50/50 dark:hover:bg-primary/5 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-600 font-bold text-sm">
+                                                ${initials}
+                                            </div>
+                                            <div>
+                                                <div class="font-bold text-sm">${admin.fullName ?? '-'}</div>
+                                                <div class="text-[11px] text-slate-500 dark:text-slate-400">
+                                                    ID: #AD-${admin.adminId ?? '-'}
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </td>
+                                    </td>
 
-                            <td class="px-6 py-4 text-sm">${admin.email ?? '-'}</td>
+                                    <td class="px-6 py-4 text-sm">${admin.email ?? '-'}</td>
 
-                            <td class="px-6 py-4 text-sm font-medium text-slate-600 dark:text-slate-300">
-                                ${admin.phone ?? '-'}
-                            </td>
+                                    <td class="px-6 py-4 text-sm font-medium text-slate-600 dark:text-slate-300">
+                                        ${admin.phone ?? '-'}
+                                    </td>
 
-                            <td class="px-6 py-4 text-sm">
-                                ${admin.companyName ?? '-'}
-                            </td>
+                                    <td class="px-6 py-4 text-sm">
+                                        ${admin.companyName ?? '-'}
+                                    </td>
 
-                            <td class="px-6 py-4">
-                                <span class="px-2.5 py-1 bg-${statusColor}-500/10 text-${statusColor}-500 text-[10px] font-bold rounded-full uppercase">
-                                    ${admin.status ?? '-'}
-                                </span>
-                            </td>
+                                    <td class="px-6 py-4">
+                                        <span class="px-2.5 py-1 bg-${statusColor}-500/10 text-${statusColor}-500 text-[10px] font-bold rounded-full uppercase">
+                                            ${admin.status ?? '-'}
+                                        </span>
+                                    </td>
 
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex justify-end gap-2">
-                                    <button
-                                        class="editAdminBtn p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
-                                        data-id="${admin.adminId}"
-                                        title="Edit Admin">
-                                        <span class="material-icons text-sm">edit</span>
-                                    </button>
+                                    <td class="px-6 py-4 text-right">
+                                        <div class="flex justify-end gap-2">
+                                            <button
+                                                class="editAdminBtn p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
+                                                data-id="${admin.adminId}"
+                                                title="Edit Admin">
+                                                <span class="material-icons text-sm">edit</span>
+                                            </button>
 
-                                    <button
-                                        class="deleteAdminBtn p-2 text-slate-400 hover:text-red-500 hover:bg-red-500/5 rounded-lg transition-all"
-                                        data-id="${admin.adminId}"
-                                        title="Delete Admin">
-                                        <span class="material-icons text-sm">delete_outline</span>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
+                                            <button
+                                                class="deleteAdminBtn p-2 text-slate-400 hover:text-red-500 hover:bg-red-500/5 rounded-lg transition-all"
+                                                data-id="${admin.adminId}"
+                                                title="Delete Admin">
+                                                <span class="material-icons text-sm">delete_outline</span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
 
                     tableBody.innerHTML += row;
                 });
@@ -626,7 +660,8 @@
                             showCancelButton: true,
                             confirmButtonColor: '#dc2626',
                             cancelButtonColor: '#64748b',
-                            confirmButtonText: 'Yes, Delete'
+                            confirmButtonText: 'Yes, Delete',
+                            zIndex: 30000
                         });
 
                         if (result.isConfirmed) {
@@ -743,11 +778,7 @@
                         console.log("Update Response:", result);
 
                         if (!result.isError) {
-                            closeModal(); // close FIRST
-                            setTimeout(() => {
-                                showSuccess(result.message || "Admin updated successfully");
-                            }, 200);
-
+                            showSuccess(result.message || "Admin updated successfully");
                             loadAdmins();
                         } else {
                             showError(result.message || "Failed to update admin");
