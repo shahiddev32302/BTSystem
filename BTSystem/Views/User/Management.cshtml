@@ -1,0 +1,421 @@
+﻿@{
+    ViewData["Title"] = "User Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="management-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-2">User Management</h2>
+            <p class="text-muted">Manage system users and their access permissions</p>
+        </div>
+        <button class="btn btn-primary" id="addUserBtn" data-bs-toggle="modal"
+                data-bs-target="#addUserModal">
+            <i class="fas fa-plus me-2"></i>Add User
+        </button>
+    </div>
+
+    <!-- Filters -->
+    <div class="management-filters">
+        <div class="filter-group">
+            <label>Status</label>
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">
+                    All Users <span class="badge">38</span>
+                </button>
+                <button class="filter-tab" data-filter="active">
+                    Active <span class="badge">12</span>
+                </button>
+                <button class="filter-tab" data-filter="inactive">
+                    Inactive <span class="badge">26</span>
+                </button>
+                <button class="filter-tab" data-filter="pending">
+                    Pending <span class="badge">26</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Cards Grid -->
+    <div class="user-cards-grid">
+
+        <!-- User Card 1 -->
+        <div class="user-card" data-type="student">
+            <div class="card-header-section">
+                <div class="user-avatar bg-success text-white">
+                    <span>JS</span>
+                </div>
+                <div class="status-badge active">
+                    <span class="pulse"></span>
+                    Active
+                </div>
+            </div>
+
+            <div class="card-content">
+                <h5 class="user-name">John Smith</h5>
+                <p class="user-role">john_smith</p>
+
+                <div class="info-item">
+                    <i class="fas fa-id-card"></i>
+                    <span>REG-001234</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>john.smith@student.edu</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+92 300 2345678</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>123 Main Street</span>
+                </div>
+            </div>
+
+            <div class="card-actions">
+                <button class="btn btn-sm btn-outline-primary me-2" title="Edit">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-info me-2" title="View">
+                    <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" title="Delete">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- User Card 2 -->
+        <div class="user-card" data-type="student">
+            <div class="card-header-section">
+                <div class="user-avatar bg-success text-white">
+                    <span>AH</span>
+                </div>
+                <div class="status-badge inactive">
+                    <span class="pulse"></span>
+                    Inactive
+                </div>
+            </div>
+
+            <div class="card-content">
+                <h5 class="user-name">Ahmed Hassan</h5>
+                <p class="user-role">ahmed_hassan</p>
+
+                <div class="info-item">
+                    <i class="fas fa-id-card"></i>
+                    <span>REG-002345</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>ahmed.hassan@student.edu</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+92 300 4567890</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>456 Park Avenue</span>
+                </div>
+            </div>
+
+            <div class="card-actions">
+                <button class="btn btn-sm btn-outline-primary me-2" title="Edit">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-info me-2" title="View">
+                    <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" title="Delete">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- User Card 3 -->
+        <div class="user-card" data-type="Passenger">
+            <div class="card-header-section">
+                <div class="user-avatar bg-secondary text-white">
+                    <span>SJ</span>
+                </div>
+                <div class="status-badge active">
+                    <span class="pulse"></span>
+                    Active
+                </div>
+            </div>
+
+            <div class="card-content">
+                <h5 class="user-name">Sarah Johnson</h5>
+                <p class="user-role">sarah_johnson</p>
+
+                <div class="info-item">
+                    <i class="fas fa-id-card"></i>
+                    <span>REG-004567</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>sarah.johnson@passenger.edu</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+92 300 5678901</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>321 Elm Boulevard</span>
+                </div>
+            </div>
+
+            <div class="card-actions">
+                <button class="btn btn-sm btn-outline-primary me-2" title="Edit">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-info me-2" title="View">
+                    <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" title="Delete">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- User Card 4 -->
+        <div class="user-card" data-type="student">
+            <div class="card-header-section">
+                <div class="user-avatar bg-success text-white">
+                    <span>EW</span>
+                </div>
+                <div class="status-badge pending">
+                    <span class="pulse"></span>
+                    Pending
+                </div>
+            </div>
+
+            <div class="card-content">
+                <h5 class="user-name">Emma Wilson</h5>
+                <p class="user-role">emma_wilson</p>
+
+                <div class="info-item">
+                    <i class="fas fa-id-card"></i>
+                    <span>REG-003456</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>emma.wilson@student.edu</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+92 300 6789012</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>789 Oak Street</span>
+                </div>
+            </div>
+
+            <div class="card-actions">
+                <button class="btn btn-sm btn-outline-primary me-2" title="Edit">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-info me-2" title="View">
+                    <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" title="Delete">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-section">
+        <div class="pagination-info">
+            Showing 1-7 of 48 users
+        </div>
+        <nav class="pagination">
+            <a class="page-link" href="#"><i class="fas fa-chevron-left"></i></a>
+            <a class="page-link active" href="#">1</a>
+            <a class="page-link" href="#">2</a>
+            <a class="page-link" href="#">3</a>
+            <a class="page-link" href="#">4</a>
+            <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
+        </nav>
+    </div>
+</div>
+
+<!-- Floating Action Button -->
+<button class="btn-fab" id="fabButton" title="Add User" data-bs-toggle="modal" data-bs-target="#addUserModal">
+    <i class="fas fa-plus"></i>
+</button>
+
+<!-- Add User Modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addUserForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" placeholder="John">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">User Name</label>
+                            <input type="text" class="form-control" placeholder="Doe">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Registration Number</label>
+                        <input type="text" class="form-control" placeholder="REG-123456">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-control" placeholder="student@university.edu">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" placeholder="••••••••">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" placeholder="••••••••">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Phone</label>
+                        <input type="tel" class="form-control" placeholder="+1 555 000 0000">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Address</label>
+                        <input type="text" class="form-control" placeholder="Street address">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Add User</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="toastContainer"></div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Sidebar toggle
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const navbarToggle = document.getElementById('navbarToggle');
+            const sidebar = document.getElementById('sidebar');
+
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('collapsed');
+                });
+            }
+
+            if (navbarToggle) {
+                navbarToggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('hidden');
+                });
+            }
+
+            // Filter functionality
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.addEventListener('click', function () {
+                    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const filter = this.dataset.filter;
+
+                    document.querySelectorAll('.user-card').forEach(card => {
+                        if (filter === 'all') {
+                            card.style.display = '';
+                            return;
+                        }
+
+                        const statusBadge = card.querySelector('.status-badge');
+                        if (!statusBadge) {
+                            card.style.display = (filter === 'inactive') ? '' : 'none';
+                            return;
+                        }
+
+                        if (filter === 'inactive') {
+                            if (!statusBadge.classList.contains('active') && !statusBadge.classList.contains('pending')) {
+                                card.style.display = '';
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        } else {
+                            card.style.display = statusBadge.classList.contains(filter) ? '' : 'none';
+                        }
+                    });
+                });
+            });
+
+            // Search functionality
+            const searchInput = document.getElementById('navbarSearchInput');
+
+            if (searchInput) {
+                searchInput.addEventListener('keyup', function (e) {
+                    const query = e.target.value.toLowerCase();
+                    const activeFilter = document.querySelector('.filter-tab.active')?.dataset.filter || 'all';
+
+                    document.querySelectorAll('.user-card').forEach(card => {
+                        const nameEl = card.querySelector('.user-name');
+                        const name = nameEl ? nameEl.textContent.toLowerCase() : '';
+
+                        let email = '';
+                        const infoItems = card.querySelectorAll('.info-item');
+                        infoItems.forEach(item => {
+                            const icon = item.querySelector('i');
+                            if (icon && icon.classList.contains('fa-envelope')) {
+                                const span = item.querySelector('span');
+                                if (span) email = span.textContent.toLowerCase();
+                            }
+                        });
+
+                        const searchText = name + ' ' + email;
+                        const matchesSearch = query === '' || searchText.includes(query);
+
+                        let matchesFilter = true;
+                        if (activeFilter !== 'all') {
+                            const statusBadge = card.querySelector('.status-badge');
+                            if (!statusBadge) {
+                                matchesFilter = (activeFilter === 'inactive');
+                            } else if (activeFilter === 'inactive') {
+                                matchesFilter = !statusBadge.classList.contains('active') && !statusBadge.classList.contains('pending');
+                            } else {
+                                matchesFilter = statusBadge.classList.contains(activeFilter);
+                            }
+                        }
+
+                        card.style.display = (matchesSearch && matchesFilter) ? '' : 'none';
+                    });
+                });
+            }
+
+            // Active sidebar item set for MVC page
+            document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+
+            const userManagementLink = document.querySelector('a[asp-controller="User"][asp-action="Management"]');
+            if (userManagementLink) {
+                userManagementLink.classList.add('active');
+            }
+        });
+    </script>
+}

@@ -43,7 +43,10 @@
                     <i class="fas fa-bus"></i>
                     <span>Bus Management</span>
                 </a>
-
+                <a asp-controller="User" asp-action="Management" class="sidebar-item">
+                    <i class="fas fa-users"></i>
+                    <span>User Management</span>
+                </a>
                 <a asp-controller="Driver" asp-action="DriverManagement" class="sidebar-item">
                     <i class="fas fa-user-tie"></i>
                     <span>Driver Management</span>
@@ -103,7 +106,7 @@
                 <div class="navbar-right">
                     <div class="search-box">
                         <i class="fas fa-search"></i>
-                        <input type="text" placeholder="Search buses, drivers, routes...">
+                        <input type="text" id="globalSearchInput" placeholder="Search buses, drivers, routes...">
                     </div>
 
                     <button class="btn btn-icon" id="notificationBell" title="Notifications">

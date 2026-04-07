@@ -133,31 +133,63 @@
             </div>
             <div class="modal-body">
                 <form>
-                    <div class="mb-3">
-                        <label class="form-label">Full Name</label>
-                        <input type="text" class="form-control" placeholder="e.g., John Doe">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">License Number</label>
-                        <input type="text" class="form-control" placeholder="e.g., DL-2024-001">
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Phone Number</label>
-                            <input type="tel" class="form-control" placeholder="+1 234 567 8900">
+                    <!-- Personal Info -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6 mt-0">
+                            <label class="form-label font-medium text-secondary mb-1">Full Name</label>
+                            <input type="text" class="form-control bg-light border-0 py-2 shadow-none" name="FullName" placeholder="e.g., John Doe" required>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Experience (Years)</label>
-                            <input type="number" class="form-control" placeholder="e.g., 5">
+                        <div class="col-md-6 mt-0">
+                            <label class="form-label font-medium text-secondary mb-1">Username</label>
+                            <input type="text" class="form-control bg-light border-0 py-2 shadow-none" name="Username" placeholder="e.g., johndoe_driver" required>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Status</label>
-                        <select class="form-select">
-                            <option value="on-duty">On Duty</option>
-                            <option value="available" selected>Available</option>
-                            <option value="off-duty">Off Duty</option>
-                        </select>
+
+                    <!-- Contact -->
+                    <div class="row g-3 mb-4 mt-0">
+                        <div class="col-md-6 mt-0">
+                            <label class="form-label font-medium text-secondary mb-1">Email Address</label>
+                            <input type="email" class="form-control bg-light border-0 py-2 shadow-none" name="Email" placeholder="e.g., john@example.com" required>
+                        </div>
+                        <div class="col-md-6 mt-0">
+                            <label class="form-label font-medium text-secondary mb-1">Phone Number</label>
+                            <input type="tel" class="form-control bg-light border-0 py-2 shadow-none" name="Phone" placeholder="e.g., +1 234 567 8900">
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="row g-3 mb-4 mt-0">
+                        <div class="col-md-6 mt-0">
+                            <label class="form-label font-medium text-secondary mb-1">Password</label>
+                            <input type="password" class="form-control bg-light border-0 py-2 shadow-none" name="Password" placeholder="Min. 8 characters" required>
+                        </div>
+                        <div class="col-md-6 mt-0">
+                            <label class="form-label font-medium text-secondary mb-1">Confirm Password</label>
+                            <input type="password" class="form-control bg-light border-0 py-2 shadow-none" name="ConfirmPassword" placeholder="Repeat password" required>
+                        </div>
+                    </div>
+
+                    <!-- Driver Info -->
+                    <div class="row g-3 mb-4 mt-0">
+                        <div class="col-md-6 mt-0">
+                            <label class="form-label font-medium text-secondary mb-1">License Number</label>
+                            <input type="text" class="form-control bg-light border-0 py-2 shadow-none" name="LicenseNumber" placeholder="e.g., DL-2025-001" required>
+                        </div>
+                        <div class="col-md-6 mt-0">
+                            <label class="form-label font-medium text-secondary mb-1">License Expiry</label>
+                            <input type="date" class="form-control bg-light border-0 py-2 shadow-none" name="LicenseExpiry" required>
+                        </div>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="row g-3 mt-0">
+                        <div class="col-md-6 mt-0">
+                            <label class="form-label font-medium text-secondary mb-1">Initial Status</label>
+                            <select class="form-select bg-light border-0 py-2 shadow-none" name="Status">
+                                <option value="on-duty">Active</option>
+                                <option value="available" selected>InActive</option>
+                            </select>
+                        </div>
                     </div>
                 </form>
             </div>

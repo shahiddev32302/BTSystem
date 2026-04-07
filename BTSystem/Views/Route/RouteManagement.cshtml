@@ -1,4 +1,4 @@
-﻿@{
+﻿@* @{
     ViewData["Title"] = "Route Management";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -209,6 +209,691 @@
                     card.style.display = status === 'all' || card.dataset.status === status ? '' : 'none';
                 });
             }
+        });
+    </script>
+}
+ *@
+@{
+    ViewData["Title"] = "Route Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .route-card {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        height: 100%;
+    }
+
+        .route-card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+            border-color: var(--primary);
+        }
+
+    .route-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+
+    .route-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+    }
+
+    .status-active {
+        background: rgba(34, 197, 94, 0.15);
+        color: #16a34a;
+    }
+
+        .status-active .status-dot {
+            background: #16a34a;
+        }
+
+    .status-inactive {
+        background: rgba(239, 68, 68, 0.15);
+        color: #dc2626;
+    }
+
+        .status-inactive .status-dot {
+            background: #dc2626;
+        }
+
+    .status-maintenance {
+        background: rgba(250, 204, 21, 0.15);
+        color: #ca8a04;
+    }
+
+        .status-maintenance .status-dot {
+            background: #ca8a04;
+        }
+
+    .route-info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin: 15px 0;
+    }
+
+    .route-info-item {
+        text-align: center;
+        padding: 10px;
+        background: var(--bg-secondary);
+        border-radius: 8px;
+    }
+
+        .route-info-item p {
+            margin: 0;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .route-info-item h6 {
+            margin: 5px 0 0 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+    .filter-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 25px;
+        padding: 15px;
+        background: var(--bg);
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        flex-wrap: wrap;
+    }
+
+    .filter-tab {
+        padding: 8px 20px;
+        border: none;
+        background: transparent;
+        border-radius: 8px;
+        color: var(--text-secondary);
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .filter-tab:hover {
+            background: var(--gray-100);
+        }
+
+        .filter-tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+    .card-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+        flex-wrap: wrap;
+    }
+
+        .card-actions .btn {
+            flex: 1;
+            min-width: 100px;
+        }
+
+    /* Manage Stops Modal */
+    #manageStopsModal .modal-dialog {
+        max-width: 560px;
+    }
+
+    #manageStopsModal .modal-content {
+        border-radius: 18px;
+        overflow: hidden;
+        border: 1px solid rgba(15, 23, 42, 0.08);
+    }
+
+    #manageStopsModal .input-group .form-control {
+        border-radius: 12px 0 0 12px;
+        border: 1px solid var(--border);
+    }
+
+    #manageStopsModal .input-group .btn {
+        border-radius: 0 12px 12px 0;
+    }
+
+    #manageStopsModal .badge.bg-primary-light {
+        background: rgba(37, 99, 235, 0.12);
+        color: #2563eb;
+        font-size: 0.75rem;
+        padding: 0.35rem 0.75rem;
+        border-radius: 999px;
+    }
+
+    .stops-container {
+        display: grid;
+        gap: 12px;
+    }
+
+    .stop-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 14px 16px;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+    }
+
+    .stop-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+    }
+
+    .stop-number {
+        width: 36px;
+        height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: var(--primary);
+        color: #fff;
+        font-size: 0.9rem;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    .stop-content span:last-child {
+        display: block;
+        color: var(--text-primary);
+        font-size: 0.95rem;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .btn-remove-stop {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        border: 1px solid rgba(148, 163, 184, 0.32);
+        background: transparent;
+        color: var(--text-secondary);
+        transition: all 0.2s ease;
+    }
+
+        .btn-remove-stop:hover {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.25);
+            color: #dc2626;
+        }
+
+    #modalNoStopsMsg {
+        min-height: 120px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: var(--text-secondary);
+    }
+
+        #modalNoStopsMsg i {
+            color: rgba(15, 23, 42, 0.35);
+        }
+</style>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="mb-2">Route Management</h2>
+        <p class="text-muted">Plan and manage transportation routes</p>
+    </div>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRouteModal">
+        <i class="fas fa-plus me-2"></i>Add New Route
+    </button>
+</div>
+
+<!-- Status Filter Tabs -->
+<div class="filter-tabs mb-4">
+    <button class="filter-tab active" data-status="all">All Routes</button>
+    <button class="filter-tab" data-status="active">Active</button>
+    <button class="filter-tab" data-status="inactive">Inactive</button>
+    <button class="filter-tab" data-status="maintenance">Under Maintenance</button>
+</div>
+
+<!-- Route Cards Grid -->
+<div class="row" id="routesGrid">
+
+    <!-- Route 1 -->
+    <div class="col-lg-4 col-md-6 mb-4 route-card-wrapper" data-status="active">
+        <div class="route-card">
+            <div class="route-icon"><i class="fas fa-route"></i></div>
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                    <h5 class="mb-1">Campus Loop</h5>
+                    <p class="text-muted small mb-2 route-desc">Main campus to parking areas</p>
+                </div>
+                <span class="route-status status-active">
+                    <span class="status-dot"></span>Active
+                </span>
+            </div>
+
+            <div class="route-info-grid">
+                <div class="route-info-item"><p>Distance</p><h6>8.5 km</h6></div>
+                <div class="route-info-item"><p>Duration</p><h6>25 mins</h6></div>
+                <div class="route-info-item"><p>Starting Point</p><h6>Main Campus</h6></div>
+                <div class="route-info-item"><p>Ending Point</p><h6>Parking Areas</h6></div>
+            </div>
+
+            <div class="card-actions">
+                <button class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-edit me-1"></i>Edit
+                </button>
+                <button class="btn btn-outline-success btn-sm btn-manage-stops" data-bs-toggle="modal" data-bs-target="#manageStopsModal">
+                    <i class="fas fa-map-marker-alt me-1"></i>Stops
+                </button>
+                <button class="btn btn-outline-danger btn-sm">
+                    <i class="fas fa-trash me-1"></i>Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Route 2 -->
+    <div class="col-lg-4 col-md-6 mb-4 route-card-wrapper" data-status="active">
+        <div class="route-card">
+            <div class="route-icon"><i class="fas fa-home"></i></div>
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                    <h5 class="mb-1">Hostel Route</h5>
+                    <p class="text-muted small mb-2 route-desc">Hostels to academic buildings</p>
+                </div>
+                <span class="route-status status-active">
+                    <span class="status-dot"></span>Active
+                </span>
+            </div>
+
+            <div class="route-info-grid">
+                <div class="route-info-item"><p>Distance</p><h6>6.2 km</h6></div>
+                <div class="route-info-item"><p>Duration</p><h6>18 mins</h6></div>
+                <div class="route-info-item"><p>Starting Point</p><h6>Hostels</h6></div>
+                <div class="route-info-item"><p>Ending Point</p><h6>Academic Bldgs</h6></div>
+            </div>
+
+            <div class="card-actions">
+                <button class="btn btn-outline-primary btn-sm"><i class="fas fa-edit me-1"></i>Edit</button>
+                <button class="btn btn-outline-success btn-sm btn-manage-stops" data-bs-toggle="modal" data-bs-target="#manageStopsModal">
+                    <i class="fas fa-map-marker-alt me-1"></i>Stops
+                </button>
+                <button class="btn btn-outline-danger btn-sm"><i class="fas fa-trash me-1"></i>Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Route 3 -->
+    <div class="col-lg-4 col-md-6 mb-4 route-card-wrapper" data-status="inactive">
+        <div class="route-card">
+            <div class="route-icon"><i class="fas fa-city"></i></div>
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                    <h5 class="mb-1">City Express</h5>
+                    <p class="text-muted small mb-2 route-desc">Campus to city center</p>
+                </div>
+                <span class="route-status status-inactive">
+                    <span class="status-dot"></span>Inactive
+                </span>
+            </div>
+
+            <div class="route-info-grid">
+                <div class="route-info-item"><p>Distance</p><h6>12.5 km</h6></div>
+                <div class="route-info-item"><p>Duration</p><h6>35 mins</h6></div>
+                <div class="route-info-item"><p>Starting Point</p><h6>Campus</h6></div>
+                <div class="route-info-item"><p>Ending Point</p><h6>City Center</h6></div>
+            </div>
+
+            <div class="card-actions">
+                <button class="btn btn-outline-primary btn-sm"><i class="fas fa-edit me-1"></i>Edit</button>
+                <button class="btn btn-outline-success btn-sm btn-manage-stops" data-bs-toggle="modal" data-bs-target="#manageStopsModal">
+                    <i class="fas fa-map-marker-alt me-1"></i>Stops
+                </button>
+                <button class="btn btn-outline-danger btn-sm"><i class="fas fa-trash me-1"></i>Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Route 4 -->
+    <div class="col-lg-4 col-md-6 mb-4 route-card-wrapper" data-status="active">
+        <div class="route-card">
+            <div class="route-icon"><i class="fas fa-hospital"></i></div>
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                    <h5 class="mb-1">Hospital Run</h5>
+                    <p class="text-muted small mb-2 route-desc">Campus to city hospital</p>
+                </div>
+                <span class="route-status status-active">
+                    <span class="status-dot"></span>Active
+                </span>
+            </div>
+
+            <div class="route-info-grid">
+                <div class="route-info-item"><p>Distance</p><h6>5.8 km</h6></div>
+                <div class="route-info-item"><p>Duration</p><h6>16 mins</h6></div>
+                <div class="route-info-item"><p>Starting Point</p><h6>Campus</h6></div>
+                <div class="route-info-item"><p>Ending Point</p><h6>City Hospital</h6></div>
+            </div>
+
+            <div class="card-actions">
+                <button class="btn btn-outline-primary btn-sm"><i class="fas fa-edit me-1"></i>Edit</button>
+                <button class="btn btn-outline-success btn-sm btn-manage-stops" data-bs-toggle="modal" data-bs-target="#manageStopsModal">
+                    <i class="fas fa-map-marker-alt me-1"></i>Stops
+                </button>
+                <button class="btn btn-outline-danger btn-sm"><i class="fas fa-trash me-1"></i>Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Route 5 -->
+    <div class="col-lg-4 col-md-6 mb-4 route-card-wrapper" data-status="maintenance">
+        <div class="route-card">
+            <div class="route-icon"><i class="fas fa-book"></i></div>
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                    <h5 class="mb-1">Library Express</h5>
+                    <p class="text-muted small mb-2 route-desc">Central library to departments</p>
+                </div>
+                <span class="route-status status-maintenance">
+                    <span class="status-dot"></span>Maintenance
+                </span>
+            </div>
+
+            <div class="route-info-grid">
+                <div class="route-info-item"><p>Distance</p><h6>3.5 km</h6></div>
+                <div class="route-info-item"><p>Duration</p><h6>12 mins</h6></div>
+                <div class="route-info-item"><p>Starting Point</p><h6>Library</h6></div>
+                <div class="route-info-item"><p>Ending Point</p><h6>Departments</h6></div>
+            </div>
+
+            <div class="card-actions">
+                <button class="btn btn-outline-primary btn-sm"><i class="fas fa-edit me-1"></i>Edit</button>
+                <button class="btn btn-outline-success btn-sm btn-manage-stops" data-bs-toggle="modal" data-bs-target="#manageStopsModal">
+                    <i class="fas fa-map-marker-alt me-1"></i>Stops
+                </button>
+                <button class="btn btn-outline-danger btn-sm"><i class="fas fa-trash me-1"></i>Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Route 6 -->
+    <div class="col-lg-4 col-md-6 mb-4 route-card-wrapper" data-status="active">
+        <div class="route-card">
+            <div class="route-icon"><i class="fas fa-running"></i></div>
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                    <h5 class="mb-1">Sports Complex</h5>
+                    <p class="text-muted small mb-2 route-desc">Campus to sports facilities</p>
+                </div>
+                <span class="route-status status-active">
+                    <span class="status-dot"></span>Active
+                </span>
+            </div>
+
+            <div class="route-info-grid">
+                <div class="route-info-item"><p>Distance</p><h6>4.2 km</h6></div>
+                <div class="route-info-item"><p>Duration</p><h6>15 mins</h6></div>
+                <div class="route-info-item"><p>Starting Point</p><h6>Campus</h6></div>
+                <div class="route-info-item"><p>Ending Point</p><h6>Sports Complex</h6></div>
+            </div>
+
+            <div class="card-actions">
+                <button class="btn btn-outline-primary btn-sm"><i class="fas fa-edit me-1"></i>Edit</button>
+                <button class="btn btn-outline-success btn-sm btn-manage-stops" data-bs-toggle="modal" data-bs-target="#manageStopsModal">
+                    <i class="fas fa-map-marker-alt me-1"></i>Stops
+                </button>
+                <button class="btn btn-outline-danger btn-sm"><i class="fas fa-trash me-1"></i>Delete</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Add Route Modal -->
+<div class="modal fade" id="addRouteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Route</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">Route Name</label>
+                        <input type="text" class="form-control" placeholder="e.g., Campus Loop">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" rows="2" placeholder="Route description"></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Distance (km)</label>
+                            <input type="number" class="form-control" placeholder="e.g., 8.5" step="0.1">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Duration (mins)</label>
+                            <input type="number" class="form-control" placeholder="e.g., 25">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Starting Point</label>
+                            <input type="text" class="form-control" placeholder="e.g., Campus Main Gate">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Ending Point</label>
+                            <input type="text" class="form-control" placeholder="e.g., City Center">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Route Status</label>
+                        <select class="form-select">
+                            <option value="active" selected>Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="maintenance">Under Maintenance</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Add Route</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Manage Stops Modal -->
+<div class="modal fade" id="manageStopsModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0 pt-4 px-4">
+                <h5 class="modal-title text-primary">Manage Route Stops</h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body px-4">
+                <div class="mb-4">
+                    <label class="form-label text-muted small text-uppercase fw-bold">Current Route</label>
+                    <h4 id="currentRouteName" class="mb-0">--</h4>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Add New Stop</label>
+                    <div class="input-group">
+                        <input type="text" id="modalStopInput" class="form-control" placeholder="Enter stop name...">
+                        <button class="btn btn-primary px-3" type="button" id="modalAddStopBtn">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-3 mt-4">
+                    <label class="form-label mb-0">Route Timeline</label>
+                    <span class="badge bg-primary-light" id="modalStopsCount">0 Stops</span>
+                </div>
+
+                <div id="modalStopsList" class="stops-container pb-3">
+                    <div class="text-center py-4 text-muted border rounded-3" id="modalNoStopsMsg">
+                        <i class="fas fa-map-markers-alt mb-2 d-block opacity-50 fs-4"></i>
+                        No stops defined for this route yet
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-top-0 pb-4 px-4">
+                <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary px-4">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const filterTabs = document.querySelectorAll('.filter-tab');
+            const routeWrappers = document.querySelectorAll('.route-card-wrapper');
+
+            // Layout search input use kar rahe hain
+            const searchInput = document.getElementById('globalSearchInput');
+
+            function filterRoutes() {
+                const activeTab = document.querySelector('.filter-tab.active');
+                const status = activeTab ? activeTab.dataset.status : 'all';
+                const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+                routeWrappers.forEach(wrapper => {
+                    const title = wrapper.querySelector('h5')?.textContent.toLowerCase() || '';
+                    const desc = wrapper.querySelector('.route-desc')?.textContent.toLowerCase() || '';
+                    const cardStatus = wrapper.dataset.status;
+
+                    const matchesStatus = status === 'all' || cardStatus === status;
+                    const matchesSearch = title.includes(searchTerm) || desc.includes(searchTerm);
+
+                    wrapper.style.display = (matchesStatus && matchesSearch) ? '' : 'none';
+                });
+            }
+
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', function () {
+                    filterTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    filterRoutes();
+                });
+            });
+
+            if (searchInput) {
+                searchInput.addEventListener('input', filterRoutes);
+            }
+
+            // STOP MANAGEMENT LOGIC
+            const modalStopsList = document.getElementById('modalStopsList');
+            const modalStopInput = document.getElementById('modalStopInput');
+            const modalAddStopBtn = document.getElementById('modalAddStopBtn');
+            const modalStopsCount = document.getElementById('modalStopsCount');
+            const modalNoStopsMsg = document.getElementById('modalNoStopsMsg');
+            const currentRouteNameDisplay = document.getElementById('currentRouteName');
+
+            let currentStops = [];
+
+            document.querySelectorAll('.btn-manage-stops').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const routeCard = this.closest('.route-card');
+                    const routeName = routeCard.querySelector('h5').textContent;
+                    currentRouteNameDisplay.textContent = routeName;
+
+                    currentStops = [];
+                    renderModalStops();
+                });
+            });
+
+            function renderModalStops() {
+                modalStopsList.querySelectorAll('.stop-item').forEach(el => el.remove());
+
+                if (currentStops.length === 0) {
+                    modalNoStopsMsg.classList.remove('d-none');
+                } else {
+                    modalNoStopsMsg.classList.add('d-none');
+
+                    currentStops.forEach((stop, index) => {
+                        const stopItem = document.createElement('div');
+                        stopItem.className = 'stop-item';
+                        stopItem.innerHTML = `
+                                    <div class="stop-content">
+                                        <span class="stop-number">${index + 1}</span>
+                                        <span>${stop}</span>
+                                    </div>
+                                    <button class="btn-remove-stop" data-index="${index}">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                `;
+                        modalStopsList.appendChild(stopItem);
+                    });
+                }
+
+                modalStopsCount.textContent = `${currentStops.length} Stops`;
+
+                modalStopsList.querySelectorAll('.btn-remove-stop').forEach(btn => {
+                    btn.addEventListener('click', function () {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        currentStops.splice(index, 1);
+                        renderModalStops();
+                    });
+                });
+            }
+
+            modalAddStopBtn.addEventListener('click', function () {
+                const stopName = modalStopInput.value.trim();
+                if (stopName) {
+                    currentStops.push(stopName);
+                    modalStopInput.value = '';
+                    renderModalStops();
+                }
+            });
+
+            modalStopInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    modalAddStopBtn.click();
+                }
+            });
         });
     </script>
 }
