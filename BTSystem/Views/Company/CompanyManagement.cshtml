@@ -1,4 +1,4 @@
-﻿
+﻿@* 
 @{
     ViewData["Title"] = "Company Management";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -850,6 +850,933 @@
             async function deleteCompany(companyId) {
                 try {
                     const response = await fetch(`${API_BASE}/api/companies/${companyId}?modifiedBy=${MODIFIED_BY}`, {
+                        method: "DELETE"
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok || data.isError) {
+                        throw new Error(data?.message || "Failed to delete company");
+                    }
+
+                    await showSuccess(data.message || "Company deleted successfully!");
+                    await loadCompanies(statusFilter.value || "All");
+                } catch (error) {
+                    console.error("Delete Company Error:", error);
+                    showError(error.message || "Something went wrong while deleting company.");
+                }
+            }
+
+            // =============================
+            // Initial Load
+            // =============================
+            loadCompanies("All");
+        });
+    </script>
+} *@
+
+
+
+@{
+    ViewData["Title"] = "Company Management";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<!-- SweetAlert Z-Index Fix -->
+<style>
+    .swal2-container {
+        z-index: 20000 !important;
+    }
+</style>
+
+<div class="flex-1 overflow-y-auto p-8 space-y-8">
+    <!-- Welcome Section -->
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-bold tracking-tight">Company Management</h1>
+            <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">
+                Manage and monitor all registered bus transportation companies.
+            </p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button id="addCompanyBtn"
+                    class="flex items-center gap-3 px-5 py-2.5 bg-primary text-white hover:bg-primary/90 rounded-xl transition-all text-sm font-semibold shadow-lg shadow-primary/25">
+                <span class="material-icons text-[20px]">add</span>
+                Add New Company
+            </button>
+        </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Total Companies -->
+        <div class="bg-white dark:bg-surface-dark p-6 rounded-xl border border-primary/5 shadow-sm hover:shadow-md transition-all group">
+            <div class="flex items-start justify-between">
+                <div>
+                    <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                        Total Companies
+                    </p>
+                    <h3 class="text-2xl font-bold mt-1" id="totalCompanies">0</h3>
+                    <p class="text-emerald-500 text-xs font-medium mt-2 flex items-center">
+                        <span class="material-icons text-sm mr-1">trending_up</span>
+                        <span id="newCompaniesThisMonth">0</span> this month
+                    </p>
+                </div>
+                <div class="p-3 bg-primary/10 rounded-lg group-hover:bg-primary group-hover:text-white transition-colors">
+                    <span class="material-icons text-primary group-hover:text-white">business</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Companies -->
+        <div class="bg-white dark:bg-surface-dark p-6 rounded-xl border border-primary/5 shadow-sm hover:shadow-md transition-all group">
+            <div class="flex items-start justify-between">
+                <div>
+                    <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                        Active Status
+                    </p>
+                    <h3 class="text-2xl font-bold mt-1" id="activeCompanies">0</h3>
+                    <p class="text-emerald-500 text-xs font-medium mt-2 flex items-center">
+                        <span class="material-icons text-sm mr-1">check_circle</span>
+                        <span id="activePercentage">0</span>% overall
+                    </p>
+                </div>
+                <div class="p-3 bg-primary/10 rounded-lg group-hover:bg-primary group-hover:text-white transition-colors">
+                    <span class="material-icons text-primary group-hover:text-white">verified</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Buses -->
+        <div class="bg-white dark:bg-surface-dark p-6 rounded-xl border border-primary/5 shadow-sm hover:shadow-md transition-all group">
+            <div class="flex items-start justify-between">
+                <div>
+                    <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                        Total Buses
+                    </p>
+                    <h3 class="text-2xl font-bold mt-1" id="totalBuses">0</h3>
+                    <p class="text-primary text-xs font-medium mt-2 flex items-center">
+                        <span class="material-icons text-sm mr-1">directions_bus</span>
+                        Across all companies
+                    </p>
+                </div>
+                <div class="p-3 bg-primary/10 rounded-lg group-hover:bg-primary group-hover:text-white transition-colors">
+                    <span class="material-icons text-primary group-hover:text-white">moving</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Students -->
+        <div class="bg-white dark:bg-surface-dark p-6 rounded-xl border border-primary/5 shadow-sm hover:shadow-md transition-all group">
+            <div class="flex items-start justify-between">
+                <div>
+                    <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                        Total Students
+                    </p>
+                    <h3 class="text-2xl font-bold mt-1" id="totalStudents">0</h3>
+                    <p class="text-indigo-500 text-xs font-medium mt-2 flex items-center">
+                        <span class="material-icons text-sm mr-1">school</span>
+                        Across all companies
+                    </p>
+                </div>
+                <div class="p-3 bg-primary/10 rounded-lg group-hover:bg-primary group-hover:text-white transition-colors">
+                    <span class="material-icons text-primary group-hover:text-white">groups</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter and Search Bar -->
+    <div class="bg-white dark:bg-surface-dark p-4 rounded-xl border border-primary/5 shadow-sm flex flex-col sm:flex-row gap-4 justify-between items-center bg-slate-50/50 dark:bg-background-dark/30">
+        <div class="relative w-full sm:w-96">
+            <span class="material-icons absolute left-3 top-2.5 text-slate-400 text-sm">search</span>
+            <input id="searchInput"
+                   class="w-full bg-white dark:bg-surface-dark border border-slate-200 dark:border-slate-700 rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
+                   placeholder="Search companies by name, email, city or ID..." type="text" />
+        </div>
+        <div class="flex gap-2 w-full sm:w-auto">
+            <select id="statusFilter"
+                    class="bg-white dark:bg-surface-dark border border-slate-200 dark:border-slate-700 rounded-lg text-sm px-4 py-2 focus:ring-2 focus:ring-primary focus:border-transparent outline-none cursor-pointer">
+                <option value="All">Status: All</option>
+                <option value="Active">Active Only</option>
+                <option value="Inactive">Inactive Only</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Companies Table -->
+    <div class="bg-white dark:bg-surface-dark rounded-xl border border-primary/5 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 dark:bg-background-dark/50 text-slate-500 dark:text-slate-400 text-[11px] font-bold uppercase tracking-wider">
+                        <th class="px-6 py-4">Company Info</th>
+                        <th class="px-6 py-4">Email</th>
+                        <th class="px-6 py-4 text-center">Admins</th>
+                        <th class="px-6 py-4 text-center">Buses</th>
+                        <th class="px-6 py-4 text-center">Students</th>
+                        <th class="px-6 py-4">Status</th>
+                        <th class="px-6 py-4 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="companyTableBody" class="divide-y divide-primary/5">
+                    <tr>
+                        <td colspan="7" class="text-center py-10 text-slate-500">Loading companies...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Add / Edit Company Modal -->
+    <div id="addCompanyModal" class="fixed inset-0 z-[9999] hidden">
+        <div id="modalBackdrop" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div class="relative w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white dark:bg-surface-dark p-8 shadow-2xl transition-all border border-slate-200 dark:border-border-dark">
+                <div class="flex items-center justify-between mb-8">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+                            <span class="material-icons text-primary">business</span>
+                        </div>
+                        <div>
+                            <h3 id="modalTitle" class="text-xl font-bold">Add New Company</h3>
+                            <p id="modalSubtitle" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                                Register a new tenant in the system
+                            </p>
+                        </div>
+                    </div>
+                    <button id="closeModalBtn"
+                            type="button"
+                            class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+
+                <form id="addCompanyForm" class="space-y-6">
+                    <input type="hidden" id="editCompanyId" />
+
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">
+                                    Company Name
+                                </label>
+                                <input type="text" id="companyName" required
+                                       class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm"
+                                       placeholder="e.g. City Transit Group">
+                            </div>
+
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">
+                                    Company Email
+                                </label>
+                                <input type="email" id="companyEmail" required
+                                       class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm"
+                                       placeholder="admin@company.com">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">
+                                    Country
+                                </label>
+                                <select id="countrySelect" required
+                                        class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm appearance-none">
+                                    <option value="" selected disabled>Loading countries...</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">
+                                    City
+                                </label>
+                                <select id="citySelect" required disabled
+                                        class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm appearance-none disabled:opacity-50">
+                                    <option value="" selected disabled>Select Country First</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">
+                                Status
+                            </label>
+                            <select id="statusSelect" required
+                                    class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all text-sm appearance-none">
+                                <option value="1" selected>Active</option>
+                                <option value="0">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 flex flex-col sm:flex-row gap-3 pt-6 border-t border-slate-100 dark:border-border-dark">
+                        <button type="button" id="cancelModalBtn"
+                                class="flex-1 px-6 py-3 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-all text-sm">
+                            Cancel
+                        </button>
+
+                        <button type="submit" id="saveCompanyBtn"
+                                class="flex-1 px-6 py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 shadow-lg shadow-primary/25 transition-all text-sm flex items-center justify-center gap-2">
+                            <span class="material-icons text-sm">check_circle</span>
+                            <span id="saveBtnText">Confirm & Create</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="flex flex-col md:flex-row justify-between items-center py-4 border-t border-slate-200 dark:border-border-dark text-slate-400 text-xs">
+        <p>© 2024 OmniBus Tracking System. All rights reserved.</p>
+        <div class="flex gap-6 mt-4 md:mt-0">
+            <a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+            <a class="hover:text-primary transition-colors" href="#">Service Status</a>
+            <a class="hover:text-primary transition-colors" href="#">API Docs</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const API_BASE = "http://192.168.10.189:8021";
+            const countriesApi = `${API_BASE}/api/companies/countries-dropdown`;
+            const citiesApiBase = `${API_BASE}/api/companies/cities-dropdown`;
+            const createCompanyApi = `${API_BASE}/api/companies/create`;
+            const updateCompanyApi = `${API_BASE}/api/companies/update`;
+            const deleteCompanyApiBase = `${API_BASE}/api/companies`;
+            const getAllCompaniesApi = `${API_BASE}/api/companies/all`;
+            const MODIFIED_BY = 1;
+            const CREATED_BY = 1;
+
+            let allCompanies = [];
+            let isEditMode = false;
+            let editingCompanyId = null;
+
+            // =============================
+            // Elements
+            // =============================
+            const modal = document.getElementById("addCompanyModal");
+            const openBtn = document.getElementById("addCompanyBtn");
+            const closeBtn = document.getElementById("closeModalBtn");
+            const cancelBtn = document.getElementById("cancelModalBtn");
+            const backdrop = document.getElementById("modalBackdrop");
+            const form = document.getElementById("addCompanyForm");
+
+            const modalTitle = document.getElementById("modalTitle");
+            const modalSubtitle = document.getElementById("modalSubtitle");
+
+            const countrySelect = document.getElementById("countrySelect");
+            const citySelect = document.getElementById("citySelect");
+            const statusSelect = document.getElementById("statusSelect");
+
+            const companyNameInput = document.getElementById("companyName");
+            const companyEmailInput = document.getElementById("companyEmail");
+            const editCompanyIdInput = document.getElementById("editCompanyId");
+
+            const searchInput = document.getElementById("searchInput");
+            const statusFilter = document.getElementById("statusFilter");
+            const companyTableBody = document.getElementById("companyTableBody");
+
+            const saveCompanyBtn = document.getElementById("saveCompanyBtn");
+            const saveBtnText = document.getElementById("saveBtnText");
+
+            // =============================
+            // Helpers
+            // =============================
+            function safeArray(arr) {
+                return Array.isArray(arr) ? arr : [];
+            }
+
+            function getCompanyBusCount(company) {
+                return Number(
+                    company?.totalBuses ??
+                    company?.fleet?.totalVehicles ??
+                    company?.fleetGraph?.totalBuses ??
+                    safeArray(company?.buses).length ??
+                    0
+                );
+            }
+
+            function getCompanyStudentCount(company) {
+                return Number(
+                    company?.totalStudents ??
+                    safeArray(company?.students).length ??
+                    0
+                );
+            }
+
+            function getCompanyAdminCount(company) {
+                return Number(
+                    company?.totalAdmins ??
+                    safeArray(company?.admins).length ??
+                    0
+                );
+            }
+
+            function getCompanyStatus(company) {
+                if (typeof company?.isActive === "boolean") return company.isActive;
+                if (typeof company?.status === "string") return company.status.toLowerCase() === "active";
+                return false;
+            }
+
+            function getInitials(name) {
+                if (!name) return "NA";
+                return name
+                    .split(" ")
+                    .map(word => word[0])
+                    .join("")
+                    .substring(0, 2)
+                    .toUpperCase();
+            }
+
+            // =============================
+            // SweetAlert Helpers
+            // =============================
+            function showSuccess(message) {
+                return Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: message,
+                    confirmButtonColor: '#2563eb',
+                    zIndex: 30000
+                });
+            }
+
+            function showError(message) {
+                return Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: message,
+                    confirmButtonColor: '#dc2626',
+                    zIndex: 30000
+                });
+            }
+
+            function showWarning(message) {
+                return Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning',
+                    text: message,
+                    confirmButtonColor: '#f59e0b',
+                    zIndex: 30000
+                });
+            }
+
+            // =============================
+            // Modal Functions
+            // =============================
+            function resetForm() {
+                form.reset();
+                isEditMode = false;
+                editingCompanyId = null;
+                editCompanyIdInput.value = "";
+
+                modalTitle.textContent = "Add New Company";
+                modalSubtitle.textContent = "Register a new tenant in the system";
+                saveBtnText.textContent = "Confirm & Create";
+
+                citySelect.innerHTML = `<option value="" selected disabled>Select Country First</option>`;
+                citySelect.disabled = true;
+                countrySelect.innerHTML = `<option value="" selected disabled>Loading countries...</option>`;
+                statusSelect.value = "1";
+            }
+
+            function openModal() {
+                modal.classList.remove("hidden");
+                loadCountries();
+            }
+
+            function closeModal() {
+                modal.classList.add("hidden");
+                resetForm();
+            }
+
+            function setEditMode(company) {
+                resetForm();
+
+                isEditMode = true;
+                editingCompanyId = company.companyId;
+                editCompanyIdInput.value = company.companyId;
+
+                modalTitle.textContent = "Update Company";
+                modalSubtitle.textContent = "Modify company details";
+                saveBtnText.textContent = "Update Company";
+
+                companyNameInput.value = company.companyName || "";
+                companyEmailInput.value = company.companyEmail || "";
+                statusSelect.value = getCompanyStatus(company) ? "1" : "0";
+
+                openModal();
+
+                setTimeout(async () => {
+                    await setCountryAndCityForEdit(company.country, company.city);
+                }, 500);
+            }
+
+            openBtn?.addEventListener("click", () => {
+                resetForm();
+                openModal();
+            });
+
+            closeBtn?.addEventListener("click", closeModal);
+            cancelBtn?.addEventListener("click", closeModal);
+            backdrop?.addEventListener("click", closeModal);
+
+            // =============================
+            // Load Companies
+            // =============================
+            async function loadCompanies(status = "All") {
+                try {
+                    companyTableBody.innerHTML = `
+                                <tr>
+                                    <td colspan="7" class="text-center py-10 text-slate-500">Loading companies...</td>
+                                </tr>
+                            `;
+
+                    const response = await fetch(`${getAllCompaniesApi}?statusFilter=${encodeURIComponent(status)}`);
+                    const data = await response.json();
+
+                    if (!data || data.isError) {
+                        throw new Error(data?.message || "Failed to fetch companies");
+                    }
+
+                    const result = data.result || {};
+                    allCompanies = safeArray(result.companies);
+
+                    renderStats(result.stats || {}, allCompanies);
+                    renderTable(allCompanies);
+                } catch (error) {
+                    console.error("Error loading companies:", error);
+                    companyTableBody.innerHTML = `
+                                <tr>
+                                    <td colspan="7" class="text-center py-10 text-red-500">Failed to load companies.</td>
+                                </tr>
+                            `;
+                }
+            }
+
+            // =============================
+            // Render KPI Stats
+            // =============================
+            function renderStats(stats, companies) {
+                const totalCompanies = stats.totalCompanies ?? companies.length ?? 0;
+                const activeCompanies = stats.activeCompanies ?? companies.filter(c => getCompanyStatus(c)).length ?? 0;
+                const totalStudents = stats.totalStudents ?? companies.reduce((sum, company) => sum + getCompanyStudentCount(company), 0);
+                const totalBuses = stats.totalBuses ?? companies.reduce((sum, company) => sum + getCompanyBusCount(company), 0);
+                const newCompaniesThisMonth = stats.newCompaniesThisMonth ?? 0;
+                const activePercentage = totalCompanies > 0
+                    ? Math.round((activeCompanies / totalCompanies) * 100)
+                    : 0;
+
+                document.getElementById("totalCompanies").textContent = totalCompanies;
+                document.getElementById("activeCompanies").textContent = activeCompanies;
+                document.getElementById("activePercentage").textContent = activePercentage;
+                document.getElementById("totalStudents").textContent = totalStudents;
+                document.getElementById("newCompaniesThisMonth").textContent = newCompaniesThisMonth;
+                document.getElementById("totalBuses").textContent = totalBuses;
+            }
+
+            // =============================
+            // Render Company Table
+            // =============================
+            function renderTable(companies) {
+                if (!companies || companies.length === 0) {
+                    companyTableBody.innerHTML = `
+                                <tr>
+                                    <td colspan="7" class="text-center py-10 text-slate-500">No companies found.</td>
+                                </tr>
+                            `;
+                    return;
+                }
+
+                companyTableBody.innerHTML = companies.map(company => {
+                    const initials = getInitials(company.companyName);
+                    const isActive = getCompanyStatus(company);
+
+                    const statusClass = isActive
+                        ? "bg-emerald-500/10 text-emerald-500"
+                        : "bg-slate-500/10 text-slate-500";
+
+                    const statusText = isActive ? "Active" : "Inactive";
+
+                    const totalAdmins = getCompanyAdminCount(company);
+                    const totalBuses = getCompanyBusCount(company);
+                    const totalStudents = getCompanyStudentCount(company);
+
+                    return `
+                                <tr class="hover:bg-slate-50/50 dark:hover:bg-primary/5 transition-colors group">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
+                                                ${initials}
+                                            </div>
+                                            <div>
+                                                <a href="/Company/Details/${company.companyId}"
+                                                   class="font-bold text-sm hover:text-primary transition-colors cursor-pointer">
+                                                    ${company.companyName || "N/A"}
+                                                </a>
+                                                <div class="text-[11px] text-slate-500 dark:text-slate-400">
+                                                    ID: ${company.companyCode || company.companyId || "N/A"} • ${company.city || "N/A"}, ${company.country || "N/A"}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-xs text-slate-500 dark:text-slate-400">${company.companyEmail || "N/A"}</div>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-50 dark:bg-slate-800 rounded-full border border-slate-100 dark:border-slate-700">
+                                            <span class="material-icons text-indigo-500 text-[14px]">admin_panel_settings</span>
+                                            <span class="text-sm font-bold">${totalAdmins}</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-50 dark:bg-slate-800 rounded-full border border-slate-100 dark:border-slate-700">
+                                            <span class="material-icons text-primary text-[14px]">directions_bus</span>
+                                            <span class="text-sm font-bold">${totalBuses}</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-50 dark:bg-slate-800 rounded-full border border-slate-100 dark:border-slate-700">
+                                            <span class="material-icons text-indigo-500 text-[14px]">school</span>
+                                            <span class="text-sm font-bold">${totalStudents}</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="px-2.5 py-1 ${statusClass} text-[10px] font-bold rounded-full uppercase">
+                                            ${statusText}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <div class="flex justify-end gap-2">
+                                            <a href="/Company/Details/${company.companyId}"
+                                               class="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
+                                               title="View Details">
+                                                <span class="material-icons text-sm">visibility</span>
+                                            </a>
+
+                                            <button type="button"
+                                                    class="p-2 text-slate-400 hover:text-amber-500 hover:bg-amber-500/5 rounded-lg transition-all editCompanyBtn"
+                                                    title="Edit Company"
+                                                    data-id="${company.companyId}">
+                                                <span class="material-icons text-sm">edit</span>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-500/5 rounded-lg transition-all deleteCompanyBtn"
+                                                    title="Delete Company"
+                                                    data-id="${company.companyId}">
+                                                <span class="material-icons text-sm">delete_outline</span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
+                }).join("");
+
+                attachRowEvents();
+            }
+
+            // =============================
+            // Row Events
+            // =============================
+            function attachRowEvents() {
+                document.querySelectorAll(".editCompanyBtn").forEach(btn => {
+                    btn.addEventListener("click", function () {
+                        const companyId = parseInt(this.getAttribute("data-id"));
+                        const selectedCompany = allCompanies.find(x => x.companyId === companyId);
+
+                        if (selectedCompany) {
+                            setEditMode(selectedCompany);
+                        }
+                    });
+                });
+
+                document.querySelectorAll(".deleteCompanyBtn").forEach(btn => {
+                    btn.addEventListener("click", async function () {
+                        const companyId = parseInt(this.getAttribute("data-id"));
+                        const selectedCompany = allCompanies.find(x => x.companyId === companyId);
+
+                        const result = await Swal.fire({
+                            title: 'Delete Company?',
+                            text: `Are you sure you want to delete ${selectedCompany?.companyName || 'this company'}?`,
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#dc2626',
+                            cancelButtonColor: '#64748b',
+                            confirmButtonText: 'Yes, Delete',
+                            zIndex: 30000
+                        });
+
+                        if (result.isConfirmed) {
+                            deleteCompany(companyId);
+                        }
+                    });
+                });
+            }
+
+            // =============================
+            // Search Filter
+            // =============================
+            function filterCompanies() {
+                const search = searchInput.value.toLowerCase().trim();
+
+                const filtered = allCompanies.filter(company => {
+                    return (
+                        company.companyName?.toLowerCase().includes(search) ||
+                        company.companyEmail?.toLowerCase().includes(search) ||
+                        String(company.companyCode || "").toLowerCase().includes(search) ||
+                        String(company.companyId || "").toLowerCase().includes(search) ||
+                        company.city?.toLowerCase().includes(search) ||
+                        company.country?.toLowerCase().includes(search)
+                    );
+                });
+
+                renderTable(filtered);
+            }
+
+            searchInput?.addEventListener("input", filterCompanies);
+
+            // =============================
+            // Status Filter
+            // =============================
+            statusFilter?.addEventListener("change", function () {
+                const selected = this.value;
+                loadCompanies(selected);
+            });
+
+            // =============================
+            // Load Countries
+            // =============================
+            async function loadCountries() {
+                try {
+                    countrySelect.innerHTML = `<option value="" selected disabled>Loading countries...</option>`;
+
+                    const response = await fetch(countriesApi);
+                    const data = await response.json();
+
+                    if (data.status === 200 && data.result && data.result.length > 0) {
+                        countrySelect.innerHTML = `<option value="" selected disabled>Select Country</option>`;
+
+                        data.result.forEach(country => {
+                            const option = document.createElement("option");
+                            option.value = country.countryName;
+                            option.textContent = country.countryName;
+                            option.dataset.countryId = country.countryId;
+                            option.dataset.countryCode = country.countryCode;
+                            countrySelect.appendChild(option);
+                        });
+                    } else {
+                        countrySelect.innerHTML = `<option value="" selected disabled>No countries found</option>`;
+                    }
+                } catch (error) {
+                    console.error("Error loading countries:", error);
+                    countrySelect.innerHTML = `<option value="" selected disabled>Failed to load countries</option>`;
+                }
+            }
+
+            // =============================
+            // Load Cities By CountryId
+            // =============================
+            async function loadCities(countryId, selectedCity = null) {
+                try {
+                    citySelect.disabled = true;
+                    citySelect.innerHTML = `<option value="" selected disabled>Loading cities...</option>`;
+
+                    const response = await fetch(`${citiesApiBase}/${countryId}`);
+                    const data = await response.json();
+
+                    if (data.status === 200 && data.result && data.result.length > 0) {
+                        citySelect.innerHTML = `<option value="" selected disabled>Select City</option>`;
+
+                        data.result.forEach(city => {
+                            const option = document.createElement("option");
+                            option.value = city.cityName;
+                            option.textContent = city.cityName;
+                            option.dataset.cityId = city.cityId;
+                            citySelect.appendChild(option);
+                        });
+
+                        citySelect.disabled = false;
+
+                        if (selectedCity) {
+                            citySelect.value = selectedCity;
+                        }
+                    } else {
+                        citySelect.innerHTML = `<option value="" selected disabled>No cities found</option>`;
+                        citySelect.disabled = true;
+                    }
+                } catch (error) {
+                    console.error("Error loading cities:", error);
+                    citySelect.innerHTML = `<option value="" selected disabled>Failed to load cities</option>`;
+                    citySelect.disabled = true;
+                }
+            }
+
+            // =============================
+            // Country Change
+            // =============================
+            countrySelect?.addEventListener("change", function () {
+                const selectedOption = this.options[this.selectedIndex];
+                const countryId = selectedOption?.dataset.countryId;
+
+                if (countryId) {
+                    loadCities(countryId);
+                } else {
+                    citySelect.innerHTML = `<option value="" selected disabled>Select Country First</option>`;
+                    citySelect.disabled = true;
+                }
+            });
+
+            // =============================
+            // Set Country + City For Edit
+            // =============================
+            async function setCountryAndCityForEdit(countryName, cityName) {
+                const countryOption = [...countrySelect.options].find(
+                    option => option.value?.toLowerCase() === (countryName || "").toLowerCase()
+                );
+
+                if (!countryOption) return;
+
+                countrySelect.value = countryOption.value;
+                const countryId = countryOption.dataset.countryId;
+
+                if (countryId) {
+                    await loadCities(countryId, cityName);
+                }
+            }
+
+            // =============================
+            // Create / Update Submit
+            // =============================
+            form?.addEventListener("submit", async function (e) {
+                e.preventDefault();
+
+                const companyName = companyNameInput.value.trim();
+                const companyEmail = companyEmailInput.value.trim();
+                const companyId = editCompanyIdInput.value.trim();
+                const country = countrySelect.value;
+                const city = citySelect.value;
+                const isActive = statusSelect.value === "1";
+
+                if (!companyName || !companyEmail || !country || !city) {
+                    showWarning("Please fill all required fields.");
+                    return;
+                }
+
+                try {
+                    saveCompanyBtn.disabled = true;
+                    saveBtnText.textContent = isEditMode ? "Updating..." : "Saving...";
+
+                    if (isEditMode) {
+                        closeModal();
+
+                        setTimeout(async () => {
+                            const result = await Swal.fire({
+                                title: 'Update Company?',
+                                text: 'Are you sure you want to update this company?',
+                                icon: 'question',
+                                showCancelButton: true,
+                                confirmButtonColor: '#2563eb',
+                                cancelButtonColor: '#64748b',
+                                confirmButtonText: 'Yes, Update',
+                                zIndex: 30000
+                            });
+
+                            if (!result.isConfirmed) {
+                                saveCompanyBtn.disabled = false;
+                                saveBtnText.textContent = "Update Company";
+                                return;
+                            }
+
+                            const payload = {
+                                companyId: Number(companyId),
+                                companyName: companyName,
+                                companyEmail: companyEmail,
+                                country: country,
+                                city: city,
+                                isActive: isActive,
+                                modifiedBy: MODIFIED_BY
+                            };
+
+                            try {
+                                const response = await fetch(updateCompanyApi, {
+                                    method: "PUT",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify(payload)
+                                });
+
+                                const data = await response.json();
+
+                                if (!response.ok || data.isError) {
+                                    throw new Error(data?.message || "Failed to update company");
+                                }
+
+                                await showSuccess(data.message || "Company updated successfully!");
+                                await loadCompanies(statusFilter.value || "All");
+                            } catch (error) {
+                                console.error("Update Company Error:", error);
+                                showError(error.message || "Something went wrong while updating company.");
+                            } finally {
+                                saveCompanyBtn.disabled = false;
+                                saveBtnText.textContent = "Confirm & Create";
+                            }
+                        }, 150);
+
+                    } else {
+                        const payload = {
+                            companyName: companyName,
+                            companyEmail: companyEmail,
+                            country: country,
+                            city: city,
+                            isActive: isActive,
+                            createdBy: CREATED_BY
+                        };
+
+                        const response = await fetch(createCompanyApi, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(payload)
+                        });
+
+                        const data = await response.json();
+
+                        if (!response.ok || data.isError) {
+                            throw new Error(data?.message || "Failed to create company");
+                        }
+
+                        await showSuccess(data.message || "Company created successfully!");
+                        closeModal();
+                        await loadCompanies(statusFilter.value || "All");
+
+                        saveCompanyBtn.disabled = false;
+                        saveBtnText.textContent = "Confirm & Create";
+                    }
+                } catch (error) {
+                    console.error("Create/Update Company Error:", error);
+                    showError(error.message || "Something went wrong while saving company.");
+                    saveCompanyBtn.disabled = false;
+                    saveBtnText.textContent = isEditMode ? "Update Company" : "Confirm & Create";
+                }
+            });
+
+            // =============================
+            // Delete Company
+            // =============================
+            async function deleteCompany(companyId) {
+                try {
+                    const response = await fetch(`${deleteCompanyApiBase}/${companyId}?modifiedBy=${MODIFIED_BY}`, {
                         method: "DELETE"
                     });
 
